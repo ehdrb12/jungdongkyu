@@ -14,7 +14,6 @@
 <!-- c:out태그를 사용하는 이유는 해킹 방지용으로 필요합니다. 시큐어코딩(보안코딩) -->
 </p>
 <P>  현재 미국 서버의 시간은 ${TomcatserverTime} 
-<script>alert('하이루');</script>
 입니다.. </p>
 </body>
 </html>
