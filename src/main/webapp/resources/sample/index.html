@@ -3,11 +3,13 @@
 <head><!-- 문서내용과는 관계없는 문서정보가 들어있고, 메타데이터(데이터의 데이터)가 존재 -->
 <meta charset="UTF-8"><!-- 문서의 언어 인코딩설정 지금은 유니코드로 됨 -->
 <title>반응형홈페이지</title><!-- 문서의 제목을 브라우저상단왼쪽에 표시 -->
+<!-- 외부 css파일 불러오는 태그(아래) -->
+<link rel="stylesheet" href="/resources/sample/css/reset.css" type="text/css">
 <!-- span 자리를 자지하지 않는 영역 = 한뼘 , px픽셀 화면에 표시되는 크기의 단위 -->
 <!-- :콜론(속성:값, key:Value), ;세미콜론(문장의 끝) -->
 <style>
 /* 모바일용 스타일지정 시작 */
-span {
+#header span {
 display:block;height:10px;width:50px;background-color:red;
 margin-bottom:10px
 }
@@ -41,7 +43,7 @@ margin-bottom:10px
 <section><!--  division디비전이라는 div 영역표시 태그 대신에 사용 -->
 <!-- 본문 슬라이드 영역 시작 -->
 <!-- 이미지를 불러오는 태그 img -->
-<!-- 경로:상대(,/img),절대경로(/resources/sample/img/...) -->
+<!-- 경로:상대(./img),절대경로(/resources/sample/img/...) -->
 <!-- 태그안쪽에 지정한 스타일을 인라인 스타일 -->
 <div class="slider">
 <img src="/resources/sample/img/bper.jpg"alt="가방든 남자이미지입니다.">
