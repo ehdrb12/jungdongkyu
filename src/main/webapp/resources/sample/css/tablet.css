@@ -55,8 +55,26 @@ width:50%;
 float:left;/*세로배치가 가로배치로 변함*/
 width:31.59722222222%;/*3개중1개의가로크기 (242px/768)*100=31.59722222222% */
 margin-left:2.60416666666%;/*1개의 여백구하기 (20px/768)*100=2.60416666666% */
+height:300px;
+border:1px solid #ccc;
+}
+.blog-section li .preview {
+height:200px;
+overflow:hidden;
+/*디버브용 border:1px solid red;*/
+/*min-height:200px;이미지 최소높이를 지정*/
+/*max-height:200px;이미지 초대높이를 지정*/
+}
+.blog-section li .info2 {
+padding:10px;
 }
 .blog-section li:first-child {
+margin-left:0px;
+}
+.blog-section li:nth-child(3n+1){
+/* 1,4,7,10,13...위치에 해당되는 것만 적용 
+n번째 인덱스값이기 때문에 0부터 시작합니다. 3n-2 = 3x0-2 = -2 결과가 이상함. 3n+1=3x0+1=1
+*/
 margin-left:0px;
 }
 .blog-section hr {display:none}
