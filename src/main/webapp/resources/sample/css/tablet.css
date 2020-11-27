@@ -1,7 +1,8 @@
 /*미디어쿼리:미디어의 가로크기가 768px 이상이면 아래 스타일 적용*/
 @media all and (min-width:768px) {
-
-
+/* 공통사항 시작*/
+ul {text-align:center;}
+/* 공통사항 끝*/
 /*헤더영역시작*/
 .menu-toggle-btn {display:none;}
 .header .gnb {
@@ -15,12 +16,14 @@ margin-top:10px;
 .header .gnb li {
 float:left;
 border:none;
-width:95px;
+/* width:95px;수정한부분 */
 }
 .header .gnb li:last-child {border-bottom:none;}
 .header .gnb li a {
 display:inline-block;/*콘텐츠내용크기만큼만 자리를 차지하는 영역*/
 color:#3f51b5;
+padding-left:0px;/*추가한부분*/
+margin-right:30px;/*추가한부분*/
 }
 .header .gnb li a:hover {text-decoration:none;}
 /*헤더영역 끝*/
@@ -47,6 +50,8 @@ margin-left:0px;
 .work-section li {
 float:left;/*세로배치를 가로배치로 변경*/
 width:50%;
+max-hetght:300px;
+overflow:hidden;
 }
 /*work영역 끝*/
 
@@ -55,8 +60,8 @@ width:50%;
 float:left;/*세로배치가 가로배치로 변함*/
 width:31.59722222222%;/*3개중1개의가로크기 (242px/768)*100=31.59722222222% */
 margin-left:2.60416666666%;/*1개의 여백구하기 (20px/768)*100=2.60416666666% */
-height:300px;
-border:1px solid #ccc;
+height:300px;/*높이가 들쑥 날쑥하면 이빨빠지는 부분이 생겨서 이미지 보이는 공간의 최고 높이를 300px로 고정*/
+border:1px solid #ccc;/*만약에 300px 높이 이미지는 숨김처리가 됩니다.*/
 }
 .blog-section li .preview {
 height:200px;

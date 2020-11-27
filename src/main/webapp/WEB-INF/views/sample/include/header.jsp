@@ -12,9 +12,6 @@
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script><!-- J쿼리코어 -->
 <script src="/resources/sample/js/user.js"></script>
 <!-- 외부 css파일 불러오는 태그(아래) -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
-<!-- 위 부트스트랩 코어 입니다. -->
 
 <link rel="stylesheet" href="/resources/sample/css/reset.css" type="text/css">
 <link rel="stylesheet" href="/resources/sample/css/mobile.css" type="text/css">
@@ -66,6 +63,7 @@ $(document).ready(function(){
 <li><a href="/work">WORK</a></li>
 <li><a href="/blog">BLOG</a></li>
 <li><a href="/contact">CONTACT US</a></li>
+<li><a href="javascript:alert('관리자단 준비중 입니다.')">AdminLTE</a>
 </ul>
 </nav>
 <!-- 상단 로고와 햄버거 메뉴영역 끝 -->
