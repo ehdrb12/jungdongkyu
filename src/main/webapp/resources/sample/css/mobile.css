@@ -1,13 +1,14 @@
 @charset "UTF-8";
 /* 모바일용 스타일지정 시작  */
 body {/*부트스트랩css또는 reset.css에서 초기화 된것을 재 정의 할때*/
-font-seze:14px;
+font-size:14px;
 background:#fff;
-line-height:1.4;/*상속 바로전에 적용한 값을 초기화initial 시키는 역할*/
+line-height:1.4 !important;/*상속 바로전에 적용한 값을 초기화inherit, initial 시키는 역할*/
+font-family:'Malgun Gothic', dotum, sans-serif !important;
 }/*부트스트랩css영향을 받은것을 무효화시키고, 사용자css로 적용*/
 /*부트스트랩css영향을 받는 부분을 무효화 시키기(아래)*/
 ul {
-	margin-bottom:inherit !important;/*css위치와 상관없이 무조건,중요하게 적용가능*/
+	margin-bottom: inherit !important;/*css위치와 상관없이 무조건,중요하게 적용가능*/
 }
 /* 헤더영역 시작 */
 .header {
@@ -21,15 +22,15 @@ padding:0px 2%;/*안쪽여백: 바깥쪽여백은 margin입니다. 18px(상하�
 .header .logo {
 float:left;/*플로트: 떠다니는 영역. 역할은 세로배치를 가로배치로 변경처리에 사용됨*/
 }
-.header .logo a{
+.header .logo a {
 font-size:26px;/*글자크기*/
 color:#3f51b5;/*글자색상*/
 font-weight:normal;/*글자두께*/
 text-indent:-9999%;/*들여쓰기*/
 display:block;
 height:80px;
-background:url(/resources/sample/img/logo.png)no-repeat;/*배경이미지 기본이 반복repeat*/
-background-size:80%;
+background:url(/resources/sample/img/ball.png) no-repeat;/*배경이미지 기본이 반복repeat*/
+background-size:90%;
 background-position:0px center;/*배경위치는 0px(가로) center(세로)*/
 }
 .header .menu-toggle-btn { /*토글:똑딱이버튼*/
@@ -47,43 +48,44 @@ margin-bottom:5px;
 .header .gnb {
 display:none;/*페이지로딩할때 숨겨야 하기 때문에 none으로 처리*/
 position:absolute;/*gnb영역의 위치를 절대위치로 지정 위치정보가 필요*/
-top:80px;
-left:0px;
+top:80px;/*화면상단에서 얼만큼 떨어지게 배치할 건지 지정*/
+left:0px;/*화면왼쪽에서 얼만큼 떨어지게 배치할지 저정*/
 width:100%;
 background:#3f51b5;
 z-index:21;/*화면에서 콘텐츠가 겹치는경우 z인덱스*/
 }
 .header .gnb li {
-/*border는 테두리 bottom:아래,top:위,left-right:좌-우 1px두께, solid(실선),#16진수(색상)*/
+/*border는 테두리 bottom:아래,top:위,left-right:좌-우 1px(두께),solid(실선),#16진수(색상) */
 border:1px solid #303f9f;
 border-bottom:0px;
 }
 /*가상선택자 : 사용*/
-.header .gnb li:last-child{
+.header .gnb li:last-child {
 border-bottom:1px solid #303f9f;
 }
-.header .gnb li a{
-display:block;/* 1줄 1글자라도 전체 자리를 차지하는 영역 : ()inline-block 자리를 차지하지만, 본인크기만*/
+.header .gnb li a {
+display:block;/* 1줄 1글자라도 전체 자리를 차지하는 영역 : ()inline-block 자리를 차지하지만, 본인크기만) */
 padding:14px 0 14px 5%;
 font-size:14px;
 color:#fff;
 }
 /* 헤더영역 끝 */
+
 /* 본문섹션 슬라이드영역 시작 */
 #wrap .slider img {width:100%;}/* Cascade Style Sheet 특징 계단형 스타일지정 */
 .carousel-item, .carousel-item img {height:300px;}
 /* 본분섹션 슬라이드영역 끝 */
 
-/*푸터영역 시작*/
+/* 푸터영역 시작 */
 .footer {
-padding-top:30px;/*margin-top 작동을하지 않아서 padding-top으로 변경*/
+padding-top:30px;/*margin-top 작동을 하지 않아서 padding-top으로 변경*/
 }
-.footer p{
+.footer p {
 margin: 21px 0px;
 color:#3f51b5;
 text-align:center;/*문장내용을 가로 가운데 정렬*/
 }
-/*푸터영역 끝*/
+/* 푸터영역 끝 */
 
 /* we are페이지 영역 시작 */
 .weare-header {
@@ -121,7 +123,7 @@ color:#3f51b5;
 .weare-body li p {font-size:14px;}
 /* we are페이지 영역 끝 */
 
-/* work영역 시작*/
+/* work영역 시작 */
 .work-section {
 text-align:center;
 margin-top:30px;
@@ -151,15 +153,15 @@ opacity:0;/*투명도 0%로 지정*/
 opacity:0.4;
 }
 .work-section .info {
-display:block;/*자리를 차지하기 위해서 block을 지정합니다.*/
+display:block;/*화면에서 자리를 차지하기 위해서 block을 지정합니다.*/
 position:absolute;
 left:10px;
 color:#fff;
 text-align:left;
 opacity:0;
-transition:all 0.3s;/*화면전환 옵션 stransform 모양변화에대한 화면전환옵션, width, height등등 all... */
+transition:all 0.3s;/*화면전환 옵션 transform 모양변화에대한 화면전환옵션, width, height등등 all... */
 }
-.work-section li a:hover .info {
+.work-section li a:hover .info{
 opacity:1;
 transform:translateY(20px);/*모양이 변화할때 Y세로축으로 20px 이동합니다.*/
 }
@@ -171,9 +173,9 @@ font-weight:normal;
 font-size:14px;
 padding:10px 0px;
 }
-/* work영역 끝*/
+/* work영역 끝 */
 
-/* blog 영역 시작*/
+/* blog 영역 시작 */
 .blog-section {
 margin-top:30px;
 }
@@ -194,7 +196,7 @@ margin-top:30px;
 .blog-section li img {
 width:100%;
 }
-.blog-section time {
+.blog-section li time {
 display:block;
 margin:10px 0px;
 font-size:12px;
@@ -207,7 +209,7 @@ line-height:1.6;/*줄간격단위는 현재 글자크기의 배수*/
 }
 /* reset.css 에서 hr태그를 display:none;적용했기 때문에, 특별히 .blog영역에서만 hr 적용 */
 .blog-section hr {display:block; height:1px; background:#3f51b5;}
-/* blog 영역 끝*/ 
+/* blog 영역 끝 */
 
 /* contact 영역 시작 */
 .contact-section {
