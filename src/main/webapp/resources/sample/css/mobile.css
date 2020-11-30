@@ -1,10 +1,11 @@
 @charset "UTF-8";
+@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
 /* 모바일용 스타일지정 시작  */
 body {/*부트스트랩css또는 reset.css에서 초기화 된것을 재 정의 할때*/
 font-size:14px;
 background:#fff;
 line-height:1.4 !important;/*상속 바로전에 적용한 값을 초기화inherit, initial 시키는 역할*/
-font-family:'Malgun Gothic', dotum, sans-serif !important;
+font-family:"Nanum Gothic", "NanumGothic" !important;
 }/*부트스트랩css영향을 받은것을 무효화시키고, 사용자css로 적용*/
 /*부트스트랩css영향을 받는 부분을 무효화 시키기(아래)*/
 ul {
@@ -79,6 +80,7 @@ color:#fff;
 /* 푸터영역 시작 */
 .footer {
 padding-top:30px;/*margin-top 작동을 하지 않아서 padding-top으로 변경*/
+background:gray;
 }
 .footer p {
 margin: 21px 0px;
@@ -260,5 +262,9 @@ margin-top:10px;
 text-align:right;/*div영역안쪽의 내용을 좌우 정렬시키는 명령*/
 }
 /* contact 영역 끝 */
+
+/*footer 영역시작*/
+.footer {background:gray;}
+/*footer 영역 끝*/
 
 /* 모바일용 스타일지정 끝 */
