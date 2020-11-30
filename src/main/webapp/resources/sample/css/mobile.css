@@ -61,7 +61,7 @@ border:1px solid #303f9f;
 border-bottom:0px;
 }
 /*가상선택자 : 사용*/
-.header .gnb li:last-child {
+.header .gnb li:last-child	 {
 border-bottom:1px solid #303f9f;
 }
 .header .gnb li a {
