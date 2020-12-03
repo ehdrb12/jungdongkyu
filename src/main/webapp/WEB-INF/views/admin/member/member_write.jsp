@@ -29,7 +29,7 @@
         <div class="row"><!-- 부트스트랩의 디자인 클래스 row -->
           <div class="col-12"><!-- 그리드시스템중 12가로칼럼 width:100% -->
           <!-- form start -->
-              <form name="write_form" action="/admin/member_write" method="post">                
+              <form name="write_form" action="/admin/member/member_write" method="post">                
          
          <div class="card card-primary">
               <div class="card-header">
@@ -82,7 +82,7 @@
           
           <!-- 버튼영역 시작 -->
             <div class="card-body">
-            	<a href="/admin/member_list" class="btn btn-primary float-right mr-1">LIST ALL</a>
+            	<a href="/admin/member/member_list" class="btn btn-primary float-right mr-1">LIST ALL</a>
               	<button type="submit" class="btn btn-danger float-right mr-1">SUBMIT</a>
               	<!-- a채그는 링크이동은 되지만, post값을 전송하지는 못합니다. 그래서, button채그를 사용. -->
               </div>
