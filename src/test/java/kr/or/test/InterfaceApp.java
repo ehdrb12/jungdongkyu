@@ -17,7 +17,7 @@ public class InterfaceApp {
 interface CalcAddSub {
 	void add(double dx, double dy);
 	void sub(double dx, double dy);
-}
+}	
 interface CalcMulDiv extends CalcAddSub {
 	void mul(double dx, double dy);
 	void div(double dx, double dy);
