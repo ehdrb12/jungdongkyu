@@ -16,7 +16,7 @@ public class MemberVO {
 	private Integer point;//int(not null) 기본형-> 참조형은 Integer(null가능) 클래스변수
 	//member_write.jsp에서 전송값이 point가 빈값으로 오때, int형에러발생,Integer형이 에러없이 지나감.
 	private Boolean enabled;//불린형은 true,false 2개의 값중 1개.
-	private String level;//오라클에서는 level이 예약어라서 levels로 변경
+	private String levels;//오라클에서는 level이 예약어라서 levels로 변경
 	private Date reg_date;//Date클래스형 변수를 사용할떄 java.utill패키지를 임포트한다.
 	private Date update_date;//회원정보 수정일 필드.
 	//get,set 메서드가 필요한 이유는 member_list(write,update).jsp<-겟셋메서드->컨트롤러<-겟샛메서드->DB
@@ -56,11 +56,11 @@ public class MemberVO {
 	public void setEnabled(Boolean enabled) {
 		this.enabled = enabled;
 	}
-	public String getLevel() {
-		return level;
+	public String getLevels() {
+		return levels;
 	}
-	public void setLevel(String level) {
-		this.level = level;
+	public void setLevels(String levels) {
+		this.levels = levels;
 	}
 	public Date getReg_date() {
 		return reg_date;

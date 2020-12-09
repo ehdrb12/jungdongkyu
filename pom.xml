@@ -115,7 +115,16 @@
 			<artifactId>junit</artifactId>
 			<version>4.7</version>
 			<scope>test</scope>
-		</dependency>        
+		</dependency> 
+		
+		<!-- 앞으로 추가되는 프로그램 외부모듈은 아래에 추가예정입니다. -->       
+		<!-- 서버시간가져오는 모듈 아티팩트는 제작물을 가리킵니다. -->
+		<dependency>
+			<groupId>commons-net</groupId>
+			<artifactId>commons-net</artifactId>
+			<version>3.6</version>
+		</dependency>
+		
 	</dependencies>
     <build>
         <defaultGoal>install</defaultGoal>
