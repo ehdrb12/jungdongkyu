@@ -1,29 +1,75 @@
 - https://adminlte.io/themes/v3/pages/forms/general.html
 - https://kimilguk-mysql.herokuapp.com/ (아이디/암호:admin/user02)
 
+#### 20201214(월) 작업
+- JUnit테스트 준비OK.
+- 데이터베이스 접속 테스트.(아래)
+- 데이터베이스 사용 라이브러리 추가(pom.xml)
+- 스프링 테스트 pom.xml 디펜던시 의존성 추가
+- 서블렛버전을 2.5 -> 3.0.1로변경 필수(아래)
+
+```
+<dependency>
+	<groupId>javax.servlet</groupId>
+	<artifactId>javax.servlet-api</artifactId>
+	<version>3.0.1</version>
+</dependency>
+```
+- junit(JavaUnit) 테스트 설정 후 기본 unit유닛(단위)테스트
+- 단위테스트(junit)를 하는 이유는 실행환경에서 테스트 하기 전에 미리 예행 연습을 하는 역할 입니다.
+- 주로 CRUD(입력,조회,수정,삭제) 4가지를 테스트 후에 jsp 프로그램작업이 들어갑니다.
+- 메이븐과 그레들은 모두 빌드 도구 입니다. => 결과는 target폴더에 war실행파일이 만들어 짐.
+- 수업은 egov3.10(스프링4.3.22) 하시고, 진행 후 스프링5.2.5버전으로 마이그레이션 다같이 함.
+- 스프링프로젝트의 외부모듈 셋팅파일이 2가지로 구분됩니다.
+- 메이븐 으로 빌드: pom.xml사용 (xml태그로 구성) - egov(이클립스) 기본개발환경
+- 그래들 으로 빌드: build.gradle사용 (스크리트로 구성) - 안드로이드 스튜디오 기본개발환경
+- [수업공지]: 앞으로는 수업종료 10분 전에 질문/답변 시간을 갖는것이 어떨까 합니다. 
+- 이유는 수업진행 중간에 질문/답변 하기엔 약간 부담스러운 내용이 있을 수 있기 때문에, ^^
+- 질문 내용이 무엇이 되었든, 종료 10분 전에 답변을 들으실 수 있는 시간을 갖도록 하겠습니다.
 #### 20201211(금) 작업
-- BoardVO 클래스 만들기: Admin컨트롤러에서 Model클래스를 이용해서 jsp로 board_list 데이터셋을 보낼때 필요한 클래스 입니다.
+- 첨부파일 설정: servlet-context.xml에 파일업로드경로, 업로드용량제한 설정.
+- 위에 더해서 외부 의존성추가: pom.xml 메이븐 설정파일 내용 추가. fileupload~.jar
+- RestAPI 댓글컨트롤러 1개 만듭니다.-네이버에서 RestAPI로그인서버를 1개 만드는 것과 같습니다.
+- 게시판 로직에서 핵심: CRUD기본, 검색기능, 페이징처리로직, 첨부파일기능
+- 게시판 로직확장 : 댓글기능(Rest-API대세).
+- Rest-API확장기능: 네이버아이디로그인(우리는 여기까지), SNS(페이스북,트위터,구글) 로그인 API
+- 스프링 빈(등록되어서 사용가능하게된 클래스) 이 등록되는 절차(아래)
+- 톰캣서버(WAS)가 실행될때, 로딩 실행되는 파일 순서(아래)
+- web.xml 최초 실행.
+- 1. root-context.xml 실행.
+- 2. servlet(server + let = 서버프로그램): servlet-context.xml 실행.
+- 위 서블렛콘텍스트 안에 있는 component-span 의 패키지에 존재하는 아래 @~클래스를 읽어 들여서 빈으로 등록합니다.(아래)
+- @Controller, @Servcie, @Repository, @RestController(Rest-API)
+- ------------------------------------------------------------------------------------
+- 자바에서 인스턴스 오브젝트를 만들때, ClassName className = new ClassName(); 오브젝트를 만들었음.
+- 스프링에서 오브젝트를 생성하지 않고, 오브젝트를 주입하다고 하고, 기술용어로 DI(Dependency Injection)의존성주입.
+- 의존성주입(DI,외부모듈)할때, @Inject=@Autowired 줄바꿈하고, ClassName className;
+- 위 DI방식으로 SecurityCode클래스를 주입받아서, unscript메서드를 사용하였습니다.
+- 쿼리스트링: 쿼리(질의)스트링(문자열) URL에서 쿼리스트링이라고 하면, URL?키1=값1&key2=value2
+- /admin/board/board_view?bno=${boardVO.bno}
+- BoardVO 클래스 만들기: Admin컨트롤러에서 Model클래스를 이용해서 jsp로 board_list 데이터셋를 보낼때 필요한 클래스 입니다.
 - AdminController 에서 board_list, board_view, board_write 바인드 매핑만들기
 - board_list.jsp, board_view.jsp, board_write.jsp 만들기
 - 앞으로 작업예정 내용 정리(아래)
 - 스프링 테스트 pom.xml 디펜던시 의존성 추가
-- junit 테스트 설정 후 기본 unit유닛(단위)테스트
-- jdbc사용 pom.xml 의존성 추가.
+- junit(JavaUnit) 테스트 설정 후 기본 unit유닛(단위)테스트
+- jdbc(JavaDataBaseConnection)사용 pom.xml 의존성 추가.
 - Hsql사용 pom.xml 의존성 추가.
-- 마이바티스 사용 pom.xml 의존성 추가.
+- 마이바티스 사용(CRUD쿼리를관리하는툴) pom.xml 의존성 추가.
 - DB 디버그용 드라이버 사용 pom.xml 의존성 추가.
 - junit으로 DB접근 후 관리자단 회원관리 CRUD unit테스트.
-- 스프링 AOP기능으로 개발용 디버그출력환경 만들기.
+- 스프링 AOP(관점지향프로그래밍-OOP의 확장기능)기능으로 개발용 디버그출력환경 만들기.
 - 실제 회원관리 화면 CRUD 적용.
 - 실제 게시판 화면 CRUD 적용.
 - 파일업로드 라이브러리 사용 pom.xml 의존성 추가.
 - 게시판 업로드 화면 구현.
 - Json데이터 사용 pom.xml 의존성 추가.
-- 실제 댓글 화면CRUD적용.
+- 실제 댓글 화면CRUD적용.(우리가 만들어서 제공 Rest-API백엔드단)
 - 사용자단 화면 html 소스를 jsp로 만들기.
 - 스프링시큐리티 로그인 구현 pom.xml 의존성 추가.
 - 사용자단 CRUD 구현.
-- 이후 유효성검사, 파스타클라우드, 네이버아이디 로그인 사용 등등. pom.xml 의존성 추가.
+- 이후 유효성검사, 파스타클라우드, 네이버아이디 로그인(네이버에서 제공Rest-API백엔드단) 사용 등등. pom.xml 의존성 추가.
+- 오라클로 마이그레이션 작업.
 
 #### 20201210(목) 작업
 - html게시판 소스를 jsp로 변환.
