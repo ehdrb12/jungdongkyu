@@ -2,8 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ include file="../include/header.jsp"%>
-
+<%@ include file="../include/header.jsp" %>
 
   <!-- 대시보드 본문 Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -73,9 +72,9 @@
                     </tr>
                   </thead>
                   <tbody>
-                  <!-- jstl core를 갇다쓰는 이유는 향상된 for반복문을 사용하기 위해서 지정(아래) -->
+                  <!-- jstl core를 갖다쓰는 이유는 향상된 for반복문을 사용하기 위해서 지정(아래) -->
                   <c:forEach items="${board_list}" var="boardVO">
-                    <tr>
+                  	<tr>
                       <td>${boardVO.bno}</td>
                       <!-- 아래 a링크값은 리스트가 늘어날 수록 동적으로 bno값이 변하게 됩니다. 개발자가 jsp처리 -->
                       <td><a href="/admin/board/board_view?bno=${boardVO.bno}">
@@ -83,11 +82,12 @@
                       <c:out value="${boardVO.title}"></c:out>[<c:out value="${boardVO.reply_count}"></c:out>]
                       </a></td>
                       <td><c:out value="${boardVO.writer}"></c:out></td>
-                      <td><fmt:formatDate pattern="yyyy-MM-dd HH:mm"value="${boardVO.regdate}"/></td>
+                      <td><fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${boardVO.regdate}"/></td>
                       <td><span class="badge bg-danger">${boardVO.view_count}</span></td>
                       <!-- 권한표시는 부트스트랩 뺏지 클래스 사용 -->
                     </tr>
-                    </c:forEach>
+                  </c:forEach>
+                    
                   </tbody>
                 </table>
               </div>
@@ -98,7 +98,7 @@
             
             <!-- 버튼영역 시작 -->
               <div class="card-body">
-              	<a href="board_write.html" class="btn btn-primary float-right">CREATE</a>
+              	<a href="/admin/board/board_write" class="btn btn-primary float-right">CREATE</a>
               	<!-- 부트스트랩 디자인 버튼클래스를 이용해서 a태그를 버튼모양 만들기(위) -->
               	<!-- btn클래스명이 버튼모양으로 변경, btn-primary클래스명은 버튼색상을 변경하는역할 -->
               	<!-- 
@@ -137,6 +137,5 @@
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
-  
 
-<%@ include file="../include/footer.jsp"%>
+<%@ include file="../include/footer.jsp" %>

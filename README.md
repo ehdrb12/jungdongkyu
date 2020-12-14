@@ -1,10 +1,40 @@
-### 기본정보
-- 스프링관리자 AdminLTE템플릿 샘플: https://adminlte.io/themes/v3/pages/forms/general.html
+- https://adminlte.io/themes/v3/pages/forms/general.html
+- https://kimilguk-mysql.herokuapp.com/ (아이디/암호:admin/user02)
 
-#### 20201210(목) 작업예정
+#### 20201211(금) 작업
+- BoardVO 클래스 만들기: Admin컨트롤러에서 Model클래스를 이용해서 jsp로 board_list 데이터셋을 보낼때 필요한 클래스 입니다.
+- AdminController 에서 board_list, board_view, board_write 바인드 매핑만들기
+- board_list.jsp, board_view.jsp, board_write.jsp 만들기
+- 앞으로 작업예정 내용 정리(아래)
+- 스프링 테스트 pom.xml 디펜던시 의존성 추가
+- junit 테스트 설정 후 기본 unit유닛(단위)테스트
+- jdbc사용 pom.xml 의존성 추가.
+- Hsql사용 pom.xml 의존성 추가.
+- 마이바티스 사용 pom.xml 의존성 추가.
+- DB 디버그용 드라이버 사용 pom.xml 의존성 추가.
+- junit으로 DB접근 후 관리자단 회원관리 CRUD unit테스트.
+- 스프링 AOP기능으로 개발용 디버그출력환경 만들기.
+- 실제 회원관리 화면 CRUD 적용.
+- 실제 게시판 화면 CRUD 적용.
+- 파일업로드 라이브러리 사용 pom.xml 의존성 추가.
+- 게시판 업로드 화면 구현.
+- Json데이터 사용 pom.xml 의존성 추가.
+- 실제 댓글 화면CRUD적용.
+- 사용자단 화면 html 소스를 jsp로 만들기.
+- 스프링시큐리티 로그인 구현 pom.xml 의존성 추가.
+- 사용자단 CRUD 구현.
+- 이후 유효성검사, 파스타클라우드, 네이버아이디 로그인 사용 등등. pom.xml 의존성 추가.
 
-- 모달(Modal): 이용자가 팝업대화상자 내용을 종료하기 전에는 다른 화면으로 이동하지 못하는 방식 팝업창.
-- 모달리스(Modalless):
+#### 20201210(목) 작업
+- html게시판 소스를 jsp로 변환.
+- 리버스 엔지니어링: reverse 반대말 : 일반 erd만들고 -> 물리DB : 반대 물리DB -> erd를만든다
+- 개인 카톡 면담 12월 화두,(아래 2가지 중 최소 1가지 글을 남겨 주세요, 2개 다 도 가능합니다.^^)
+- 1). 11월9일 부터 시작 이후 1달 가까이 지났으니, 현재 수업 대해서 어떤 분야든 의견 있으신분 말씀해 주세요, 수업에 반영 하도록 하겠습니다.
+- 2). 사람인 취업사이트에서 학생 본인이 일 하고 싶은 회사 1개를 골라서 URL을 남겨 주세요. 
+- 첨부파일 등록에 사용되는 form 태그에는 특별한 속성이 추가 되어야만, 파일 전송이 가능합니다.
+- 그속성은: encType="multipart/form-data" 필수. 파일전송이 포함된 폼에서는 엔코딩타입속성에서 파일분할로 전송해라.
+- 모달(Modal): 이용자가 팝업대화상자 내용을 종료하기 전에는 다른 화면으로 이동하지 못하는 방식 팝업창. 
+- 모달리스(Modeless): : 이용자가 팝업대화상자 내용을 종료하기 전이라도, 현재 팝업창을 띄운상태에서 다른 창으로 이동가능. 
 - 댓글 관련 디자인 추가 후 Ajax 적용
 
 ```

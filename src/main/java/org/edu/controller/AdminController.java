@@ -6,20 +6,84 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
+
+import org.edu.util.SecurityCode;
+import org.edu.vo.BoardVO;
 import org.edu.vo.MemberVO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 //스프링에서 사용가능한 클래스를 빈(커피Bean)이라고 하고, @Contorller 클래스를 사용하면 됨.
 @Controller
 public class AdminController {
+	//@Inject == @Autowired 의존성 주입방식 DI(Dependency Inject)으로 외부 라이브러리 모듈 클래스 인스턴스 갖다쓰기(아래)
+	//@Inject == @Autowired 의존성 주입방식 DI(Dependency Inject)으로 
+	//외부 라이브러리 = 컴포넌트 = 모듈  = 실행클래스 = 인스턴스 갖다쓰기(아래)
+	@Inject
+	SecurityCode securityCode;
 	
+	@RequestMapping(value="/admin/board/board_write",method=RequestMethod.GET)
+	public String board_write() throws Exception {
+		return "admin/board/board_write";
+	}
+	@RequestMapping(value="admin/board/board_write",method=RequestMethod.POST)
+	public String board_write(MultipartFile file, BoardVO boardVO) throws Exception {
+		//post받은 boardVO내용을 DB서비스에 입력보면 됩니다.
+		//DB에 입력후 새로고침명력으로 게시물 테러를 당하지 않으려면, redirect로 이동처리 합니다.(아래)
+		return "redirect:/admin/board/board_list";
+	}
+	@RequestMapping(value="/admin/board/board_view", method=RequestMethod.GET)
+	public String board_view(Model model) throws Exception {
+		//jsp로 보낼 더미 데이터 memberVO에 담아서 보낸다.
+		//실제로는 아래처럼 더미데이터를 만드는것이 아닌
+		//쿼리스트링(질의문자열)로 받아온 bno(게시물 고유번호)를 이용해서 DB에서
+		//seclect * from tbl_board whrer bno = ? 마이바티스 실행이 된 결과값이 BoardVO형으로 받아서 jsp보내줌
+		//'3', '새로운 글을 넣습니다. ', '새로운 글을 넣습니다. '. 'user00', '2019-10-10 12:25:36',
+		BoardVO boardVO = new BoardVO();
+		boardVO.setBno(1);
+		boardVO.setTitle("첫번쨰 게시물 입니다.");
+		String xss_data = "첫번째 내용 입니다.<br><br><br>줄바꿈 처리입니다. <script>location.href('http://naver.com');</script>";
+		boardVO.setContent(securityCode.unscript(xss_data));
+		boardVO.setWriter("admin");
+		Date regdate = new Date();
+		boardVO.setRegdate(regdate);
+		boardVO.setView_count(2);
+		boardVO.setReply_count(0);
+		model.addAttribute("boardVO", boardVO);
+		return "admin/board/board_view";
+	}
 	@RequestMapping(value="/admin/board/board_list",method=RequestMethod.GET)
 	public String board_list(Model model) throws Exception {
-		
+		//테스트용 더미 게시판 데이터 만들기(아래)
+		BoardVO input_board = new BoardVO();
+		input_board.setBno(1);
+		input_board.setTitle("첫번째 게시물 입니다.");
+		input_board.setContent("첫번째 내용 입니다.<br>줄바꿈했습니다.");
+		input_board.setWriter("admin");
+		Date regdate = new Date();
+		input_board.setRegdate(regdate);
+		input_board.setView_count(2);
+		input_board.setReply_count(0);
+		BoardVO[] board_array = new BoardVO[2];
+		//input_board = {1,"첫번쨰 게시물 입니다.","첫번째 내용 입니다.<br>줄바꿈했습니다.","admin",now(),2,0};
+		board_array[0] = input_board;
+		BoardVO input_board2 = new BoardVO();
+		input_board2.setBno(2);
+		input_board2.setTitle("두번째 게시물 입니다.");
+		input_board2.setContent("두번째 내용 입니다.<br>줄바꿈했습니다.");
+		input_board2.setWriter("user02");
+		input_board2.setRegdate(regdate);
+		input_board2.setView_count(2);
+		input_board2.setReply_count(0);
+		//input_board = {2,"첫번쨰 게시물 입니다.","첫번째 내용 입니다.<br>줄바꿈했습니다.","admin",now(),2,0};
+		board_array[1] = input_board2;
+		List<BoardVO> board_list = Arrays.asList(board_array);//배열타입을 List타입으로 변경절차
+		model.addAttribute("board_list", board_list);
 		return "admin/board/board_list";
 	}
 	
