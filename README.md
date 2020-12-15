@@ -1,13 +1,46 @@
 - https://adminlte.io/themes/v3/pages/forms/general.html
 - https://kimilguk-mysql.herokuapp.com/ (아이디/암호:admin/user02)
 
+#### 20201215(화) 작업
+- 인터페이스 영역(메서드명세파일-이름만존재) -implements- 임플리먼트 클래스(메서드구현파일-오버라이드된메서드명구현내용)
+- 메서드명세 메서드명 -> 오버라이드된 메서드명
+- 멘토수업신청자리스트(누락되신분은 나중에라도 말씀해 주세요.)
+- 이클립스에서 입력힌트 나오지 않을때 조치
+window> preference> java > editor > content Assist > advanced > 체크 java Non-Type Proposals > Apply버튼클릭.
+- 자바에서 상속이라는 개념도 html css에서 나오는 상속이랑 비슷한 개념인가요?
+- html, css에서 사용되는 상속개념 - 자바(C#)언어에서 차용해서 쓰는 개념입니다.
+- 워크벤치쿼리실행참조->mapper쿼리->DAO클래스호출->Service클래스호출->[컨트롤러호출->jsp]=JUnit테스트
+- ->[DAO클래스호출->Service클래스호출]=1개의 클래스 사용 스프링BOOT방식(소규모프로젝트용)
+- DAO, Service를 2개 클래스로 나눈이유 1, 현업에서 사용되는 솔루션들이 2개로 클래스를 나눈 구조 입니다.
+- 위와 구조를 사용하는 근본적인 이유는, DB엑세스하는 부분은 최소화(1개) - DAO을 호출하는 서비스는 다수(10개)
+- 사용예, selectMember() DAO클래스에 메서드 1개.
+- DAO.selectMember() 호출하는 서비스는 관리자단서비스에서 호출, 사용자단서비스에서 호출 (1:2)
+- JUnit 자바단위테스트 Insert(), Update(), Delete() 회원관리부분 예정.
 #### 20201214(월) 작업
+- ibatis(아이바티스-쿼리생성이불편) -> mybatis(마이바티스-쿼리생성이편리)
+- 지금하시는 작업은 개발시작전 준비단계....
+- JUnit테스트(자바단위테스트): 하는목적은 jsp(컨트롤러) 힘빼기전에 CRUD테스트해보고 힘빼라는 작업방식.
+- jsp -> controller -> service -> dao -> mapper.xml -> DB(Mysql,Oracle)
+- 자바단위테스트(JUnit) -> service -> dao -> mapper.xml -> DB
+- 톰캣/JUnit 실행해야만, DB가 연동이 됩니다.
+- 톰캣이 종료되거나, JUnit테스트가 끝나면, DB연동이 끊어집니다.
 - JUnit테스트 준비OK.
 - 데이터베이스 접속 테스트.(아래)
 - 데이터베이스 사용 라이브러리 추가(pom.xml)
 - 스프링 테스트 pom.xml 디펜던시 의존성 추가
+- 의존성추가1. jdbc(Java Database Connection)모듈추가 후 설정 필수.
+- 의존성추가2. Mysql 모듈추가 후 설정.
+- ====================================
+- 위 2가지로 스프링에서 데이터베이스 커넥션 처리 , DriverManagerDataSource (DB커넥션)
+- ====================================
+- 의존성추가3. jdbc와 Mysql데이터베이스 중간에 쿼리를 사용하는 역할 Mybatis 모듈추가 후 설정 필수.
+- 위 의존성 마이바티스로 스프링에서 쿼리를 관리하는 처리 , sqlSessionFactory (쿼리생성)
+- ====================================
+- 마이바티스에는 Select(), Insert(), Update(), Delete()쿼리를 수행하는 메서드들.
+- 위 의존성 Mybatis로 스프링에서 쿼리를 호출하는 메서드명(인터페이스)을 처리, sqlSessionTemplate(쿼리호출메서드명)
+- ====================================
+DataSource(커넥션)-sqlSessionFactory(쿼리생성)-sqlSessionTemplate(쿼리호출메서드)
 - 서블렛버전을 2.5 -> 3.0.1로변경 필수(아래)
-
 ```
 <dependency>
 	<groupId>javax.servlet</groupId>
@@ -26,50 +59,6 @@
 - [수업공지]: 앞으로는 수업종료 10분 전에 질문/답변 시간을 갖는것이 어떨까 합니다. 
 - 이유는 수업진행 중간에 질문/답변 하기엔 약간 부담스러운 내용이 있을 수 있기 때문에, ^^
 - 질문 내용이 무엇이 되었든, 종료 10분 전에 답변을 들으실 수 있는 시간을 갖도록 하겠습니다.
-#### 20201211(금) 작업
-- 첨부파일 설정: servlet-context.xml에 파일업로드경로, 업로드용량제한 설정.
-- 위에 더해서 외부 의존성추가: pom.xml 메이븐 설정파일 내용 추가. fileupload~.jar
-- RestAPI 댓글컨트롤러 1개 만듭니다.-네이버에서 RestAPI로그인서버를 1개 만드는 것과 같습니다.
-- 게시판 로직에서 핵심: CRUD기본, 검색기능, 페이징처리로직, 첨부파일기능
-- 게시판 로직확장 : 댓글기능(Rest-API대세).
-- Rest-API확장기능: 네이버아이디로그인(우리는 여기까지), SNS(페이스북,트위터,구글) 로그인 API
-- 스프링 빈(등록되어서 사용가능하게된 클래스) 이 등록되는 절차(아래)
-- 톰캣서버(WAS)가 실행될때, 로딩 실행되는 파일 순서(아래)
-- web.xml 최초 실행.
-- 1. root-context.xml 실행.
-- 2. servlet(server + let = 서버프로그램): servlet-context.xml 실행.
-- 위 서블렛콘텍스트 안에 있는 component-span 의 패키지에 존재하는 아래 @~클래스를 읽어 들여서 빈으로 등록합니다.(아래)
-- @Controller, @Servcie, @Repository, @RestController(Rest-API)
-- ------------------------------------------------------------------------------------
-- 자바에서 인스턴스 오브젝트를 만들때, ClassName className = new ClassName(); 오브젝트를 만들었음.
-- 스프링에서 오브젝트를 생성하지 않고, 오브젝트를 주입하다고 하고, 기술용어로 DI(Dependency Injection)의존성주입.
-- 의존성주입(DI,외부모듈)할때, @Inject=@Autowired 줄바꿈하고, ClassName className;
-- 위 DI방식으로 SecurityCode클래스를 주입받아서, unscript메서드를 사용하였습니다.
-- 쿼리스트링: 쿼리(질의)스트링(문자열) URL에서 쿼리스트링이라고 하면, URL?키1=값1&key2=value2
-- /admin/board/board_view?bno=${boardVO.bno}
-- BoardVO 클래스 만들기: Admin컨트롤러에서 Model클래스를 이용해서 jsp로 board_list 데이터셋를 보낼때 필요한 클래스 입니다.
-- AdminController 에서 board_list, board_view, board_write 바인드 매핑만들기
-- board_list.jsp, board_view.jsp, board_write.jsp 만들기
-- 앞으로 작업예정 내용 정리(아래)
-- 스프링 테스트 pom.xml 디펜던시 의존성 추가
-- junit(JavaUnit) 테스트 설정 후 기본 unit유닛(단위)테스트
-- jdbc(JavaDataBaseConnection)사용 pom.xml 의존성 추가.
-- Hsql사용 pom.xml 의존성 추가.
-- 마이바티스 사용(CRUD쿼리를관리하는툴) pom.xml 의존성 추가.
-- DB 디버그용 드라이버 사용 pom.xml 의존성 추가.
-- junit으로 DB접근 후 관리자단 회원관리 CRUD unit테스트.
-- 스프링 AOP(관점지향프로그래밍-OOP의 확장기능)기능으로 개발용 디버그출력환경 만들기.
-- 실제 회원관리 화면 CRUD 적용.
-- 실제 게시판 화면 CRUD 적용.
-- 파일업로드 라이브러리 사용 pom.xml 의존성 추가.
-- 게시판 업로드 화면 구현.
-- Json데이터 사용 pom.xml 의존성 추가.
-- 실제 댓글 화면CRUD적용.(우리가 만들어서 제공 Rest-API백엔드단)
-- 사용자단 화면 html 소스를 jsp로 만들기.
-- 스프링시큐리티 로그인 구현 pom.xml 의존성 추가.
-- 사용자단 CRUD 구현.
-- 이후 유효성검사, 파스타클라우드, 네이버아이디 로그인(네이버에서 제공Rest-API백엔드단) 사용 등등. pom.xml 의존성 추가.
-- 오라클로 마이그레이션 작업.
 
 #### 20201210(목) 작업
 - html게시판 소스를 jsp로 변환.

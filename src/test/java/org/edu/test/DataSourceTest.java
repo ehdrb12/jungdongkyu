@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -38,14 +40,68 @@ public class DataSourceTest {
 	@Inject
 	IF_MemberDAO memberDAO;
 	
-	@Test
-	public void selectMember() throws Exception {
-		List<MemberVO> memberList = memberDAO.selectMember();
-		System.out.println("회원리스트 테스트");
-		System.out.println(memberList.toString());
+	@Inject
+	MemberVO memberVO;//기존자바처럼 new MemberVO() 오브젝트를 생성하지않고, 주입해서사용.
+	
+	public String memberPrimaryKey() {
+		//사용자 프라이머리키 생성하는 메서드 년월일시분처 + 밀리초
+		Date primaryKey = new Date();
+		SimpleDateFormat newFormat = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+		System.out.println("프라이머리키 : " + newFormat.format(primaryKey));
+		return "user_" + newFormat.format(primaryKey);
 	}
 	
-	@Test                                  
+	@Test
+	public void updateMember() throws Exception {
+		//CRUD 중 Update 테스트 구현 특징, user_id는 프라이머리키 이기 때문에 수정대상이 아닙니다.
+		memberVO.setEmail("test@test.com");
+		memberVO.setUser_name("아무개");
+		memberVO.setUser_id("admin");
+		String user_id = memberVO.getUser_id();//memberVO의 오브젝트의 데이터는 1개의 레코드이기때문에 반환값이 1개만
+	}
+	
+	@Test
+	public void readMember() throws Exception {
+		//CRUD 중 Read 테스트 구현
+		MemberVO memberVO = new MemberVO();
+		memberVO = memberDAO.readMember("admin");
+		System.out.println("admin 에 대한 상세정보 입니다.");
+		System.out.println(memberVO.toString());
+	}
+	
+	@Test
+	public void deleteMember() throws Exception {
+		//CRUD 중 Delete 테스트 구현(쿼리 -> DAO -> memberDAO주입받은 오브젝트사용)
+		memberDAO.deleteMember("user_20201215155930375");//삭제메서드 -> 쿼리 호출
+	}
+	
+	@Test
+	public void insertMember() throws Exception {
+		//CRUD 중 Create 테스트
+		MemberVO memberVO = new MemberVO();
+		//사용자 생성 규칙: user_ 시작(prefix),suffix(접미사)는 년월일시분초 
+		//사용자 생성결과 예: user_20201215142132
+		String memberIdKey = memberPrimaryKey();
+		memberVO.setUser_id(memberIdKey);
+		memberVO.setUser_name("사용자03");
+		//패스워드 암호화 처리(필수이지만, 스프링 시큐리티 할때 처리 예정)
+		memberVO.setUser_pw("1234");
+		memberVO.setEmail("user03@abc.com");
+		memberVO.setPoint(100);
+		memberVO.setEnabled(true);
+		memberVO.setLevels("ROLE_USER");
+		Date reg_date = new Date();
+		memberVO.setReg_date(reg_date);//매퍼쿼리에서 처리로 대체
+		memberDAO.insertMember(memberVO);
+	}
+	
+	@Test
+	public void selectMember() throws Exception {
+		List<MemberVO> memberList =	memberDAO.selectMember();
+		System.out.println("회원리스트 테스트 입니다.");
+		System.out.println(memberList.toString());
+	}
+	@Test
 	public void dbConnectionTest() throws Exception {
 		try {//내부에서 {} 에러발생시 실행을 중지하고, catch{}구문이 실행 됩니다. 예외처리라고 합니다.
 			Connection connection = dataSource.getConnection();

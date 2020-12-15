@@ -14,4 +14,51 @@ memberMapper.xml: 회원관리에대한 모든 쿼리를 모아서 관리하는 
 select * from tbl_member 
 </select>
 
+<insert id="insertMember">
+INSERT INTO tbl_member (
+	user_id,
+	user_pw,
+	user_name,
+	email,
+	point,
+	enabled,
+	levels,
+	reg_date
+	) VALUES (
+	#{user_id},
+	#{user_pw},
+	#{user_name},
+	#{email},
+	#{point},
+	#{enabled},
+	#{levels},
+	now()
+)
+</insert>
+<!-- jsp에서 변수표현 EL표기법 ${변수명}, 마이바티스에서는 변수포현을 #{변수명} -->
+<!-- 마이바티스의 장점, 쿼리안쪽에 조건을 달수있습니다. -->
+<update id="updateMember">
+UPDATE tbl_member 
+SET 
+    user_name = #{user_name},
+    user_pw = #{user_pw},
+    email = #{email},
+    point = #{point},
+    enabled = #{enabled},
+    levels = #{levels},
+    update_date = now()
+    
+WHERE
+    user_id = #{user_id}
+
+</update>
+
+<delete id="deleteMember">
+DELETE FROM tbl_member WHERE user_id=#{user_id}			
+</delete>
+
+<select id="readMember" resultType="org.edu.vo.MemberVO">
+SELECT * FROM tbl_member WHERE user_id=#{user_id}
+</select>
+
 </mapper>
