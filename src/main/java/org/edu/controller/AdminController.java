@@ -22,35 +22,34 @@ import org.springframework.web.multipart.MultipartFile;
 //스프링에서 사용가능한 클래스를 빈(커피Bean)이라고 하고, @Contorller 클래스를 사용하면 됨.
 @Controller
 public class AdminController {
-	//@Inject == @Autowired 의존성 주입방식 DI(Dependency Inject)으로 외부 라이브러리 모듈 클래스 인스턴스 갖다쓰기(아래)
 	//@Inject == @Autowired 의존성 주입방식 DI(Dependency Inject)으로 
 	//외부 라이브러리 = 컴포넌트 = 모듈  = 실행클래스 = 인스턴스 갖다쓰기(아래)
 	@Inject
 	SecurityCode securityCode;
 	
 	@Inject
-	IF_MemberService memberService;//멤버인터페이스를 주입받아서
+	IF_MemberService memberService;//멤버인터페이스를 주입받아서 memberService오브젝트 변수를 생성.
 	
-	@RequestMapping(value="/admin/board/board_write",method=RequestMethod.GET)
+	@RequestMapping(value="/admin/board/board_write",method=RequestMethod.GET)//URL경로
 	public String board_write() throws Exception {
-		return "admin/board/board_write";
+		return "admin/board/board_write";//파일경로
 	}
-	@RequestMapping(value="admin/board/board_write",method=RequestMethod.POST)
+	@RequestMapping(value="/admin/board/board_write",method=RequestMethod.POST)
 	public String board_write(MultipartFile file, BoardVO boardVO) throws Exception {
-		//post받은 boardVO내용을 DB서비스에 입력보면 됩니다.
-		//DB에 입력후 새로고침명력으로 게시물 테러를 당하지 않으려면, redirect로 이동처리 합니다.(아래)
+		//post받은 boardVO내용을 DB서비스에 입력하면 됩니다.
+		//dB에 입력후 새로고침명령으로 게시물 테러를 당하지 않으려면, redirect로 이동처리 합니다.(아래)
 		return "redirect:/admin/board/board_list";
 	}
 	@RequestMapping(value="/admin/board/board_view", method=RequestMethod.GET)
-	public String board_view(Model model) throws Exception {
-		//jsp로 보낼 더미 데이터 memberVO에 담아서 보낸다.
-		//실제로는 아래처럼 더미데이터를 만드는것이 아닌
+	public String board_view(@RequestParam("bno") Integer bno, Model model) throws Exception {
+		//jsp로 보낼 더미 데이터 boardVO에 담아서 보낸다.
+		//실제로는 아래처럼 더미데이터를 만드것이 아닌
 		//쿼리스트링(질의문자열)로 받아온 bno(게시물 고유번호)를 이용해서 DB에서
-		//seclect * from tbl_board whrer bno = ? 마이바티스 실행이 된 결과값이 BoardVO형으로 받아서 jsp보내줌
-		//'3', '새로운 글을 넣습니다. ', '새로운 글을 넣습니다. '. 'user00', '2019-10-10 12:25:36',
+		//select * from tbl_boarad where bno = ? 마이바티스 실행이 된 결과값이 BoardVO형으로 받아서 jsp보내줌.
+		//'3', '새로운 글을 넣습니다. ', '새로운 글을 넣습니다. ', 'user00', '2019-10-10 12:25:36', '2019-10-10 12:25:36', '0', '0'
 		BoardVO boardVO = new BoardVO();
 		boardVO.setBno(1);
-		boardVO.setTitle("첫번쨰 게시물 입니다.");
+		boardVO.setTitle("첫번째 게시물 입니다.");
 		String xss_data = "첫번째 내용 입니다.<br><br><br>줄바꿈 처리입니다. <script>location.href('http://naver.com');</script>";
 		boardVO.setContent(securityCode.unscript(xss_data));
 		boardVO.setWriter("admin");
@@ -74,8 +73,9 @@ public class AdminController {
 		input_board.setView_count(2);
 		input_board.setReply_count(0);
 		BoardVO[] board_array = new BoardVO[2];
-		//input_board = {1,"첫번쨰 게시물 입니다.","첫번째 내용 입니다.<br>줄바꿈했습니다.","admin",now(),2,0};
+		//input_board = {1,"첫번째 게시물 입니다.","첫번째 내용 입니다.<br>줄바꿈했습니다.","admin",now(),2,0};
 		board_array[0] = input_board;
+		//------------------------------------
 		BoardVO input_board2 = new BoardVO();
 		input_board2.setBno(2);
 		input_board2.setTitle("두번째 게시물 입니다.");
@@ -84,9 +84,10 @@ public class AdminController {
 		input_board2.setRegdate(regdate);
 		input_board2.setView_count(2);
 		input_board2.setReply_count(0);
-		//input_board = {2,"첫번쨰 게시물 입니다.","첫번째 내용 입니다.<br>줄바꿈했습니다.","admin",now(),2,0};
+		//input_board2 = {2,"두번째 게시물 입니다.","두번째 내용 입니다.<br>줄바꿈했습니다.","user02",now(),2,0};
 		board_array[1] = input_board2;
-		List<BoardVO> board_list = Arrays.asList(board_array);//배열타입을 List타입으로 변경절차
+		//-------------------------------------
+		List<BoardVO> board_list = Arrays.asList(board_array);//배열타입을 List타입으로 변경절차.
 		model.addAttribute("board_list", board_list);
 		return "admin/board/board_list";
 	}
@@ -119,23 +120,22 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value="/admin/member/member_list",method=RequestMethod.GET)
-	public String member_list(Model model) throws Exception {
+	public String member_list(@RequestParam(value="search_type",required=false) String search_type, @RequestParam(value="search_keyword",required=false) String search_keyword, Model model) throws Exception {
 		/*
 		 * String[][] members = {
 		 * {"admin","찐관리자","admin@abc.com","true","2020-12-04","ROLE_ADMIN"},
 		 * {"user","일반사용자","user@abc.com","false","2020-12-04","ROLE_USER"} };
-		 * //{"user_id":"admin","user_name":"관리자",...} 해시#데이터(그물-낚시) //Map 차입이 부모,
-		 * HashMap타입 자식클래스, 관례적으로 사용, paramMap오브젝트의 확장하기 편하도록하기 위해서. //Map타입을 상쇽받아서,
-		 * HashMap타입의 오브젝트를 생성하는 방식. Map<String,Integer> mapTest = new HashMap<String,
-		 * Integer>(); String ageValue = "40"; int ageValue2 = 40;
+		 * //{"user_id":"admin","user_name":"관리자",...} 해시#데이터 타입<키(key),값(value)>(그물-낚시)
+		 * //Map 타입이 부모, HashMap타입 자식클래스, 관례적으로 사용, paramMap오브젝트의 확장하기 편하도록 하기 위해서 상속.
+		 * //Map타입을 상속받아서, HashMap타입의 오브젝트를 생성하는 방식. Map<String,Integer> mapTest = new
+		 * HashMap<String, Integer>(); String ageValue = "40"; int ageValue2 = 40;
 		 * mapTest.put("ageValue2", ageValue2); mapTest.put("age",
-		 * Integer.parseInt(ageValue) );
+		 * Integer.parseInt(ageValue) );//제네릭타입을 사용하면, 여기처럼 parseInt형변환을 할 필요가 없기 때문에
+		 * //제네릭타입의 근본목적은 데이터타입에대해서 명시적인 코딩을 해서 코드를 단순화 시키기 위해서...
 		 * 
-		 * Map<String, Object> paramMap = new HashMap<String, Object>( );
+		 * Map<String, Object> paramMap = new HashMap<String, Object>();
 		 * paramMap.put("user_id", "admin"); paramMap.put("user_name", "관리자");
-		 * paramMap.put("age", 40); System.out.println("해시데이터타입 출력" + paramMap);//제네릭타입을
-		 * 사용하면, 여기처럼 parseInt형 변환을 할 필요가 없기 때문에 //제네릭타입의 근본목적은 데이터타입에대해서 명시적인 코딩을 해서
-		 * 코드를 단순화 시키기 위해서...
+		 * paramMap.put("age", 40); System.out.println("해시데이터타입 출력 " + paramMap);
 		 * 
 		 * //members 2차원배열 변수를 MemberVO 클래스형 오브젝트로 members_array 변경(아래) MemberVO
 		 * members_input = new MemberVO(); members_input.setUser_id("admin");
@@ -148,14 +148,13 @@ public class AdminController {
 		 * 있어서, 이 오브젝트를 배열오브젝트에 저장(아래) MemberVO[] members_array = new MemberVO[2];//클래스형
 		 * 배열 오브젝트 생성[2]는 배열의 크기=레코드갯수 입니다. members_array[0] = members_input;
 		 * members_array[1] = members_input;
-		 * //---------------------------------------------------------------------
-		 * 
-		 * List<MemberVO> members_list = Arrays.asList(members_array); //위에서 만든
-		 * members_array배열오브젝트를 Arrays.asList메서드로 List타입으로 변경해서 jsp 보냅니다. //위에서
-		 * 데이터타입연습으로 총 3가지 데이터 탕비을 확인했음. System.out.println("List타입의 오브젝트 클래스내용을 출력" +
-		 * members_list.toString());
+		 * //--------------------------------------------------------------------- //실제
+		 * 코딩에서는 배열타입으로 보내지 않고, List타입(목록)으로 model이용해서 jsp로 보냅니다. List<MemberVO>
+		 * members_list = Arrays.asList(members_array); //위에서 만든 members_array배열오브젝트를
+		 * Arrays.asList메서드로 List타입으로 변경해서 jsp 보냅니다. //위에서 테이터타입연습으로 총 3가지 테이터 타입을 확인했음.
+		 * System.out.println("List타입의 오브젝트 클래스내용을 출력 " + members_list.toString());
 		 */
-		List<MemberVO> members_list = memberService.selectMember();
+		List<MemberVO> members_list = memberService.selectMember(search_type,search_keyword);
 		model.addAttribute("members", members_list);//members-2차원배열을 members_array클래스오브젝트로 변경
 		return "admin/member/member_list";//member_list.jsp 로 members변수명으로 데이터를 전송
 	}

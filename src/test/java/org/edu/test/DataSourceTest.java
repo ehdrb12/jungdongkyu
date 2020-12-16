@@ -54,9 +54,14 @@ public class DataSourceTest {
 	@Test
 	public void updateMember() throws Exception {
 		//CRUD 중 Update 테스트 구현 특징, user_id는 프라이머리키 이기 때문에 수정대상이 아닙니다.
-		memberVO.setEmail("test@test.com");
-		memberVO.setUser_name("아무개");
+		MemberVO memberVO = new MemberVO();
 		memberVO.setUser_id("admin");
+		memberVO.setUser_name("아무개");
+		memberVO.setUser_pw("");//암호를 수정하지 않는 사람을 가정..
+		memberVO.setEmail("test@test.com");
+		memberVO.setPoint(100);
+		memberVO.setEnabled(true);
+		memberVO.setLevels("ROLE_ADMIM");
 		String user_id = memberVO.getUser_id();//memberVO의 오브젝트의 데이터는 1개의 레코드이기때문에 반환값이 1개만
 	}
 	
@@ -97,7 +102,7 @@ public class DataSourceTest {
 	
 	@Test
 	public void selectMember() throws Exception {
-		List<MemberVO> memberList =	memberDAO.selectMember();
+		List<MemberVO> memberList =	memberDAO.selectMember("user_name","홍길동");
 		System.out.println("회원리스트 테스트 입니다.");
 		System.out.println(memberList.toString());
 	}

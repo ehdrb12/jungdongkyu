@@ -38,8 +38,10 @@ public class MainController {
 		members[2] = memberVO3;
 		// 전에 사용했던 출력보다는 개선된 방식으로 출력(아래) MemberService 서비스전용 클래스만들어서 처리.
 		MemberService memberService = new MemberService();// 자바 오브젝트객체 생성하는 방법
+		System.out.println(members[0]);//클래스형변수를 호출할때, toString() 자동호출되는 것 같습니다.
+		System.out.println("여기까지");
 		memberService.printMember(members);// 서비스클래스의 메서드호출
-
+		
 		//서버시간 가져오기 코딩(아래)
 		//서버시간을 가져올 수 있는 commons-net 메이븐 디펜던시 사용 라이브러리
 		NTPUDPClient timeClient = new NTPUDPClient();

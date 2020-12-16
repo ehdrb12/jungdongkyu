@@ -1,6 +1,65 @@
+### 기본정보
+- 스프링관리자 AdminLTE템플릿 샘플: 
 - https://adminlte.io/themes/v3/pages/forms/general.html
 - https://kimilguk-mysql.herokuapp.com/ (아이디/암호:admin/user02)
+### 스프링 작업순서
+- 스프링 HelloWorld MVC 프로젝트 org.edu.controller 제작OK.
+- wamp(만세아이콘)으로 마리아DB(3306포트) 설치, 사용자암호 추가 및 한글처리OK.
+- 워크벤치 설치 및 ERD 작성연습, 샘플DB(edu)임포트 및 리버스 엔지니어링으로 ERD제작OK.
+- 샘플반응형 웹페이지(mobile,tablet,pc용) 및 J쿼리 페이지 작성OK.
+- 스프링 프로젝트 관리자단 AdminLTE(부트스트랩)기반으로 제작OK.
+- 스프링 테스트 pom.xml(외부라이브러리가져다가사용하는 방식) 디펜던시 의존성 추가OK.
+- 메이븐기반 전자정부표준프레임워크 egov3.9버전 -> 3.10으로 업드레이드OK.
+- junit(JavaUnit) 테스트 설정 후 기본 unit유닛(단위)테스트OK.
+- jdbc(JavaDataBaseConnection)사용 pom.xml 의존성 추가OK.
+- Mysql사용 pom.xml 의존성 추가OK.
+- 마이바티스 사용(CRUD쿼리를관리하는툴) pom.xml 의존성 추가OK.
+- junit으로 DB접근 후 관리자단 회원관리 CRUD unit테스트 마무리OK.
+- @Component애노테이션사용으로 MemberVO 인젝션사용 가능OK.
+- DB 디버그용 드라이버 사용 pom.xml 의존성 추가 후, log4jdbc.log4j2.properties 추가 OK.
+- --------------- 여기까지 ------------------
+- 실제 회원관리 화면 CRUD 적용 중...
+- 스프링 AOP(관점지향프로그래밍-OOP의 확장기능)기능으로 개발용 디버그출력환경 만들기.
+- 실제 게시판 화면 CRUD 적용.
+- 파일업로드 라이브러리 사용 pom.xml 의존성 추가.
+- 게시판 업로드 화면 구현.
+- Json데이터 사용 pom.xml 의존성 추가.
+- 실제 댓글 화면CRUD적용.(우리가 만들어서 제공 Rest-API백엔드단)
+- 사용자단 html(https://miniplugin.github.io/) 소스를 커스터마이징 후 jsp로 만들기.
+- 스프링시큐리티 로그인 구현 pom.xml 의존성 추가(회원가입시 패스워드 암호화 추가).
+- 헤로쿠 클라우드로 배포(Hsql데이터베이스사용).
+- 사용자단 CRUD 구현.
+- 오라클로 마이그레이션 작업.
+- 이후 유효성검사, 파스타클라우드, 네이버아이디 로그인(네이버에서 제공Rest-API백엔드단) 사용 등등. pom.xml 의존성 추가.
 
+#### 20201217(목) 작업예정
+- 2교시 과제물 제출
+- 통합구현과목 시작.
+- 회원관리 CRUD의 Select중에서 PageVO부터 만들기 시작할 예정.(로직확인)
+
+#### 20201216(수) 작업
+- 수의순서: 0,10 -> 10,10 -> 20,10
+- jsp에서 사용가 선택한 페이지번호를 이용해야 페이징처리가 가능.
+- ?page=3&searchType=all&searchKeyword=
+- PageVO클래스만들때, get 페이지번호, set 계산식을 적용 쿼리에 limit변수 첫번째 값으로 넣어줌.
+- GET page=위 URL쿼리스트링의 페이지 번호;
+- 1페이지계산 10x(1-1) = 0 1페이지일때
+- 2페이지계산 10x(2-1) = 10 2페이지일때
+- 3페이지계산 10x(10-1) = 90 10페이지일때
+- SELECT * FROM tbl_board
+- order by bno desc
+- limit [SET으로 받은 계산된 변수값], 10;
+- ---------------------------------
+- 데이터 정렬에 사용되는 기준값 위에서는 bno(게시판번호)
+- Order By 데이터정렬에 상용되는 키워드(예약어)
+- 정렬은 오름차순(Ascending)낮은수->높은수 : 옛글부터 보여준다.
+- 내림차순(Descending) 높은수->낮은수 : 최신글부터 보여준다.
+- ---------------------------------------------------
+- src/test/java 에서 kr.or.member 패키지 내의 MemberService.java 내에서 마지막 줄인 System.out.println(cnt + "번째 레코드는 " + member.toString()); 여기서 .toString()을 한 이유가 member라는 변수 안에 글자랑 숫자가 섞여서 .toString으로 문자형으로 변환해주는 건 알겠는데요 그럼 .toString을 빼면 오류가 나야하지않나요? 빼도 왜 오류가 안 나는지 모르겠어요
+
+- 인터페이스(책 목차 5개) - 임플리먼트클래스(책 내용 5개) 관계: 1대1 원칙)
+- DB 디버그용 드라이버(실행쿼리가 콘솔화면 나오도록-개발자가 실행확인을 편리하게함) 사용 pom.xml 의존성 추가.
+- 의존성 추가 후 root-context.xml에서 jdbc드라이버설정을 변경하면, 아래 콘솔창에서 쿼리가 보이고, 전송자료들을 확인할 수 있어서, 개발할때 필수 입니다.
 #### 20201215(화) 작업
 - 인터페이스 영역(메서드명세파일-이름만존재) -implements- 임플리먼트 클래스(메서드구현파일-오버라이드된메서드명구현내용)
 - 메서드명세 메서드명 -> 오버라이드된 메서드명
