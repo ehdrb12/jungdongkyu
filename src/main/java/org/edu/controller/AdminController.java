@@ -12,8 +12,10 @@ import org.edu.service.IF_MemberService;
 import org.edu.util.SecurityCode;
 import org.edu.vo.BoardVO;
 import org.edu.vo.MemberVO;
+import org.edu.vo.PageVO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -120,7 +122,9 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value="/admin/member/member_list",method=RequestMethod.GET)
-	public String member_list(@RequestParam(value="search_type",required=false) String search_type, @RequestParam(value="search_keyword",required=false) String search_keyword, Model model) throws Exception {
+	public String member_list(@ModelAttribute("pageVO") PageVO pageVO, Model model) throws Exception {
+		//고전적인 방식의 검색코드(아래)
+		//@RequestParam(value="search_type",required=false) String search_type, @RequestParam(value="search_keyword",required=false) String search_keyword
 		/*
 		 * String[][] members = {
 		 * {"admin","찐관리자","admin@abc.com","true","2020-12-04","ROLE_ADMIN"},
@@ -154,8 +158,19 @@ public class AdminController {
 		 * Arrays.asList메서드로 List타입으로 변경해서 jsp 보냅니다. //위에서 테이터타입연습으로 총 3가지 테이터 타입을 확인했음.
 		 * System.out.println("List타입의 오브젝트 클래스내용을 출력 " + members_list.toString());
 		 */
-		List<MemberVO> members_list = memberService.selectMember(search_type,search_keyword);
+		List<MemberVO> members_list = memberService.selectMember(pageVO);
 		model.addAttribute("members", members_list);//members-2차원배열을 members_array클래스오브젝트로 변경
+		
+		// null/10 = 에러처리(아래)
+		if(pageVO.getPage() == null) {//int 일때 null체크에러가 나와서 pageVO의 page변수형 Integer로벼경.
+			pageVO.setPage(1);
+		}
+		pageVO.setPerPageNum(5);//리스트하단에 보이는 페이징번호의 개수
+		pageVO.setPerQueryPageNum(10);//1페이지당 보여줄 회원수 10명으로 입력놓앗습니다.
+		pageVO.setTotalCount(110);//전체 회원의 수를 구한 변수 값 매개변수로 입력하는 순간 calcPage()메서드실행.
+		model.addAttribute("pageVO", pageVO);
+		//System.out.println("디버그 스타트페이지는 : " + pageVO.getStartPage());
+		//System.out.println("디버그 엔드페이지는 : " + pageVO.getEndPage());
 		return "admin/member/member_list";//member_list.jsp 로 members변수명으로 데이터를 전송
 	}
 	
