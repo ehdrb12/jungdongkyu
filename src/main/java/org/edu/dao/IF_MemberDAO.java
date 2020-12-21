@@ -7,10 +7,11 @@ import org.edu.vo.PageVO;
 
 /**
  * 회원관리 DAO 메서드 명세(목차) 인터페이스.
- * @author 정동규
+ * @author 김일국
  *
  */
 public interface IF_MemberDAO {
+	public int countMember(PageVO pageVO) throws Exception;
 	public List<MemberVO> selectMember(PageVO pageVO) throws Exception;//jsp 향상된 forEach문 사용 jstl태그
 	public void insertMember(MemberVO memberVO) throws Exception;
 	public void deleteMember(String user_id) throws Exception;

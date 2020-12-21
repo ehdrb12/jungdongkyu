@@ -1,4 +1,3 @@
-
 package org.edu.service;
 
 import java.util.List;
@@ -27,4 +26,19 @@ public class MemberServiceImpl implements IF_MemberService {
 		return memberDAO.selectMember(pageVO);
 	}
 
+	@Override
+	public int countMember(PageVO pageVO) throws Exception {
+		// 검색된 회원의 전체 명수 구하기
+		return memberDAO.countMember(pageVO);
+	}
+	@Override
+	public MemberVO readMember(String user_id) throws Exception {
+		// 선택한 회원의 상세 정보 구하기
+		return memberDAO.readMember(user_id);
+	}
+	@Override
+	public void deleteMember(String user_id) throws Exception {
+		// 선택한 회원정보를 삭제 하기
+		memberDAO.deleteMember(user_id);
+	}
 }

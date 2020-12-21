@@ -1,5 +1,62 @@
+### 기본정보
+- 스프링관리자 AdminLTE템플릿 샘플: 
+- https://adminlte.io/themes/v3/pages/forms/general.html
+- https://kimilguk-mysql.herokuapp.com/ (아이디/암호:admin/user02)
+### 수업에 대해서
+- 작업 내용의 복습시간은 이후 다른 코딩작업으로 대신하게 됩니다.
+- 예를 들면, 스프링프로젝트에서 관리자단 게시판을 만들면,
+- 나중에, 사용자단 게시판을 만들때 비슷한 과정을 한번 더 하게 됩니다. 이런방식으로 복습을 해서 기술을 익히게 됩니다.
+- 즉, 지금 이해가 않되시는 부분도 코딩작업을 여러번 반복하시게 되면서 기술을 익히게 되는 과정이라고 보시면 됩니다.
+- 그리고, 강의 내용을 녹음 하셔도 괜찮습니다.(단, 대단한 내용은 아니지만, 본인만 보시고, 유통시키지 않았으면 합니다.)
+### 스프링 작업순서
+- 스프링 HelloWorld MVC 프로젝트 org.edu.controller 제작OK.
+- wamp(만세아이콘)으로 마리아DB(3306포트) 설치, 사용자암호 추가 및 한글처리OK.
+- 워크벤치 설치 및 ERD 작성연습, 샘플DB(edu)임포트 및 리버스 엔지니어링으로 ERD제작OK.
+- 샘플반응형 웹페이지(mobile,tablet,pc용) 및 J쿼리 페이지 작성OK.
+- 스프링 프로젝트 관리자단 AdminLTE(부트스트랩)기반으로 제작OK.
+- 스프링 테스트 pom.xml(외부라이브러리가져다가사용하는 방식) 디펜던시 의존성 추가OK.
+- 메이븐기반 전자정부표준프레임워크 egov3.9버전 -> 3.10으로 업드레이드OK.
+- junit(JavaUnit) 테스트 설정 후 기본 unit유닛(단위)테스트OK.
+- jdbc(JavaDataBaseConnection)사용 pom.xml 의존성 추가OK.
+- Mysql사용 pom.xml 의존성 추가OK.
+- 마이바티스 사용(CRUD쿼리를관리하는툴) pom.xml 의존성 추가OK.
+- junit으로 DB접근 후 관리자단 회원관리 CRUD unit테스트 마무리OK.
+- @Component애노테이션사용으로 MemberVO 인젝션사용 가능OK.
+- DB 디버그용 드라이버 사용 pom.xml 의존성 추가 후, log4jdbc.log4j2.properties 추가 OK.
+- 실제 회원관리 화면 CRUD 적용 중 jsp중 member_list(select+검색)처리 후 페이징처리 OK.
+- --------------- 여기까지 ------------------
+- member_write, member_update, member_delete(OK) 만들기 작업중.
+- 스프링 AOP(관점지향프로그래밍-OOP의 확장기능)기능으로 개발용 디버그출력환경 만들기.
+- 실제 게시판 화면 CRUD 적용.
+- 파일업로드 라이브러리 사용 pom.xml 의존성 추가.
+- 게시판 업로드 화면 구현.
+- Json데이터 사용 pom.xml 의존성 추가.(댓글 Rest-Api에서필요)
+- 실제 댓글 화면CRUD적용.(우리가 만들어서 제공 Rest-API백엔드단)
+- 사용자단 html(https://miniplugin.github.io/) 소스를 커스터마이징 후 jsp로 만들기.
+- 스프링시큐리티 로그인 구현 pom.xml 의존성 추가(회원가입시 패스워드 암호화 추가).
+- 헤로쿠 클라우드로 배포(Hsql데이터베이스사용).
+- 사용자단 CRUD 구현.
+- 웹프로젝트 소스를 스프링프레임워크 버전으로 5.2.5 마이그레이션(버전 업그레이드)
+- 오라클로 마이그레이션 작업.
+- 이후 유효성검사, 파스타클라우드, 네이버아이디 로그인(네이버에서 제공Rest-API백엔드단) 사용 등등. pom.xml 의존성 추가.
+#### 20201221(월) 작업
+- 신규페이지 작업시 순서: 쿼리 > DAO > Service > Controller > jsp
+- 리스트, 검색, 페이징 처리OK.
+- 로그4j에 레벨: debug < warn < info 오른쪽 일수록 더 자세한 로그가 출력이 됩니다.
+- 마리아DB실행(만세아이콘)->워크벤치실행->이클립스실행
 - 통합구현 NCS학습모듈 이론 2-1단원.
-
+- 변수변경1: 쿼리에서 사용되는 시작인덱스 startNo 변수를 queryStartNo 으로 변경예정
+- 변수변경2: 쿼리에서 사용되는 1페이지당출력할개수 perQueryPageNum 변수를 queryPerPageNum 으로 변경예정
+- totalCount가 들어가는 계산식 변경(아래)
+- tempEnd*this.perQueryPageNum > this.totalCount (임시끝페이지x쿼리에서1페이지당출력할개수 > 실제전체개수)
+- this.totalCount/(double)this.queryPerPageNum (실제전체개수/쿼리에서1페이당출력할개수)
+- this.endPage*this.perQueryPageNum < this.totalCount (계산된끝페이지x쿼리에서1페이지당출력할개수 > 실제전체개수)
+- queryStartNo(쿼리시작인덱스) = perQueryPageNum*(this.page-1);//2페이지계산 10x(2-1) = 10[계산결과나온 시작페이지번호]
+- 리스트 출력전 페이징 처리부터 해야 하기 때문에 selectMember호출보다 위로 이동
+- @ModelAttribute("pageVO") 원래 이것을 사용하는 목적은 jsp에서 받을 때 필요 여기선 필요없음
+- log4j.xml 로그 등급 변경 및 dtd(Document Type Define)문서타입정의를 아래로 변경예정
+- 더미데이터 입력: 데이터베이스 프로시저(DB전용프로그램방식) 사용예정.
+- 스프링웹프로젝트 ERD만들고, 물리DB생성 후 프로지서 사용 연습예정.(더 자세히는 7번째과목 SQL활용에서 다룹니다.)
 #### 20201218(금) 작업
 - 조건문 중 삼항 연산자: 
 - (idx==pageVO.page)?'active':'';//전체 3개의 항(부분)으로 만들어져서 삼항연사자라고 합니다.
