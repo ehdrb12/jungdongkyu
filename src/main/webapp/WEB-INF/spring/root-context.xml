@@ -47,5 +47,8 @@
 	 <context:component-scan base-package="org.edu.dao" />
 	 <context:component-scan base-package="org.edu.service" />
 	 <context:component-scan base-package="org.edu.vo" />
+	 <context:component-scan base-package="org.edu.aop" />
+	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+	<aop:config></aop:config>
 	 
 </beans>

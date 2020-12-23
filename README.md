@@ -1,7 +1,4 @@
-### 기본정보
-- 스프링관리자 AdminLTE템플릿 샘플: 
-- https://adminlte.io/themes/v3/pages/forms/general.html
-- https://kimilguk-mysql.herokuapp.com/ (아이디/암호:admin/user02)
+
 ### 수업에 대해서
 - 작업 내용의 복습시간은 이후 다른 코딩작업으로 대신하게 됩니다.
 - 예를 들면, 스프링프로젝트에서 관리자단 게시판을 만들면,
@@ -39,6 +36,64 @@
 - 웹프로젝트 소스를 스프링프레임워크 버전으로 5.2.5 마이그레이션(버전 업그레이드)
 - 오라클로 마이그레이션 작업.
 - 이후 유효성검사, 파스타클라우드, 네이버아이디 로그인(네이버에서 제공Rest-API백엔드단) 사용 등등. pom.xml 의존성 추가.
+
+#### 20201223(수) 작업
+- 스프링의 특징3가지 : DI(의존성 주입:Dependency Injection), AOP(관점지향프로그래밍)
+- , IoC(제어의 역전 Inversion of Control:개발자가 처리하였던  메모리관리(가비지컬렉션-쓰레기프로그램종료시키기)-개발자가 코딩으로 오브젝트클래스를 종료할 필요없이, 스프링이 대신 처리 하는 기능) IoC예(아래), 개발자편리위주로 변경된 프레임워크 스프링입니다.
+
+```
+Connection conn = null
+Statement stmt = null
+ResultSet rs = null 
+구현내용 마치면 항상 아래 처럼 처리 해줘야 했습니다. 스프링에서 IoC기능으로 개발자가 제어를 하지 않고,스프링이 처리 해 줍니다. 
+rs.close();
+stmt.close();
+conn.close();
+```
+- 스프링 AOP(관점지향프로그래밍-OOP의 확장기능)기능으로 개발용 디버그출력환경 만들기 시작.
+- AOP(Aspect Oriented Programming): 구조화된 OOP의 단점인 복잡도 증가를 줄이는 효과를 기대해서 만든 프로그램 방식 입니다.
+- 즉, OOP자바클래스단에서 제어하던 반복되는 명령을 호출단에서 제어하도록 변경한 내용이 AOP입니다.
+- 예, 인증처리, 디버그와 같은 에러처리를 개발 클래스에서 처리하지않고, 공통클래스 1개 만들어서,
+인증이나, 예외처리(디버그)가 필요할때 마다 호출되는 시스템을 AOP라고 합니다.
+- 예외처리를 AOP로 구현하면서, 기능을 확인해 봅니다.
+- DATABASE폴더에 edu_mysql.sql 더미스키마+데이터 백업작업.
+- 맥OS 워크벤치 백업이 오동작 -> phpMyAdmin 툴변경 내보내기(백업)했습니다.
+- 프로그램에서 데이터크기단위: 8비트단위=2의8제곱=256개=> 왜 데이터크기를 0~255=256개
+- ERD만들기: 발주사의 업무담당자와 미팅(협의)끝난 이후,
+- 발주사(회사,대학,관공서)에서 사용하는 업무서식문서(결제서류,입학원서,입사원서,월급명세서,휴가신청서 등등)를 가지고, ERD를 만들게 됩니다.
+- wamp(만세아이콘)실행.
+- 프로젝트에서 DATABASE폴더 안의 edu_mysql.sql 삭제.
+- 스프링에서 작업시 순서: DataBase > 쿼리 > DAO > Service > Controller > jsp
+- 지금 진행하는 스프링웹프로젝트 워크벤치로 ERD만들고, 
+- 물리DB생성 후 프로지서 사용 더미데이터 입력(게시물관련) 연습예정.(더 자세히는 7번째과목 SQL활용에서 다룹니다.)
+
+#### 20201222(화) 작업
+- 회원관리 CRUD마무리 OK.
+- 오후 문제점: 2가지(ID수정방지기능OK, enalbed값 jsp바인딩-(true|false-enabled)처리 확인) 업데이트 마무리.
+- 회원등록(CRUD중 C) 작업예정.
+- 중복아이디체크(Ajax로 간단한 RestAPI컨트롤러 구성): 중복아이디가 존재한다면, SUBMIT버튼을 비활성화(disabled)
+- 중복아이디가 존재하지 않을때만 SUBMIT버튼이 활성화시키는 Jquery를 사용합니다.
+- 중복아이디체크는 버튼을 사용하지 않고, 아이디 input 항목을 벗어났을때 이벤트를 이용해서 Ajax를 호출할 예정.
+- 한글이 POST시 깨지는 문제: web.xml 에서 한글처리를 위한 UTF-8필터 추가(필수)
+
+```
+<!--  ...한글처리를 위한 UTF-8 필터 추가 -->
+	<filter>
+	  <filter-name>encoding</filter-name>
+	  <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+	  <init-param>
+	   <param-name>encoding</param-name>
+	   <param-value>UTF-8</param-value>
+	  </init-param>
+	</filter>	
+	<filter-mapping>
+	  <filter-name>encoding</filter-name>
+	  <url-pattern>/*</url-pattern>
+	</filter-mapping>
+```
+- 회원관리 CRUD는 마무리하고,
+- 지금 진행하는 스프링웹프로젝트 워크벤치로 ERD만들고, 
+- 물리DB생성 후 프로지서 사용 더미데이터 입력(게시물관련) 연습예정.(더 자세히는 7번째과목 SQL활용에서 다룹니다.)
 #### 20201221(월) 작업
 - 신규페이지 작업시 순서: 쿼리 > DAO > Service > Controller > jsp
 - 리스트, 검색, 페이징 처리OK.

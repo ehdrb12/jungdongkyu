@@ -54,7 +54,7 @@
 
                 <hr>
                 <strong><i class="far fa-file-alt mr-1"></i> point</strong>
-                <p class="text-muted">${member.point}</p>
+                <p class="text-muted">${memberVO.point}</p>
                 
                 <hr>
                 <strong><i class="fas fa-adjust mr-1"></i> enabled</strong>
@@ -66,12 +66,13 @@
               </div>
               <!-- /.card-body -->
             </div>
-           <form name="action_form" id="action_form" action="" method="">
+          
+          <form name="action_form" id="action_form" action="">
           <!-- 버튼영역 시작 -->
-           <div class="card-body">
+            <div class="card-body">
             	<a href="/admin/member/member_list?page=${pageVO.page}" class="btn btn-primary float-right mr-1">LIST ALL</a>
               	<button type="button" id="deleteBtn" class="btn btn-danger float-right mr-1">DELETE</button>
-				<button type="button" class="btn btn-warning float-right mr-1 text-white">UPDATE</button>        	
+				<button type="button" id="updateBtn" class="btn btn-warning float-right mr-1 text-white">UPDATE</button>        	
               	<!-- 부트스트랩 디자인 버튼클래스를 이용해서 a태그를 버튼모양 만들기(위) -->
               	<!-- btn클래스명이 버튼모양으로 변경, btn-primary클래스명은 버튼색상을 변경하는역할 -->
               	<!-- 
@@ -84,6 +85,7 @@
               </div>
           <!-- 버튼영역 끝 -->
           <input type="hidden" name="user_id" value="${memberVO.user_id}">
+          <input type="hidden" name="page" value="${pageVO.page}">
           </form>
           </div>
         </div>
@@ -97,9 +99,8 @@
 <%@ include file="../include/footer.jsp" %>
 <script>
 $(document).ready(function(){
-	
 	$("#deleteBtn").bind("click", function(){
-		if(confirm("정말 삭제 하시겠습니까?")){
+		if(confirm("정말 삭제 하시겠습니까?")) {
 			$("#action_form").attr("action","/admin/member/member_delete");
 			$("#action_form").attr("method","post");
 			$("#action_form").submit();
