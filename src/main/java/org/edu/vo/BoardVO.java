@@ -3,31 +3,32 @@ package org.edu.vo;
 import java.util.Date;
 
 /**
- * 게시판에서 사용되는 데이터 입출력 클래스 
- * @author 정동규
+ * 게시판에서 사용되는 데이터 입출력 클래스
+ * @author 김일국
  *
  */
 public class BoardVO {
 	//멤버변수 선언
-	private int bno;//int는 입력값이 null일때 에러나기 때문에, Interger로 변경
+	private Integer bno;//int은 입력값이 null일때 에러나기  때문에, Interger로 변경
 	private String title;
 	private String content;
 	private String writer;
-	private Date regdate;
+	private Date reg_date;
 	private Date update_date;
 	private Integer view_count;
 	private Integer reply_count;
 	
+	private String[] save_file_names;//리스트형 첨부파일명을 배열형으로 변경할때 사용한 변수.
 	@Override
 	public String toString() {
-		return "디버그 BoardVO [bno=" + bno + ", title=" + title + ", content=" + content + ", writer=" + writer + ", regdate="
-				+ regdate + ", update_date=" + update_date + ", view_count=" + view_count + ", reply_count="
+		return "디버그용 BoardVO [bno=" + bno + ", title=" + title + ", content=" + content + ", writer=" + writer + ", regdate="
+				+ reg_date + ", update_date=" + update_date + ", view_count=" + view_count + ", reply_count="
 				+ reply_count + "]";
 	}
-	public int getBno() {
+	public Integer getBno() {
 		return bno;
 	}
-	public void setBno(int bno) {
+	public void setBno(Integer bno) {
 		this.bno = bno;
 	}
 	public String getTitle() {
@@ -48,11 +49,11 @@ public class BoardVO {
 	public void setWriter(String writer) {
 		this.writer = writer;
 	}
-	public Date getRegdate() {
-		return regdate;
+	public Date getReg_date() {
+		return reg_date;
 	}
-	public void setRegdate(Date regdate) {
-		this.regdate = regdate;
+	public void setReg_date(Date reg_date) {
+		this.reg_date = reg_date;
 	}
 	public Date getUpdate_date() {
 		return update_date;
@@ -71,6 +72,12 @@ public class BoardVO {
 	}
 	public void setReply_count(Integer reply_count) {
 		this.reply_count = reply_count;
+	}
+	public String[] getSave_file_names() {
+		return save_file_names;
+	}
+	public void setSave_file_names(String[] save_file_names) {
+		this.save_file_names = save_file_names;
 	}
 	
 }

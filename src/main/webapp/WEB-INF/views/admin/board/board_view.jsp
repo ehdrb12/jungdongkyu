@@ -47,10 +47,7 @@
                 <hr><!-- horizontal 수평선 태그 -->
                 <strong><i class="fas fa-map-marker-alt mr-1"></i> content</strong>
                 <p class="text-muted">
-                	
-                	<textarea rows="5" class="form-control">
                 	${boardVO.content}
-                	</textarea>
                 </p>
 				<!-- 부트스트랩 오른쪽여백주기클래스명mr-1:(margin-right: .25rem!important;) -->
                 <hr>
@@ -61,16 +58,16 @@
 
                 <hr>
                 <strong><i class="far fa-save mr-1"></i> 첨부파일</strong>
-                <p class="text-muted"><a href="#">파일다운로드</a></p>
+                <p class="text-muted"><a href="#">${boardVO.save_file_names[0]}-파일다운로드</a></p>
 
               </div>
               <!-- /.card-body -->
             </div>
           <!-- 버튼영역 시작 -->
           <div class="card-body">
-            	<a href="/admin/board/board_list" class="btn btn-primary float-right mr-1">LIST ALL</a>
+            	<a href="/admin/board/board_list?page=${pageVO.page}" class="btn btn-primary float-right mr-1">LIST ALL</a>
               	<button class="btn btn-danger float-right mr-1">DELETE</button>
-				<a href="/admin/board/board_write?bno=${boardVO.bno}" class="btn btn-warning float-right mr-1 text-white">UPDATE</a>             	
+				<a href="/admin/board/board_update?page=${pageVO.page}&bno=${boardVO.bno}" class="btn btn-warning float-right mr-1 text-white">UPDATE</a>             	
               	<!-- 부트스트랩 디자인 버튼클래스를 이용해서 a태그를 버튼모양 만들기(위) -->
               	<!-- btn클래스명이 버튼모양으로 변경, btn-primary클래스명은 버튼색상을 변경하는역할 -->
               	<!-- 
