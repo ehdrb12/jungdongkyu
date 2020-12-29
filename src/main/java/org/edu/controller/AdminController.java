@@ -37,14 +37,40 @@ public class AdminController {
 	@Inject
 	IF_MemberService memberService;//멤버인터페이스를 주입받아서 memberService오브젝트 변수를 생성.
 	
+	//GET은 URL전송방식(아무데서나 브라우저주소에 적으면 실행됨), POST는 폼전송방식(해당페이지에서만 작동가능)
+	@RequestMapping(value="/admin/board/board_delete",method=RequestMethod.POST)
+	public String board_delete(RedirectAttributes rdat,PageVO pageVO, @RequestParam("bno") Integer bno) throws Exception {
+		//첨부파일 삭제 미처리3 -추가예정:삭제할때 순서, 자식부터 삭제 후 부모가 삭제됩니다.
+		boardService.deleteBoard(bno);
+		rdat.addFlashAttribute("msg", "삭제");
+		return "redirect:/admin/board/board_list?page=" + pageVO.getPage();//삭제할 당시의 현재페이지를 가져가서 리스트로보줌
+	}
+	
+	@RequestMapping(value="/admin/board/board_update",method=RequestMethod.GET)
+	public String board_update(@RequestParam("bno") Integer bno,@ModelAttribute("pageVO") PageVO pageVO,Model model) throws Exception {
+		BoardVO boardVO = boardService.readBoard(bno);
+		model.addAttribute("boardVO", boardVO);
+		return "admin/board/board_update";//파일경로
+	}
+	@RequestMapping(value="/admin/board/board_update",method=RequestMethod.POST)
+	public String board_update(RedirectAttributes rdat,MultipartFile file, BoardVO boardVO, PageVO pageVO) throws Exception {
+		boardService.updateBoard(boardVO);
+		//첨부파일 수정 미처리2 - 추가예정:수정할때 순서, 부모부터 수정 후 자식이 수정됩니다.
+		rdat.addFlashAttribute("msg", "수정");
+		return "redirect:/admin/board/board_view?page="+pageVO.getPage()+"&bno="+boardVO.getBno();
+	}
+	
 	@RequestMapping(value="/admin/board/board_write",method=RequestMethod.GET)//URL경로
 	public String board_write() throws Exception {
 		return "admin/board/board_write";//파일경로
 	}
 	@RequestMapping(value="/admin/board/board_write",method=RequestMethod.POST)
-	public String board_write(MultipartFile file, BoardVO boardVO) throws Exception {
+	public String board_write(RedirectAttributes rdat,MultipartFile file, BoardVO boardVO) throws Exception {
 		//post받은 boardVO내용을 DB서비스에 입력하면 됩니다.
 		//dB에 입력후 새로고침명령으로 게시물 테러를 당하지 않으려면, redirect로 이동처리 합니다.(아래)
+		boardService.insertBoard(boardVO);
+		//첨부파일 등록 미처리1 - 추가예정:등록순서, 부모부터 등록 후 자식이 생성이 됩니다.
+		rdat.addFlashAttribute("msg", "저장");
 		return "redirect:/admin/board/board_list";
 	}
 	@RequestMapping(value="/admin/board/board_view", method=RequestMethod.GET)
@@ -63,19 +89,18 @@ public class AdminController {
 		 * boardVO.setReg_date(reg_date); boardVO.setView_count(2);
 		 * boardVO.setReply_count(0);
 		 */
-		
 		BoardVO boardVO = boardService.readBoard(bno);
-		//시큐어코딩 추가 시작
+		//시큐어코딩 시작
 		String xss_data = boardVO.getContent();
 		boardVO.setContent(securityCode.unscript(xss_data));
-		//시큐어코딩 추가 끝
+		//시큐어코딩 끝
 		//첨부파일 리스트 값을 가져와서 세로데이터(jsp에서는 forEach문사용)를 가로데이터(jsp에서 배열사용)로 바꾸기
-		//첨부파일을 1개만 올리기 때문에 리스트형 데이터를 일반 배열데이터로 변경
-		// 리스트형 입력값[
-		// {'save_fole_name1'}
-		// {'save_fole_name2'}
+		//첨부파일을 1개만 올리기 때문에 리스트형 데이터를 배열데이터로 변경
+		// 리스트형 입력값(세로) [
+		// {'save_file_name0'},
+		// {'save_file_name1'},
 		// ..
-		// ]
+		//]
 		List<String> files = boardService.readAttach(bno);
 		String[] save_file_names = new String[files.size()];
 		int cnt = 0;
@@ -85,7 +110,7 @@ public class AdminController {
 		}
 		//배열형출력값(가로) {'save_file_name0','save_file_name1',...}
 		boardVO.setSave_file_names(save_file_names);
-		//위처럼 첨부파일을 세로배치->가로배치로 바꾸고, get/set하는 이유는 attachVO를 만들지 않아서 입니다.
+		//위처럼 첨부파일을 세로베치->가로배치로 바꾸고, get/set하는 이유는 attachVO를 만들지 않아서 입니다.
 		//만약 위처럼 복잡하게 세로배치->가로배치로 바꾸는 것이 이상하면, 아래처럼처리
 		//model.addAttribute("save_file_names", files);
 		model.addAttribute("boardVO", boardVO);

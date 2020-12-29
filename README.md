@@ -40,6 +40,40 @@
 - AdminLTE관리자단 게시판CRUD작업시작.
 - 코딩 틈틈히 이론수업(IT강의저장소의 스프링내용)
 
+#### 20201229(화) 작업
+- CK에디터 사용을 하려다가, 이클립스 내장브라우저에서 작동하지 않아서 섬머노트 에디터로 변경처리.
+- input type="file" name="file" 바로 DB테이블에 저장할 수 없습니다.
+- save_file_name, real_file_name 이런 테이블필드에 저장하기전에 전처리 과정이 필요합니다.
+- 첨부파일 등록시 전처리 과정: (아래)
+- 전처리 과정 1. 서버에 저장공간(폴더)에 save_file_name이름으로 .jpg, .hwp, .xls 저장되는 기능필요
+- 전처리 과정 2. 물리DB테이블에 save_file_name필드, real_file_name필드, bno게시물번호필드 에 저장되는 기능필요
+- 데이터흐름: 물리DB(필드명) - DAO - Service - Controller - JSP(input태그의 name속성)
+-          BoardVO(멤버변수명와 위 5군데 Get/Set 이 가능하려면, 이름이 동일해야함. 필수조건)
+- 관리자단 게시판 CRUD작업 중 어제 Read작업 확인(첨부파일 다운로드는 아래 insert작업 후 다시 확인)
+- C(insert)작업 시 첨부파일 업로드 구현
+- Update 작업 후 Delete작업으로 마무리.
+#### 20201228(월) 작업
+- resources/home폴더의 디자인html파일에서 댓글달기 html은 같이 작업예정.
+- 위 home폴더 내용을 jsp로 변경처리 후 스프링과 연동하는 작업이 진행됩니다.
+- 위 작업은 관리자단 게시판 CRUD작업 후 진행.
+- AdminLTE관리자단 게시판CRUD작업시작.
+- 리스트작업OK. -> 뷰단작업 진행.
+- DAO는 3개, 서비스는 1개 묶어줄수 있습니다.
+- 자료구조: List<BoardVO>, List<String>
+- List<BoardVO>: [
+	{bno1, 'title1', 'content1', ... },
+	{bno2, 'title2', 'content2', ... },
+	...
+- ]
+- List<String>: [
+	{'file_name1'},
+	{'file_name2'},
+	...
+- ]
+- 작업순서: DB -> 매퍼쿼리 <-> DAO클래스 <-> Service클래스 <-> Controller클래스 -> jsp
+- 프로그램에서 조건문의 and(교집합 결과), or(합집합 결과).
+- 코딩 틈틈히 이론수업(IT강의저장소의 스프링내용)
+- 다음주에 파스타가 살아있으면, 우리작업 결과물 파스타에 배포할 예정이니까, 플레이파크사용가능한지 확인 해 주시기 바랍니다.(모든 학생 다 가능하실때 진행+스프링시큐리티-로그인처리후)
 #### 20201224(목) 작업
 - V6.0.0과목시작. 
 - 사용자단 홈페이지 퍼블리싱한 결과물을 webapp/resources폴더에 home폴더명으로 생성.

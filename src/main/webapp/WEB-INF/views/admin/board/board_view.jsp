@@ -55,18 +55,22 @@
                 <p class="text-muted">
                 <c:out value="${boardVO.writer}"></c:out>
                 </p>
-
-                <hr>
-                <strong><i class="far fa-save mr-1"></i> 첨부파일</strong>
-                <p class="text-muted"><a href="#">${boardVO.save_file_names[0]}-파일다운로드</a></p>
-
+				<c:if test="${boardVO.save_file_names[0] != null}">
+					<hr>
+	                <strong><i class="far fa-save mr-1"></i> 첨부파일</strong>
+	                <p class="text-muted">
+	                <a href="#">
+	                ${boardVO.save_file_names[0]}-파일다운로드-</a>
+	                </p>
+				</c:if>
               </div>
               <!-- /.card-body -->
             </div>
+         
           <!-- 버튼영역 시작 -->
           <div class="card-body">
             	<a href="/admin/board/board_list?page=${pageVO.page}" class="btn btn-primary float-right mr-1">LIST ALL</a>
-              	<button class="btn btn-danger float-right mr-1">DELETE</button>
+              	<button class="btn btn-danger float-right mr-1" id="btn_board_delete">DELETE</button>
 				<a href="/admin/board/board_update?page=${pageVO.page}&bno=${boardVO.bno}" class="btn btn-warning float-right mr-1 text-white">UPDATE</a>             	
               	<!-- 부트스트랩 디자인 버튼클래스를 이용해서 a태그를 버튼모양 만들기(위) -->
               	<!-- btn클래스명이 버튼모양으로 변경, btn-primary클래스명은 버튼색상을 변경하는역할 -->
@@ -248,3 +252,19 @@ $(document).ready(function() {
     </div>
   </div>
 </div>
+<form name="action_form" >
+	<input type="hidden" name="bno" value="${boardVO.bno}">
+	<input type="hidden" name="page" value="${pageVO.page}">
+</form>
+<script>
+$(document).ready(function(){
+	$("#btn_board_delete").on("click",function(){
+ 		//alert("디버그");
+ 		if(confirm("정말로 삭제 하시겠습니디까?")) {
+ 			$('form[name="action_form"]').attr("method","post");
+ 	 		$('form[name="action_form"]').attr("action","/admin/board/board_delete");
+ 	 		$('form[name="action_form"]').submit();
+ 		}
+ 	}); 
+});
+</script>

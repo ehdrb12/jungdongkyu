@@ -46,5 +46,23 @@ public class BoardDAOImpl implements IF_BoardDAO {
 		// 게시물 상세보기시 조회수 +1 업데이트 처리 매퍼쿼리 연결(아래)
 		sqlSession.update("boardMapper.updateViewCount", bno);
 	}
+	
+	@Override
+	public void insertBoard(BoardVO boardVO) throws Exception {
+		//게시물 등록 매퍼쿼리 연결(아래)
+		sqlSession.insert("boardMapper.insertBoard", boardVO);
+	}
+
+	@Override
+	public void deleteBoard(Integer bno) throws Exception {
+		// 게시물 삭제 매퍼쿼리 연결(아래)
+		sqlSession.delete("boardMapper.deleteBoard", bno);
+	}
+
+	@Override
+	public void updateBoard(BoardVO boardVO) throws Exception {
+		// 게시물 수정매퍼쿼리 연결(아래)
+		sqlSession.update("boardMapper.updateBoard", boardVO);
+	}
 
 }
