@@ -1,6 +1,8 @@
 package org.edu.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -46,10 +48,10 @@ public class BoardDAOImpl implements IF_BoardDAO {
 		// 게시물 상세보기시 조회수 +1 업데이트 처리 매퍼쿼리 연결(아래)
 		sqlSession.update("boardMapper.updateViewCount", bno);
 	}
-	
+
 	@Override
 	public void insertBoard(BoardVO boardVO) throws Exception {
-		//게시물 등록 매퍼쿼리 연결(아래)
+		// 게시물 등록 매퍼쿼리 연결(아래)
 		sqlSession.insert("boardMapper.insertBoard", boardVO);
 	}
 
@@ -61,8 +63,22 @@ public class BoardDAOImpl implements IF_BoardDAO {
 
 	@Override
 	public void updateBoard(BoardVO boardVO) throws Exception {
-		// 게시물 수정매퍼쿼리 연결(아래)
+		// 게시물 수정 매퍼궈리 연결(아래)
+		// 위쪽의 메서드인 updateBoard매서드의 매개변수 해석(아래) BoardVO클래스는 개발자생성한 참조형데이터타입
+		//jsp에서 update_form태그에서 전송된 값 boardVO클래스에 담겨서 데이터를 받습니다.
+		//함수는 오브젝트 생성해야지만, 사용이 가능합니다.자바에선 new, 스프링에선 Inject
+		//BoardVO 개발자 선언한 클래스, 데이터클래스, 오브젝트클래스 - C언어 구조체
+		//String 자바가 선언한 클래스
 		sqlSession.update("boardMapper.updateBoard", boardVO);
+	}
+
+	@Override
+	public void insertAttach(String save_file_name, String real_file_name) throws Exception {
+		// 첨부파일 입력 매퍼쿼리 연결(아래)
+		Map<String,Object> paramMap = new HashMap<String,Object>();
+		paramMap.put("save_file_name", save_file_name);
+		paramMap.put("real_file_name", real_file_name);
+		sqlSession.insert("boardMapper.insertAttach", paramMap);
 	}
 
 }
