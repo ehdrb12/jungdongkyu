@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * MemberServiceImpl는 DAO메서드 호출을 구현
- * @author 정동규
+ * @author 김일국
  *
  */
 @Service
@@ -31,16 +31,19 @@ public class MemberServiceImpl implements IF_MemberService {
 		// 검색된 회원의 전체 명수 구하기
 		return memberDAO.countMember(pageVO);
 	}
+
 	@Override
 	public MemberVO readMember(String user_id) throws Exception {
 		// 선택한 회원의 상세 정보 구하기
 		return memberDAO.readMember(user_id);
 	}
+
 	@Override
 	public void deleteMember(String user_id) throws Exception {
 		// 선택한 회원정보를 삭제 하기
 		memberDAO.deleteMember(user_id);
 	}
+
 	@Override
 	public void updateMember(MemberVO memberVO) throws Exception {
 		// 선택한 회원정보 수정하기
@@ -49,7 +52,8 @@ public class MemberServiceImpl implements IF_MemberService {
 
 	@Override
 	public void insertMember(MemberVO memberVO) throws Exception {
-		// jsp에서 입력한 회원정보 등록
-		memberDAO.insertMember(memberVO);		
+		// jsp폼에서 입력한 회원정보 등록하기
+		memberDAO.insertMember(memberVO);
 	}
+
 }

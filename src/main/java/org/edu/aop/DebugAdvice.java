@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * DebugAdvice클래스로서 디버그를 Advice라는 AOP기능을 사용해서 디버그를 실행하게 됩니다.
- * @author 정동규
+ * @author 김일국
  *
  */
 @Component //스프링빈으로 사용하겠다는 명시
@@ -42,7 +42,7 @@ public class DebugAdvice {
 		//위는 현재 시간체크하는 메서드가 어떤메서드인지 눈으로 확인하려고 logger.debug로 출력
 		Object result = pjp.proceed();//AdminController에 있는 메서드가 실행됩니다.(시간이 소요됨)
 		long endTime = System.currentTimeMillis();//현재 컴퓨터 시간을 저장하는 변수
-		logger.info(pjp.getSignature().getName() + "메서드명의 실행시간은:" + (double)(endTime-startTime)/1000 + "초 입니다.");
+		logger.info(pjp.getSignature().getName() + "()메서드명 의 실행시간은:" + (double)(endTime-startTime)/1000 + "초 입니다.");
 		logger.info("AOP 디버그 끝 ==========================");
 		return result;
 	}

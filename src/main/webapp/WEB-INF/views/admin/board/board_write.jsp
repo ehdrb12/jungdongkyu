@@ -87,7 +87,7 @@
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
-  
+
 <%@ include file="../include/footer.jsp" %>
 
 <!-- 첨부파일 부트스트랩 디자인 JS -->
@@ -119,9 +119,9 @@ $(document).ready(function(){
 				    ['height', ['height']],
 				    ['insert',['link','video']],//'picture',
 				    ['view', ['fullscreen', 'help']]
-				 ],
+				],
 		fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New','맑은 고딕','궁서','굴림체','굴림','돋음체','바탕체'],
 		fontSizes: ['8','9','10','11','12','14','16','18','20','22','24','28','30','36','50','72']
-    });
+	});
 });//textarea 중 content아이디영역을 섬머노트에디터로 변경처리 함수실행
 </script>

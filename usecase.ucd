@@ -38,10 +38,10 @@
         </java.beans.PropertyChangeSupport>
       </listeners>
       <constraint>
-        <height>222</height>
-        <width>216</width>
-        <x>341</x>
-        <y>114</y>
+        <height>239</height>
+        <width>273</width>
+        <x>676</x>
+        <y>109</y>
       </constraint>
       <sourceConnections/>
       <targetConnections/>
@@ -61,10 +61,10 @@
             </java.beans.PropertyChangeSupport>
           </listeners>
           <constraint>
-            <height>50</height>
-            <width>37</width>
-            <x>37</x>
-            <y>50</y>
+            <height>-1</height>
+            <width>-1</width>
+            <x>46</x>
+            <y>25</y>
           </constraint>
           <sourceConnections>
             <net.java.amateras.uml.usecasediagram.model.UsecaseRelationModel>
@@ -94,10 +94,10 @@
                   </java.beans.PropertyChangeSupport>
                 </listeners>
                 <constraint>
-                  <height>49</height>
-                  <width>97</width>
-                  <x>109</x>
-                  <y>71</y>
+                  <height>40</height>
+                  <width>100</width>
+                  <x>150</x>
+                  <y>134</y>
                 </constraint>
                 <sourceConnections/>
                 <targetConnections>
@@ -110,7 +110,53 @@
               <bendpoints/>
             </net.java.amateras.uml.usecasediagram.model.UsecaseRelationModel>
           </sourceConnections>
-          <targetConnections/>
+          <targetConnections>
+            <net.java.amateras.uml.model.AnchorModel>
+              <showIcon>true</showIcon>
+              <listeners serialization="custom">
+                <java.beans.PropertyChangeSupport>
+                  <default>
+                    <source class="net.java.amateras.uml.model.AnchorModel" reference="../../../.."/>
+                    <propertyChangeSupportSerializedDataVersion>2</propertyChangeSupportSerializedDataVersion>
+                  </default>
+                  <null/>
+                </java.beans.PropertyChangeSupport>
+              </listeners>
+              <source class="net.java.amateras.uml.model.NoteModel">
+                <backgroundColor reference="../../../../../../../../backgroundColor"/>
+                <foregroundColor reference="../../../../../../../../foregroundColor"/>
+                <showIcon>true</showIcon>
+                <parent class="net.java.amateras.uml.usecasediagram.model.UsecaseRootModel" reference="../../../../../../../.."/>
+                <listeners serialization="custom">
+                  <java.beans.PropertyChangeSupport>
+                    <default>
+                      <source class="net.java.amateras.uml.model.NoteModel" reference="../../../.."/>
+                      <propertyChangeSupportSerializedDataVersion>2</propertyChangeSupportSerializedDataVersion>
+                    </default>
+                    <null/>
+                  </java.beans.PropertyChangeSupport>
+                </listeners>
+                <constraint>
+                  <height>54</height>
+                  <width>138</width>
+                  <x>669</x>
+                  <y>32</y>
+                </constraint>
+                <sourceConnections>
+                  <net.java.amateras.uml.model.AnchorModel reference="../../.."/>
+                </sourceConnections>
+                <targetConnections/>
+                <children/>
+                <filterProperty/>
+                <content>간단한 은행시스템&#xd;
+유스케이스&#xd;
+다이어그램</content>
+                <old></old>
+              </source>
+              <target class="net.java.amateras.uml.usecasediagram.model.UsecaseActorModel" reference="../../.."/>
+              <bendpoints/>
+            </net.java.amateras.uml.model.AnchorModel>
+          </targetConnections>
           <children/>
           <filterProperty/>
           <name>사용자</name>
@@ -120,35 +166,7 @@
       <filterProperty/>
       <name>은행 시스템</name>
     </net.java.amateras.uml.usecasediagram.model.SystemModel>
-    <net.java.amateras.uml.model.NoteModel>
-      <backgroundColor reference="../../../backgroundColor"/>
-      <foregroundColor reference="../../../foregroundColor"/>
-      <showIcon>true</showIcon>
-      <parent class="net.java.amateras.uml.usecasediagram.model.UsecaseRootModel" reference="../../.."/>
-      <listeners serialization="custom">
-        <java.beans.PropertyChangeSupport>
-          <default>
-            <source class="net.java.amateras.uml.model.NoteModel" reference="../../../.."/>
-            <propertyChangeSupportSerializedDataVersion>2</propertyChangeSupportSerializedDataVersion>
-          </default>
-          <null/>
-        </java.beans.PropertyChangeSupport>
-      </listeners>
-      <constraint>
-        <height>53</height>
-        <width>115</width>
-        <x>337</x>
-        <y>18</y>
-      </constraint>
-      <sourceConnections/>
-      <targetConnections/>
-      <children/>
-      <filterProperty/>
-      <content>간단한 은행시스템&#xd;
-유스테이스&#xd;
-다이어그램</content>
-      <old></old>
-    </net.java.amateras.uml.model.NoteModel>
+    <net.java.amateras.uml.model.NoteModel reference="../net.java.amateras.uml.usecasediagram.model.SystemModel/children/net.java.amateras.uml.usecasediagram.model.UsecaseActorModel/targetConnections/net.java.amateras.uml.model.AnchorModel/source"/>
   </children>
   <filterProperty/>
 </net.java.amateras.uml.usecasediagram.model.UsecaseRootModel>

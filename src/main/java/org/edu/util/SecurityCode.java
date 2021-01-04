@@ -11,7 +11,7 @@ public class SecurityCode {
      * @param data
      * @return
      */
-	public String unscript(String data) {
+    public String unscript(String data) {
         if (data == null || data.trim().equals("")) {
             return "";
         }
