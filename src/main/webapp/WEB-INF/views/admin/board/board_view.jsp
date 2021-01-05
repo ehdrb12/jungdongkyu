@@ -56,30 +56,33 @@
                 <p class="text-muted">
                 <c:out value="${boardVO.writer}"></c:out>
                 </p>
-                <c:if test="${boardVO.save_file_names[0] != null}">
-                	<hr>
-	                <strong><i class="far fa-save mr-1"></i> 첨부파일</strong>
-	                <p class="text-muted">
-	                <a href="/download?save_file_name=${boardVO.save_file_names[0]}&real_file_name=${boardVO.real_file_names[0]}">
-	                ${boardVO.real_file_names[0]}-파일다운로드
-	                </a>
-	                <c:set var="fileNameArray" value="${fn:split(boardVO.save_file_names[0],'.') }" />
-	                <c:set var="extName" value="${fileNameArray[fn:length(fileNameArray)-1]}" />
-	                <!-- length결과는 2 -1 = 배열의 인덱스1 -->
-	                <c:set var="extName" value="${fn:split(boardVO.save_file_names[0],'.')}" />
-	                <!-- 첨부파일이 이미지 인지 아닌지 비교해서 img태그를 사용할 지 결정(아래) -->
-	                <!-- fn:contains함수({'jpg','gif','png'...}비교내용, 첨부파일확장자) -->
-	                <c:choose>
-	                	<c:when test="${fn:containsIgnoreCase(chkImgArray,extName)}">
-	                	 <img style="width=100" src="/download?save_file_name=${boardVO.save_file_names[0]}&real_file_name=${boardVO.real_file_names[0]}">
-	                	</c:when>
-	                	<c:otherwise>
-	                		<!-- 사용자홈페이지 메인 최근게시물 미리보기 이미지가 업을때 사용예정. -->
-	                	</c:otherwise>
-	                </c:choose>
-	                <img style="width:100%;" src="/download?save_file_name=${boardVO.save_file_names[0]}&real_file_name=${boardVO.real_file_names[0]}">
-	                </p>
-                </c:if>
+                <c:forEach var="index" begin="0" end="1">
+                	<c:if test="${boardVO.save_file_names[index] != null}">
+	                	<hr>
+		                <strong><i class="far fa-save mr-1"></i> 첨부파일${index}</strong>
+		                <p class="text-muted">
+		                <a href="/download?save_file_name=${boardVO.save_file_names[index]}&real_file_name=${boardVO.real_file_names[index]}">
+		                ${boardVO.real_file_names[index]}-파일다운로드${index}
+		                </a>
+		                <c:set var="fileNameArray" value="${fn:split(boardVO.save_file_names[index],'.')}" />
+		                <c:set var="extName" value="${fileNameArray[fn:length(fileNameArray)-1]}" />
+		                <!-- length결과는 2 - 1 = 배열의 인덱스1 -->
+		                <!-- 첨부파일이 이미지 인지 아닌지 비교해서 img태그를 사용할 지 결정(아래) -->
+		                <!-- fn:contains함수({'jpg','gif','png'...}비교배열내용,JPG,jpg첨부파일확장자) -->
+		                <c:choose>
+		                	<c:when test="${fn:containsIgnoreCase(checkImgArray,extName)}">
+		                		<img style="width:100%;" src="/download?save_file_name=${boardVO.save_file_names[index]}&real_file_name=${boardVO.real_file_names[index]}">
+		                	</c:when>
+		                	<c:otherwise>
+		                		<c:out value="${checkImgArray}" />
+		                		<!-- 사용자홈페이지 메인 최근게시물 미리보기 이미지가 없을때 사용예정. -->
+		                	</c:otherwise>
+		                </c:choose>
+		                <!-- true이면 이미지파일 이란 의미 -->
+		                </p>
+	                </c:if>
+                </c:forEach>
+                
               </div>
               <!-- /.card-body -->
             </div>
@@ -124,7 +127,7 @@
 	          <div class="timeline">
 	          	  <!-- .time-label의 before 위치 -->
 		          <div class="time-label">
-	                <span class="bg-red">Reply List[1]&nbsp;&nbsp;</span>
+	                <span class="bg-red" id="btn_reply_list" style="cursor:pointer;">Reply List[1]&nbsp;&nbsp;</span>
 	              </div>
 	              <!-- .time-label의 after 위치 -->
 		          <!-- <div>
@@ -187,7 +190,7 @@ jstl을 사용하려면, jsp에서 <%@ taglib uri=... 처럼 외부 core를 가�
  <i class="fas fa-envelope bg-blue"></i>
  <div class="timeline-item">
    <h3 class="timeline-header">{{replyer}}</h3>
-   <div class="timeline-body">{{replytext}}</div>
+   <div class="timeline-body">{{reply_text}}</div>
    <div class="timeline-footer">
 	 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#replyModal">
   		수정
@@ -197,7 +200,6 @@ jstl을 사용하려면, jsp에서 <%@ taglib uri=... 처럼 외부 core를 가�
 </div>
 {{/each}}
 </script>
-
 <!-- 화면을 재구현Representation하는 함수(아래) -->
 <script>
 var printReplyList = function(data, target, templateObject) {
@@ -207,6 +209,30 @@ var printReplyList = function(data, target, templateObject) {
 	target.after(html);//target은 .time-label 클래스영역을 가리킵니다.
 };
 </script>
+<!-- 댓글 리스트 버튼 클릭시 Ajax RestApi컨트롤러 호출(아래)해서 댓글목록 Json데이터로  -->
+<script>
+$(document).ready(function(){
+	$("#btn_reply_list").on("click", function(){
+		//alert('디버그');
+		$.ajax({ //$.getJSON 으로 대체 해도 됩니다.
+			type:"post",
+			url:"/reply/reply_list/116",//116게시물번호에 대한 댓글목록을 가져오는 URL
+			dataType:"json",//받을때 json데이터를 받는다.
+			success:function(result) {//result에는 댓글 목록을 json데이터로 받음.
+				//빵틀에 result데이터를 바인딩해서 출력합니다.
+				//console.log(result);
+				//var result = JSON.parse(result);//dataTayp:'text' 일때 실행 텍스트자료를 제이슨 자료로 변환.
+				//console.log("여기까지" + result.replyList);//디버그용 
+				printReplyList(result.replyList, $(".time-label"), $("#template"));//화면에 출력하는 구현함수를 호출하면 실행.
+			},
+			error:function(result) {
+				alert("RestApi서버에 문제가 발생했습니다. 다음에 이용해 주세요!");
+			}
+		});
+	});
+});
+</script>
+
 <!-- 댓글 등록 버튼 액션 처리(아래) -->
 <script>
 $(document).ready(function() {
@@ -223,8 +249,8 @@ $(document).ready(function() {
 				//지금은 html이라서 result값을 이용할 수가 없어서 댓글 더미데이터를 만듭니다.(아래)
 				result = [
 					//{rno:댓글번호,bno:게시물번호,replytext:"첫번째 댓글",replyer:"admin",regdate:타임스탬프}
-					{rno:1,bno:15,replytext:"첫번째 댓글",replyer:"admin",regdate:1601234512345},//첫번째 댓글 데이터
-					{rno:2,bnt:15,replytext:"두번째 댓글",replyer:"admin",regdate:1601234512345}//두번째 댓글 데이터
+					{rno:1,bno:15,reply_text:"첫번째 댓글",replyer:"admin",reg_date:1601234512345},//첫번째 댓글 데이터
+					{rno:2,bno:15,reply_text:"두번째 댓글",replyer:"admin",reg_date:1601234512345}//두번째 댓글 데이터
 				];//위 URL이 공공데이터생각하면,위 데이터를 화면에 구현하면, 빅데이터의 시각화로 불리게 됩니다.
 				//printReplyList(빅데이터, 출력할 타켓위치, 빅데이터를 가지고 바인딩된-묶인 템플릿화면);
 				printReplyList(result, $(".time-label"), $("#template"));//화면에 출력하는 구현함수를 호출하면 실행.

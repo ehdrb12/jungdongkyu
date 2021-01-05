@@ -63,15 +63,6 @@
                     <input type="file" name="file" class="custom-file-input" id="customFile">
                     <label class="custom-file-label" for="customFile" style="color:#999;">파일첨부</label>
                   </div>
-                  <c:if test="${boardVO.save_file_names[0] != null}">
-	                	<hr>
-		                <strong><i class="far fa-save mr-1"></i> 첨부파일</strong>
-		                <p class="text-muted">
-		                <a href="/download?save_file_name=${boardVO.save_file_names[0]}&real_file_name=${boardVO.real_file_names[0]}">
-		                ${boardVO.real_file_names[0]}-파일다운로드
-		                </a>
-		                </p>
-                </c:if>
                 </div>
                 <!-- /.card-body -->
               
@@ -79,7 +70,7 @@
           
           <!-- 버튼영역 시작 -->
             <div class="card-body">
-            	<a href="/admin/board/board_view?page=${pageVO.page}&bno=${boardVO.bno}" class="btn btn-primary float-right mr-1">뷰화면이동</a>
+            	<a href="/admin/board/board_list?page=${pageVO.page}" class="btn btn-primary float-right mr-1">LIST ALL</a>
               	<button type="submit" class="btn btn-danger float-right mr-1">SUBMIT</button>              	
               	<!-- a태그는 링크이동은 되지만, post값을 전송하지는 못합니다. 그래서, button태그를 사용. -->
             </div>
