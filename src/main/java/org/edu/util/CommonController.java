@@ -27,7 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 /**
  * CommonController 공통사용(Admin,Home) 컨트롤러
- * @author 정동규
+ * @author 김일국
  *
  */
 @Controller
@@ -121,11 +121,11 @@ public class CommonController {
 	
 	@Transactional
 	@RequestMapping(value="/file_delete",method=RequestMethod.POST)
-	@ResponseBody //메서드 응답을 내용만 반환 받겠다는 명시 RestAPI
+	@ResponseBody //메서드 응답을 내용만 반환 받겠다고 명시 RestAPI 
 	public String file_delete(@RequestParam("save_file_name") String save_file_name) {
 		String result = "";
 		try {
-			boardDAO.deleteAttach(save_file_name);
+			boardDAO.deleteAttach(save_file_name);//DB에서만 지워짐.
 			//실제 폴더에서 파일도 지우기(아래)
 			File target = new File(uploadPath, save_file_name);
 			if(target.exists()) {
@@ -133,9 +133,9 @@ public class CommonController {
 			}
 			result = "success";
 		} catch (Exception e) {
-			e.printStackTrace();
+			result = "fail : " + e.toString();
 		}
-		return null;
+		return result;
 	}
 
 	public ArrayList<String> getCheckImgArray() {
@@ -145,4 +145,5 @@ public class CommonController {
 	public void setCheckImgArray(ArrayList<String> checkImgArray) {
 		this.checkImgArray = checkImgArray;
 	}
+
 }

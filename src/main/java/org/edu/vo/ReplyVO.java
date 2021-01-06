@@ -15,7 +15,7 @@ public class ReplyVO {
 	private String replyer;//댓글 작성자
 	private Date reg_date;//댓글 등록일
 	private Date update_date;//댓글 수정일
-
+	
 	@Override
 	public String toString() {
 		return "ReplyVO [rno=" + rno + ", bno=" + bno + ", reply_text=" + reply_text + ", replyer=" + replyer
@@ -57,5 +57,5 @@ public class ReplyVO {
 	public void setUpdate_date(Date update_date) {
 		this.update_date = update_date;
 	}
-
+	
 }

@@ -1,5 +1,6 @@
 package org.edu.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -38,20 +39,37 @@ public class BoardServiceImpl implements IF_BoardService {
 	}
 
 	@Override
-	public List<String> readAttach(Integer bno) throws Exception {
+	public List<HashMap<String,Object>> readAttach(Integer bno) throws Exception {
 		// bno번호에 해당하는 첨부파일 조회쿼리 DAO연결(아래)
 		return boardDAO.readAttach(bno);
 	}
 
+	@Transactional
 	@Override
 	public void insertBoard(BoardVO boardVO) throws Exception {
 		// 게시물 등록 DAO연결(아래)
 		boardDAO.insertBoard(boardVO);
+		// 첨부파일 등록 DAO연결(아래)
+		String[] save_file_names = boardVO.getSave_file_names();
+		String[] real_file_names = boardVO.getReal_file_names();
+		//첨부파일이 여러개일때 상황 대비
+		int index = 0;
+		String real_file_name = "";
+		if(save_file_names == null) { return; }//배열첨부파일이 없으면 진행 빠져나감.
+		for(String save_file_name:save_file_names) {//첨부파일 1개일때는 1번만 반복됩니다.
+			if(save_file_name != null) {//첨부파일배열에서 배열값이 있는경우만
+				real_file_name = real_file_names[index];
+				boardDAO.insertAttach(save_file_name, real_file_name);
+			}
+			index = index + 1;
+		}
 	}
 
+	@Transactional
 	@Override
 	public void deleteBoard(Integer bno) throws Exception {
-		// 게시물 삭제 DAO연결(아래)
+		// 첨부파일 삭제 후 게시물 삭제 DAO연결(아래)
+		boardDAO.deleteAttachAll(bno);
 		boardDAO.deleteBoard(bno);
 	}
 
@@ -59,6 +77,21 @@ public class BoardServiceImpl implements IF_BoardService {
 	public void updateBoard(BoardVO boardVO) throws Exception {
 		// 게시물 수정 DAO연결(아래)
 		boardDAO.updateBoard(boardVO);
+		// 첨부파일 등록 DAO연결(아래) 조건은 기존 첨부파일 DB를 삭제한 이후
+		Integer bno = boardVO.getBno();
+		String[] save_file_names = boardVO.getSave_file_names();
+		String[] real_file_names = boardVO.getReal_file_names();
+		//첨부파일이 여러개일때 상황 대비
+		int index = 0;
+		String real_file_name = "";
+		if(save_file_names == null) { return; }
+		for(String save_file_name:save_file_names) {//첨부파일 개수 만큼 반복됩니다.
+			if(save_file_name != null) {
+				real_file_name = real_file_names[index];
+				boardDAO.updateAttach(save_file_name, real_file_name, bno);
+				index = index + 1;
+			}
+		}
 	}
 
 }
