@@ -1,6 +1,74 @@
-- 부메랑을 이용해서 댓글 CRUD 테스트 마무리.
-- 댓글 페이징처리(매퍼쿼리 ~ 컨트롤러까지 )
-- jsp에서 Ajax+제이쿼리 화면처리 마무리.
+### 기본정보
+- 스프링관리자 AdminLTE템플릿 샘플: 
+- https://adminlte.io/themes/v3/pages/forms/general.html
+- https://kimilguk-mysql.herokuapp.com/ (아이디/암호:admin/user02)
+
+### 수업에 대해서
+- 작업 내용의 복습시간은 이후 다른 코딩작업으로 대신하게 됩니다.
+- 예를 들면, 스프링프로젝트에서 관리자단 게시판을 만들면,
+- 나중에, 사용자단 게시판을 만들때 비슷한 과정을 한번 더 하게 됩니다. 이런방식으로 복습을 해서 기술을 익히게 됩니다.
+- 즉, 지금 이해가 않되시는 부분도 코딩작업을 여러번 반복하시게 되면서 기술을 익히게 되는 과정이라고 보시면 됩니다.
+- 그리고, 강의 내용을 녹음 하셔도 괜찮습니다.(단, 대단한 내용은 아니지만, 본인만 보시고, 유통시키지 않았으면 합니다.)
+
+#### 톰캣 서버 강제 종료시키기
+- netstat -ano | findstr 8080 : 특정 포트로 검색
+- taskkill /F /PID 위에서출력된 제일오른쪽번호 : PID를 통해 작동중인 프로그램 종료
+
+### 스프링 작업순서
+- 스프링 HelloWorld MVC 프로젝트 org.edu.controller 제작OK.
+- wamp(만세아이콘)으로 마리아DB(3306포트) 설치, 사용자암호 추가 및 한글처리OK.
+- 워크벤치 설치 및 ERD 작성연습, 샘플DB(edu)임포트 및 리버스 엔지니어링으로 ERD제작OK.
+- 샘플반응형 웹페이지(mobile,tablet,pc용) 및 J쿼리 페이지 작성OK.
+- 스프링 프로젝트 관리자단 AdminLTE(부트스트랩)기반으로 제작OK.
+- 스프링 테스트 pom.xml(외부라이브러리가져다가사용하는 방식) 디펜던시 의존성 추가OK.
+- 메이븐기반 전자정부표준프레임워크 egov3.9버전 -> 3.10으로 업드레이드OK.
+- junit(JavaUnit) 테스트 설정 후 기본 unit유닛(단위)테스트OK.
+- jdbc(JavaDataBaseConnection)사용 pom.xml 의존성 추가OK.
+- Mysql사용 pom.xml 의존성 추가OK.
+- 마이바티스 사용(CRUD쿼리를관리하는툴) pom.xml 의존성 추가OK.
+- junit으로 DB접근 후 관리자단 회원관리 CRUD unit테스트 마무리OK.
+- @Component애노테이션사용으로 MemberVO 인젝션사용 가능OK.
+- DB 디버그용 드라이버 사용 pom.xml 의존성 추가 후, log4jdbc.log4j2.properties 추가 OK.
+- 실제 회원관리 화면 CRUD 적용 중 jsp중 member_list(select+검색)처리 후 페이징처리 OK.
+- member_write, member_update, member_delete 만들기 작업OK.
+- 스프링 AOP(관점지향프로그래밍-OOP의 확장기능)기능으로 개발용 디버그출력환경 만들기 시작.
+- pom.xml에 AOP모듈 추가 필수
+- root-context.xml에서 aop태그 추가
+- 관리자단 실제 게시판 화면 CRUD 적용OK.
+- 트랜잭션 @Tansactional추가: root-context.xml에서 dataSource에 트랜잭션 설정추가필수OK.
+- 파일업로드 라이브러리 사용 pom.xml 의존성 추가OK.
+- 관리자단 게시판 업로드 화면 구현OK.
+- --------------- 여기까지 ------------------
+- 댓글에서 Json데이터 사용 pom.xml 의존성 추가.(댓글 Rest-Api에서필요)
+- 보통 jackson, Gson 외부라이브러리를 사용할때는 pom.xml에 모듈을 추가해야 하지만,
+- Rest컨트롤러 클래스안에 ResponseEntity<String>를 사용해서 Json데이터로 반환합니다.
+- 그래서, pom.xml 모듈추가 없가없이 작업 진행 합니다.X(잘못된 정보)
+- jackson-databind 모듈추가했음.
+- 실제 댓글 화면CRUD적용.(우리가 만들어서 제공 Rest-API백엔드단)OK.
+-------------------------------------------------------------------
+- 사용자단 html(https://miniplugin.github.io/) 소스를 커스터마이징 후 jsp로 만들기.
+- 인터셉터(가로채기-Interceptor)클래스를 이용해서, 예외처리를 공통 error.jsp 로 바인딩 처리.
+- 스프링시큐리티 로그인 구현 pom.xml 의존성 추가(회원가입시 패스워드 암호화 추가).
+--------------------------------------------------------------------
+- 헤로쿠 클라우드로 배포(Hsql데이터베이스사용).
+- 사용자단 CRUD 구현.
+- 웹프로젝트 소스를 스프링프레임워크 버전으로 5.2.5 마이그레이션(버전 업그레이드)
+- 오라클로 마이그레이션 작업.
+- 이후 유효성검사, 파스타클라우드, 네이버아이디 로그인(네이버에서 제공Rest-API백엔드단) 사용 등등. pom.xml 의존성 추가.
+
+#### 20200108(금) 작업예정
+- 사용자단 html(https://miniplugin.github.io/) 소스를 커스터마이징 후 jsp로 만들기.
+- 인터셉터(가로채기-Interceptor)클래스를 이용해서, 예외처리를 공통 error.jsp 로 바인딩 처리.
+- 스프링시큐리티 로그인 구현 pom.xml 의존성 추가(회원가입시 패스워드 암호화 추가).
+
+#### 20200107(목) 작업
+- prepend, append, after J쿼리 기능.
+- 어제 작업한 댓글 리스트 btn_reply_list 버튼id에 부트스트랩(J쿼리기반의 프레임워크)의 토글기능을 넣어서
+- 하단 댓글리스트(페이징포함)를 나타나고, 숨기는 기능을 넣게되겠습니다.
+- 위 작업: 1. 액션버튼부분 : data-toggle="collapse" data-target="#div_reply"
+- 2. 대상 타켓 부분 <div id="div_reply">토글영역</div>
+- 댓글 jsp에서 Ajax,jQuery사용해서 CRUD처리 마무리.
+- 입사지원시 코딩테스트 할때 아래처럼 기초이론을 구현해보라는 요구사항 때문에 정리(아래)
 - Ps.싱글톤이 사용되는 이유참조: https://shxrecord.tistory.com/132
 - Ps.싱글톤 빈(스프링)에 대해서(1개의 빈은 1개의 빈객체만 생성해서 사용하겠다명시)
 - https://m.blog.naver.com/PostView.nhn?blogId=sksk3479&logNo=221175889439&proxyReferer=https:%2F%2Fwww.google.com%2F
@@ -29,6 +97,13 @@ public class SingletonEx {
 	}
 }
 ```
+
+#### 20200106(수) 작업
+- 파스타는 2주 사용기간 제한 없어질때 까지 이용하는 것은 보류, 헤로쿠(Hsql데이터베이스)사용-스프링시큐리티(*로그인)적용 한 이후에 헤로쿠에 올리겠습니다.
+- 부메랑을 이용해서 댓글 CRUD 테스트 마무리OK.
+- 댓글 페이징처리(매퍼쿼리 ~ 컨트롤러까지 ) - 부메랑 reply_list/10(게시물번호)/1(페이지번호)테스트 OK.
+- jsp에서 Ajax+제이쿼리 화면처리 마무리.
+
 #### 20200105(화) 작업
 - 부메랑(크롬의 플러그인): JUnit(스프링-자바단위테스트=CRUD테스트)과 같은 역할. RestAPI의 단위테스트(CRUD테스트)를 할때 사용 한 이후 댓글 클래스 작업을 시작 합니다.
 - 댓글 DB -> VO -> 매퍼쿼리 -> DAO(Service) -> Controller -> JSP
@@ -43,6 +118,7 @@ public class SingletonEx {
 - 사용자화면 디자인 커스터마이징
 - 인터셉터(가로채기-Interceptor)클래스를 이용해서, 예외처리를 공통 error.jsp 로 바인딩 처리.
 - 스프링시큐리티 사용해서 로그인 구현...
+
 #### 20210104(월) 작업.
 - 이론: Ch9 스프링컨테이너 설정부터 시작.
 - 관리자단 게시판의 뷰화면의 댓글 RestAPI프로그램작업 시작.
@@ -61,6 +137,7 @@ public class SingletonEx {
 - jstl반복문중 begin end 사용 해서 첨부파일 jsp부분 중복코드 처리 <c:forEach var="index" begin="0" end="1">
 - jstl반복에 대한 기술 참조: https://offbyone.tistory.com/368
 - 개별 첨부파일 삭제 기능 RestAPI컨트롤러 + Ajax로 구현(아래)
+
 ```
 //REST-API서비스로 사용할때 @ResponseBody애노테이션으로 json|텍스트데이터를 반환함(아래)
 	//아래는 Rest-API백엔드단, Ajax(jsp)부분은 Rest-API의 프론트엔드단.
@@ -114,11 +191,13 @@ $(document).ready(function() {
 ```
 
 #### 20201231(목) 작업
+- 어떠한 프로젝트던지 관리자단 시작(CRUD내부로직 마무리) -> 사용자단(관리자단에서 작업했던내용중 CRUD일부만 화면으로 제공) 진행
+- HTTP전송 데이터: HEADER데이터 + body(jsp내용)
 - 첨부파일: 업로드 부분 OK.(학생들확인)
-- 첨부파일: 게시물상세보기 화면에 UUID파일명이 아닌 real_file_name나오게 하기.점검.
-- 첨부파일: 다운로드 기능 추가.(한글내용, 한글파일명 깨지는 것 방지로직 추가)
-- 첨부파일: 게시물 삭제시 첨부파일과 첨부테이블도 삭제처리 하기.
-- 첨부파일: 게시물 수정시 기존첨부파일 삭제 후 업로드 처리 하기.(미수정시는 해당없음)
+- 첨부파일: 게시물상세보기 화면에 UUID파일명이 아닌 real_file_name나오게 하기OK.
+- 첨부파일: 다운로드 기능 추가.(한글내용, 한글파일명 깨지는 것 방지로직 추가)OK.
+- 첨부파일: 게시물 삭제시 첨부파일과 첨부테이블도 삭제처리 하기OK.
+- 첨부파일: 게시물 수정시 기존첨부파일 삭제 후 업로드 처리 하기.(미수정시는 해당없음 확인)OK.
 
 #### 20201230(수) 작업
 - 스프링 이론은 ch08까지 OK.
