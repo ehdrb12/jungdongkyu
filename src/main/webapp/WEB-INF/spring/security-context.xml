@@ -7,18 +7,73 @@
 <!-- url패턴을 사용해서 스프링 시큐리티 필터를 무시하는 경로 추가하기(아래) -->
 <security:http pattern="/**/*.js" security="none"></security:http>
 <security:http pattern="/**/*.css" security="none"></security:http>
-<security:http pattern="/img/*" security="none"></security:http>
-<!-- 스프링 시큐리티 기본설정인 로그인페이지, 로그아웃 기능 사용하겠다고 명시 spEL변수사용 -->
+<security:http pattern="/**/img/*" security="none"></security:http>
+<!-- 스프링 시큐리티 기본설정인 로그인페이지, 로그아웃 기능 사용하겠다고 명시 spEL언어를 사용가능 -->
 <security:http auto-config="true" use-expressions="true">
 	<security:session-management invalid-session-url="/">
-	<!-- 동일ID의 세션 최대 개수가 한개, 그 이상일 경우 기존 세션 무효화(아래) -->
-	<!-- 예를 들면, 노트복에서 로그인 이후 PCㅇ제서 로그인하면 노트북은 로그인세션이 사라집니다. -->
-	<security:concurrency-control max-sessions="3" error-if-maximum-exceeded="false"/>
+		<!-- 동일ID의 세션 최대 개수가 3개, 그 이상일 경우 기존 세션 무효화(아래) -->
+		<!-- 예를 들면, 노특북에서 로그인 이후 PC에서 로그인하면 노트북은 로그인세션이 사라집니다. -->
+		<security:concurrency-control max-sessions="3" error-if-maximum-exceeded="false" />
 	</security:session-management>
-	<!-- 동일ID의 세션 최대 개수가 한개, 그 이상일 경우 기존 세션 무효화 -->
-	<security:intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/> 
+	<!-- 특정 url 패턴에 해당하는 권한 부여(아래) -->
+	<security:intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
 	<security:intercept-url pattern="/**/*_write" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')" method="GET"/>
-	<security:intercept-url pattern="/**/*_update" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')" />
-	<security:intercept-url pattern="/**/*_delete" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')" />
+	<security:intercept-url pattern="/**/*_update" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')"/>
+	<security:intercept-url pattern="/**/*_delete" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')"/>
+	<security:intercept-url pattern="/**/member/**" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')"/>
+	<security:intercept-url pattern="/**" access="permitAll"/>
+	<security:csrf disabled="true"/>
+	<security:form-login
+		login-page="/login"
+		login-processing-url="/login"
+		always-use-default-target="true"
+		default-target-url="/login_success"
+		authentication-failure-url="/login?msg=fail"
+		username-parameter="user_id"
+		password-parameter="user_pw"
+	/>
+	<security:remember-me key="remember-key" token-validity-seconds="604800" remember-me-parameter="remember-me-parameter" />
+	<security:logout logout-url="/logout" logout-success-url="/" invalidate-session="true" 
+	delete-cookies="JSESSIONID,SPRING_SECURITY_REMEMBER_ME_COOKIE" />
 </security:http>
-</beans>
+	<!-- 
+	쿠키에는 간단한 텍스트문자 정보가 저장되어 있습니다.(접속한 PC기기에 저장됩니다.)
+	세션은 간단한 테스트문자 정보가 저장되어 있습니다.(접속한 서버기기에 저장됩니다.)
+	홈컨트롤러에 로그인이 성공했으면 /login_success를 실행(세션을 만듭니다.)하도록 만들예정.
+	세션에 생성할 정보는 로그인한사람 이름, 로그인한사람 권한을 저장.
+	특징: 세션에 저장된 정보는 페이지를 이동해도 세션정보가 사라지지않고 유지가 됩니다. 
+	-->	
+	<!-- /home/login이렇게 경로를 사용하지 않고, /login으로 하는 이유는 공통기능은 경로제약사항을 두지 않기 위해서 -->
+	<!-- HomeController클래스 Home22Controller클래스를 만들어서 사이트 리뉴얼 합니다. -->
+	<!-- csrf:크로스사이트 리퀘스트 포거리: 교차사이트 요청 공격:기본은 csrf기능사용 기본일때는 jsp에서 폼전송태그를 jstl태그로 변경해야 합니다. 그래서, disabled시킵니다. -->
+	<!-- 인증 관련 아이디/암호 비교 설정(아래) -->
+	<security:authentication-manager>
+	<!-- 스프링에 내장되어 있는 인증제공자, userDetail과 userDetailService를 사용하겠다고 명시(아래) -->
+		<security:authentication-provider>
+			<security:jdbc-user-service 
+				data-source-ref="dataSource"
+				users-by-username-query="select user_id as no,user_pw as password, enabled from tbl_member where user_id = ?"
+				authorities-by-username-query="select user_id as no,levels as authority from tbl_member where user_id = ?"
+				/>
+			<security:password-encoder ref="passwordEncoder" />
+		</security:authentication-provider>
+	</security:authentication-manager>
+	<!-- 위 쿼리에서 사용할 패스워드 암호화 id passwordEncoder 빈 클래스를 생성(아래) -->
+	<bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
+	<!-- 
+	BCrypt패스워드엔코더 클래스의 특징: 암호화 시키는 클래스 
+	특징1: MD5, SHA-1,2, SHA-512  대등한 암호화 클래스이고, 장점은 암화시키는 속도 조절이 가능합니다.
+	- 어떤 해커가 시스템에 접근할때, admin아이디를 갖고, 암호를 계속 대입해서 통과될때 까지 접근 시도를 하게 됩니다.
+	- $2a$10$kIqR/PTloYan/MRNiEsy6uYO6OCHVmAKR4kflVKQkJ345nqTiuGeO (60바이트 문자-user02)
+	- 해커는 위와 같은 해시문자를 생성해서 기존 암호와 비교하게 될때 해시문자 생성시 속도제한때문에 1초 수십만번을 못하게 됩니다. 
+	- BCryptPasswordEncoder.match(passwordEnder('user02'),'$2a$10$kIqR/PTloYan/MRNiEsy6uYO6OCHVmAKR4kflVKQkJ345nqTiuGeO')
+	특징2: user02 이 문자를 passwordEncoder로 암호화 시키면, 실행 할때 마다 출력 해시문자열이 변경이 됩니다.
+	- user02 암호화시킨 해시문자와 1초뒤에 한번 더 암호화 시킨 해시문자 틀리게 출력이 됩니다.
+	- 일반적인 passwordEncoder('user02').equals('$2a$10$kIqR/PTloYan/MRNiEsy6uYO6OCHVmAKR4kflVKQkJ345nqTiuGeO')
+	- String.equals() 문자열 비교 메서드로는 비교할 수가 없습니다.
+	특징3: 예전 암호화 방식은 user02 암화시키면, 해시값이 항상 같습니다. 이것을 방지하려고, 아래처럼 처리했습니다. 
+	- 'ID고유값'+'user02암호'=암호화된 해시값 고유값나오게 처리
+	- 위처럼 'ID고유값"을 salt(소금)라고 얘기합니다.
+	- BCrypt패스워드 엔코더는 salt값이 필요없이, 동일한 user02 암호라도 해시값(60바이트문자)이 다 틀립니다.(장점) 
+	-->
+</beans> 
