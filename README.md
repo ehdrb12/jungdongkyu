@@ -56,6 +56,56 @@
 - 오라클로 마이그레이션 작업.
 - 이후 유효성검사(객체검증), 파스타클라우드, 네이버아이디 로그인(네이버에서 제공Rest-API백엔드단) 사용 등등. pom.xml 의존성 추가.
 
+#### 20200114(목) 작업예정
+- 사용자단 , 댓글 CRUD 마무리.
+- 사용자단, 게시판 CRUD 마무리.
+- 사용자단, 유효성 검사 기능을 포함해서 마이페이지+회원가입 프로그램처리.
+- 네이버아이디 로그인(네이버에서 제공Rest-API백엔드단) 실습.
+- 헤로쿠(URL)에 배포(HsqlDB로 배포, 메이븐 외부 라이브러리 추가필수 pom.xml수정)
+
+#### 20210113(수) 작업
+- 이론은 ch13 시작 예정.
+- 사용자단, 게시판/RestApi댓글 CRUD처리.
+- 수업시작전 로그인 에러 자바스크립트 메세지 출력 추가 및 이미지파일미리보기 구형 버전에서 에러나는 문제 처리
+
+```
+login.jsp (아래)
+<script>
+if('${param.msg}' == "fail"){
+	alert('로그인에 실패했습니다.! 상세메세지 ${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message}');
+}
+</script>
+CommonController.java (아래)
+	/**
+	 * 게시물 첨부파일 이미지보기 메서드 구현(윈도7,윈도8 IE에서 지원가능)
+	 * 에러메시지 처리: getOutputStream() has already been called for this respons
+	 * @throws IOException 
+	 */
+	@RequestMapping(value = "/image_preview", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
+	@ResponseBody
+	public byte[] getImageAsByteArray(@RequestParam("save_file_name") String save_file_name, HttpServletResponse response) throws IOException {
+		FileInputStream fis = null;
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		fis = new FileInputStream(uploadPath + "/" + save_file_name);
+		int readCount = 0;
+		byte[] buffer = new byte[1024];
+		byte[] fileArray = null;
+	while((readCount = fis.read(buffer)) != -1){
+		baos.write(buffer,0,readCount);
+	}
+	fileArray = baos.toByteArray();
+	fis.close();
+	baos.close();
+	return fileArray;
+	}
+```
+
+#### 20210112(화) 작업
+- 메이븐 업데이트 하신 분들 프로젝트 context-root경로 / 로 변경해 주세요^^
+- 스프링시큐리티 설정(security-context.xml)내용 추가
+- 로그인 페이지 및 로그인 클래스 구현(세션처리)
+
+
 #### 20210111(월) 작업
 - 이론은 ch12 시작 예정.
 - ch11: DTO(DataTansperObject) = DAO(DataAccessObject)

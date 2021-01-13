@@ -71,7 +71,7 @@
 		                <!-- fn:contains함수({'jpg','gif','png'...}비교배열내용,JPG,jpg첨부파일확장자) -->
 		                <c:choose>
 		                	<c:when test="${fn:containsIgnoreCase(checkImgArray,extName)}">
-		                		<img style="width:100%;" src="/download?save_file_name=${boardVO.save_file_names[index]}&real_file_name=${boardVO.real_file_names[index]}">
+		                		<img style="width:100%;" src="/image_preview?save_file_name=${boardVO.save_file_names[index]}&real_file_name=${boardVO.real_file_names[index]}">
 		                	</c:when>
 		                	<c:otherwise>
 		                		<c:out value="${checkImgArray}" />
@@ -255,6 +255,7 @@ var replyList = function() {
 		success:function(result) {//result에는 댓글 목록을 json데이터로 받음.
 			//alert("디버그" + result);
 			if(typeof result=="undefined" || result=="" || result==null) {
+				$("#div_reply").empty();//조회된 값이 없을때, 화면내용클리어.
 				alert('조회된 값이 없습니다.');
 			}else{
 				//빵틀에 result데이터를 바인딩해서 출력합니다.
@@ -305,8 +306,51 @@ $(document).ready(function(){
 		$.ajax({
 			type:"delete",
 			url:"/reply/reply_delete/${boardVO.bno}/"+rno,
-			dataType:"text"
-			
+			dataType:"text",//반환값 문자열
+			success:function(result){
+				if(result=="success") {
+					alert("삭제가 성공 되었습니다.");
+					var reply_count = $("#reply_count").text();//$("영역").val(input데이터),
+					$("#reply_count").text(parseInt(reply_count)-1);//$("영역").text(영역안쪽의문자열)
+					replyList();//댓글리스트 메서드호출 댓글영역 html재생성
+					$("#replyModal").modal("hide");//모달창(팝업창)숨기기
+				}
+			},
+			error:function(result){
+				alert("RestAPI서버오류로 삭제에 실패했습니다.");
+			}
+		});
+	});
+});
+</script>
+<!-- 댓글 수정 버튼 액션 처리(아래) -->
+<script>
+$(document).ready(function() {
+	$("#updateReplyBtn").on("click", function(){
+		var rno = $("#rno").val();//모달창의 input태그값 변수지정
+		var reply_text_modal = $("#reply_text_modal").val();//모달창의 input태그값 변수지정
+		$.ajax({
+			type:"patch",
+			url:"/reply/reply_update",
+			headers:{
+				"Content-Type":"application/json",
+				"X-HTTP-Method-Override":"PATCH"
+			},
+			data:JSON.stringify({//json데이터로 변환해서 RestAPI서버로 전송
+				reply_text:reply_text_modal,
+				rno:rno
+			}),
+			dataType:"text",//RestAPI에서 반환되는 값
+			success:function(result){
+				if(result=="success") {//=대입, ==비교, 1==='1'(비교+타입포함),
+					alert("수정에 성공하였습니다.");
+					$("#replyModal").modal("hide");
+					replyList();
+				}
+			},
+			error:function(result){
+				alert("RestAPI서버에 문제가 있습니다.");
+			}
 		});
 	});
 });
@@ -424,4 +468,4 @@ $(document).ready(function(){
 		}
 	});
 });
-</script> 
+</script>
