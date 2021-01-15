@@ -16,8 +16,8 @@ $(document).ready(function() {
 	*/
 });
 </script>
-	
-	<!-- 메인콘텐츠영역 -->
+
+<!-- 메인콘텐츠영역 -->
 	<div id="container">
 		<!-- 메인상단위치표시영역 -->
 		<div class="location_area customer">
@@ -61,34 +61,36 @@ $(document).ready(function() {
 						<tr>
 							<td>
 							<!-- 전체게시물-(현재페이지x1페이지당보여줄개수)+1페이지당보여줄개수-현재인덱스값 -->
-                     		 ${pageVO.totalCount-(pageVO.page*pageVO.queryPerPageNum)+pageVO.queryPerPageNum-status.index}
+		                      ${pageVO.totalCount-(pageVO.page*pageVO.queryPerPageNum)+pageVO.queryPerPageNum-status.index}
 							</td>
 							<td class="tit_notice">
 							<a href="/home/board/board_view?bno=${boardVO.bno}&page=${pageVO.page}&search_type=${pageVO.search_type}&search_keyword=${pageVO.search_keyword}">
-								<c:out value="${boardVO.title}"/>
+								<c:out value="${boardVO.title}" />
 							</a> </td>
 							<td>${boardVO.view_count}</td>
 							<td>
-							<fmt:formatDate pattern="yyyy-mm-dd HH:mm" value="${boardVO.reg_date}"/>
+							<fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${boardVO.reg_date}"/>
 							</td>
 						</tr>
 					</c:forEach>
+										
 				</tbody>
 			</table>
 			<!-- //게시물리스트영역 -->
 			
 			<!-- 페이징처리영역 -->
 			<div class="pagination">
-			<c:if test="${pageVO.prev}">
-				<a href="/home/board/board_list?page=${pageVO.startPage-1}&search_type=${pageVO.search_type}&search_keyword=${pageVO.search_keyword}" class="prevpage  pbtn"><img src="/resources/home/img/btn_prevpage.png" alt="이전 페이지로 이동"></a>
-			</c:if>
+				<c:if test="${pageVO.prev}">
+					<a href="/home/board/board_list?page=${pageVO.startPage-1}&search_type=${pageVO.search_type}&search_keyword=${pageVO.search_keyword}" class="prevpage  pbtn"><img src="/resources/home/img/btn_prevpage.png" alt="이전 페이지로 이동"></a>
+				</c:if>
 				<c:forEach begin="${pageVO.startPage}" end="${pageVO.endPage}" var="idx">
-				<a href="/home/board/board_list?page=${idx}&search_type=${pageVO.search_type}&search_keyword=${pageVO.search_keyword}">
-				<span class='pagenum <c:out value="${(pageVO.page==idx)?'currentpage':''}" />'>${idx}</span></a>				
+					<a href="/home/board/board_list?page=${idx}&search_type=${pageVO.search_type}&search_keyword=${pageVO.search_keyword}">
+					<span class='pagenum <c:out value="${(pageVO.page==idx)?'currentpage':'' }" />'>${idx}</span>
+					</a>
 				</c:forEach>
-			<c:if test="${pageVO.next}">
-				<a href="/home/board/board_list?page=${pageVO.endPage+1}&search_type=${pageVO.search_type}&search_keyword=${pageVO.search_keyword}" class="nextpage  pbtn"><img src="/resources/home/img/btn_nextpage.png" alt="다음 페이지로 이동"></a>			
-			</c:if>
+				<c:if test="${pageVO.next}">
+					<a href="/home/board/board_list?page=${pageVO.endPage+1}&search_type=${pageVO.search_type}&search_keyword=${pageVO.search_keyword}" class="nextpage  pbtn"><img src="/resources/home/img/btn_nextpage.png" alt="다음 페이지로 이동"></a>
+				</c:if>
 			</div>
 			<!-- //페이징처리영역 -->
 			<p class="btn_line">
@@ -97,6 +99,6 @@ $(document).ready(function() {
 		</div>
 		<!-- //메인본문영역 -->
 	</div>
-	<!-- //메이콘텐츠영역 -->
+<!-- //메이콘텐츠영역 -->
 
 <%@ include file="../include/footer.jsp" %>

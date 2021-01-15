@@ -15,7 +15,7 @@
 	
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"> 
 		<property name="driverClassName" value="org.hsqldb.jdbcDriver" />
-		<property name="url" value="jdbc:hsqldb:file:c:/egov/workspace/embeded/hsql_file.db" />
+		<property name="url" value="jdbc:hsqldb:file:c:/egov/workspace/embeded/hsql_file.db;hsqldb.lock_file=false" />
 		<property name="username" value="sa" />
 		<property name="password" value="" />
 	</bean>

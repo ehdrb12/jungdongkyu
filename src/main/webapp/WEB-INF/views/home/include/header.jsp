@@ -24,9 +24,9 @@
 
 </style>
 <script>
-$(document).ready(function() {
-	
-});
+if('${msg}' != '') {//자바의 EL표기법 = 달라{변수명}
+	alert("${msg} 가(이) 성공하였습니다.");
+}
 </script>
 </head>
 <body>
@@ -46,7 +46,7 @@ $(document).ready(function() {
 				<ul class="util clear">
 				<c:choose>
 					<c:when test="${session_enabled eq 'true'}">
-					<!-- 로그인 후 보이는 메뉴(아래) -->
+						<!-- 로그인 후 보이는 메뉴(아래) -->
 						<li><a href="#">${session_username} 님 환영합니다.</a></li>
 						<li><a href="/member/mypage">마이페이지</a></li>
 						<li><a href="/logout">로그아웃</a>

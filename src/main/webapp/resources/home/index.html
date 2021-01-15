@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
 <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<link rel="stylesheet" href="/resources/home/css/reset.css">
+<link rel="stylesheet" href="/resources/home/css/reset.css"><!-- 상대경로 절대경로로 변경 /로시작 -->
 <link rel="stylesheet" href="/resources/home/css/main.css">
 <link rel="stylesheet" href="/resources/home/css/tablet.css">
 <link rel="stylesheet" href="/resources/home/css/pc.css">
@@ -106,11 +106,11 @@ $(document).ready(function() {
                 <!-- 슬라이드버튼영역 -->
                 <div class="rollbtnArea">
                     <ul class="rollingbtn">
-                        <li class="seq butt0"><a href="#butt"><img src="resources/home/img/btn_rollbutt_on.png" alt="1번" /></a></li>
-                        <li class="seq butt1"><a href="#butt"><img src="resources/home/img/btn_rollbutt_off.png" alt="2번" /></a></li>
-                        <li class="seq butt2"><a href="#butt"><img src="resources/home/img/btn_rollbutt_off.png" alt="3번" /></a></li>
-                        <li class="rollstop"><a href="#" class="stop"><img src="resources/home/img/btn_roll_stop.png" alt="멈춤" /></a></li>
-                        <li class="rollplay"><a href="#" class="play"><img src="resources/home/img/btn_roll_play.png" alt="재생" /></a></li>
+                        <li class="seq butt0"><a href="#butt"><img src="/resources/home/img/btn_rollbutt_on.png" alt="1번" /></a></li>
+                        <li class="seq butt1"><a href="#butt"><img src="/resources/home/img/btn_rollbutt_off.png" alt="2번" /></a></li>
+                        <li class="seq butt2"><a href="#butt"><img src="/resources/home/img/btn_rollbutt_off.png" alt="3번" /></a></li>
+                        <li class="rollstop"><a href="#" class="stop"><img src="/resources/home/img/btn_roll_stop.png" alt="멈춤" /></a></li>
+                        <li class="rollplay"><a href="#" class="play"><img src="/resources/home/img/btn_roll_play.png" alt="재생" /></a></li>
                     </ul>
                 </div>
                 <!-- //슬라이드버튼영역 -->
@@ -124,19 +124,19 @@ $(document).ready(function() {
 			<div class="about_box">
 				<ul class="place_list box_inner clear">
 					<li><a href="#" onclick="$('.popup_base').css('height',$(document).height());$('.contact_pop').show();">
-							<img class="img_topplace" src="resources/home/img/no_image.png" alt="OOOO OOOOO" />
+							<img class="img_topplace" src="/resources/home/img/no_image.png" alt="OOOO OOOOO" style="opacity:0.7;"/>
 							<h3>OOOO OOOOO</h3>
 							<p class="txt">OOOO OOOOOOOOO OOOOOOOOO OOOOOOOOO OOOOOOOOO OOOOOOOOO OOOOOOOOO OOOOO!</p>
 							<span class="view">VIEW</span></a>
 					</li>
 					<li><a href="#" onclick="$('.popup_base').css('height',$(document).height());$('.space_pop').show();">
-							<img class="img_topplace" src="resources/home/img/no_image.png" alt="OOOO OOOOO" />
+							<img class="img_topplace" src="/resources/home/img/no_image.png" alt="OOOO OOOOO" style="opacity:0.7;"/>
 							<h3>OOOO OOOOO</h3>
 							<p class="txt">OOOO OOOOOOOOO OOOOOOOOO OOOOOOOOO OOOOOOOOO OOOOOOOOO OOOOOOOOO OOOOO.</p>
 							<span class="view">VIEW</span></a>
 					</li>
 					<li><a href="#" onclick="$('.popup_base').css('height',$(document).height());$('.program_pop').show();">
-							<img class="img_topplace" src="resources/home/img/no_image.png" alt="OOOO OOOOO" />
+							<img class="img_topplace" src="/resources/home/img/no_image.png" alt="OOOO OOOOO" style="opacity:0.7;"/>
 							<h3>OOOO OOOOO</h3>
 							<p class="txt">OOOO OOOOOOOOO OOOOOOOOO OOOOOOOOO OOOOOOOOO OOOOOOOOO OOOOOOOOO OOOOO</p>
 							<span class="view">VIEW</span></a>
@@ -196,7 +196,6 @@ $(document).ready(function() {
 <!-- //헤더에서푸터까지 -->
 
 <!-- 하단퀵메뉴영역 -->
-<h2 class="hdd">빠른 링크 : 전화 문의,카카오톡,오시는 길,꼭대기로</h2>
 <div class="quick_area">
 	<p class="to_top"><a href="#wrap" class="s_point">TOP</a></p>
 </div>

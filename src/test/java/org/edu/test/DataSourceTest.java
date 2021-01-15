@@ -16,6 +16,7 @@ import org.edu.vo.MemberVO;
 import org.edu.vo.PageVO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -49,7 +50,7 @@ public class DataSourceTest {
 		Date primaryKey = new Date();
 		SimpleDateFormat newFormat = new SimpleDateFormat("yyyyMMddHHmmssSSS");
 		System.out.println("프라이머리키 : " + newFormat.format(primaryKey));
-		return "user_" + newFormat.format(primaryKey);
+		return "dummy_" + newFormat.format(primaryKey);
 	}
 	
 	@Test
@@ -92,6 +93,8 @@ public class DataSourceTest {
 		memberVO.setUser_id(memberIdKey);
 		memberVO.setUser_name("사용자03");
 		//패스워드 암호화 처리(필수이지만, 스프링 시큐리티 할때 처리 예정)
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		memberVO.setUser_pw(passwordEncoder.encode("1234"));
 		memberVO.setUser_pw("1234");
 		memberVO.setEmail("user03@abc.com");
 		memberVO.setPoint(100);
@@ -99,7 +102,10 @@ public class DataSourceTest {
 		memberVO.setLevels("ROLE_USER");
 		Date reg_date = new Date();
 		memberVO.setReg_date(reg_date);//매퍼쿼리에서 처리로 대체
-		memberDAO.insertMember(memberVO);
+		for(int cnt=0;cnt<=100;cnt++) {//데미사용자 100명
+			memberDAO.insertMember(memberVO);
+		}
+		
 	}
 	
 	@Test
