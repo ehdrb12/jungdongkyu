@@ -11,15 +11,15 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
- * OpenApi클래스로 HRD-Net에서 제공하는 통합과정 실업자훈련API 목록을 출력하는 자바앱
- * @author 정동규
+ * OpenApi클래스로 HRD-Net에서 제공하는 구직훈련과정API 목록을 출력하는 자바앱
+ * @author 김일국
  *
  */
 public class OpenApi {
 	//외부연계 역할 메서드(아래)
 	public static void serviceApi() {
-		BufferedReader bufferedReader =  null;//HRD넷에서 전송받은 데이터를 임시 저장하는 공간.
-		String urlStr = "http://www.hrd.go.kr/hrdp/api/apipo/APIPO0101T.do?returnType=XML&srchTraOrganNm=%ED%9C%B4%EB%A8%BC&pageSize=10&srchTraArea1=44&authKey=HVQejMDEh0IqzZIhy1IM6mdws0CxSYEN&sort=ASC&outType=1&srchTraStDt=20201109&srchTraArea2=44133&pageNum=1&sortCol=TR_STT_DT&srchTraEndDt=20210317&srchTraPattern=N1&srchPart=-99&apiRequstPageUrlAdres=/jsp/HRDP/HRDPO00/HRDPOA60/HRDPOA60_1.jsp&apiRequstIp=1.247.68.238";
+		BufferedReader bufferedReader = null;//HRD넷에서 전송받은 데이터를 임시 저장하는 공간.자동차범퍼.
+		String urlStr = "http://www.hrd.go.kr/hrdp/api/apipo/APIPO0101T.do?srchTraEndDt=20210317&pageSize=10&srchTraArea2=44133&srchTraArea1=44&srchTraOrganNm=%ED%9C%B4%EB%A8%BC&srchTraStDt=20201108&sortCol=TR_STT_DT&authKey=인증키입력해주세요&sort=ASC&returnType=XML&outType=1&pageNum=1&srchTraPattern=N1&srchPart=-99&apiRequstPageUrlAdres=/jsp/HRDP/HRDPO00/HRDPOA60/HRDPOA60_1.jsp&apiRequstIp=58.74.90.6";
 		try {
 			URL url = new URL(urlStr);
 			try {
@@ -47,7 +47,7 @@ public class OpenApi {
 		} catch (MalformedURLException e) {
 			// 외부연계 URL주소형식이 잘못되었을때 에러상황발생
 			System.out.println("URL주소형식이 잘못되었습니다. 왜냐하면 " + e.toString());
-		}finally {
+		} finally {
 			//콘솔화면에 현재 PC시간을 표시해서 진짜 5초단위로 스케줄대로 작동되는지 확인
 			Calendar calendar = Calendar.getInstance();
 			System.out.println(calendar.getTime());
@@ -55,13 +55,13 @@ public class OpenApi {
 	}
 	//스태틱 메서드는 new키워드로 객체오브젝트 생성없이 바로 접근이 기능한 메서드를 말합니다.
 	public static void main(String[] args) {
-		//메인스레드는 1개 다른스레드를 추가로 실행할때, Runnable메서드를 사용합니다.(아래)
+		//메인스레드에 1개 다른스레드를 추가로 실행할때, Runnable메서드를 사용합니다.(아래)
 		//추가스레드를 스케줄로 실행할때 실행간격 변수(5초)
-		int sleepSec =10;
-		//주기적인 스레드작업(Concurrent동시작업)을 위한 코딩:new키워드로 실행가능한 오브젝트 변수인 exec변수 생성.
-		//final 인 현재 클래스에서만 사용하겠다는 명시적인 의미
+		int sleepSec = 5;
+		//주기적인 스레드작업(Concurrent동시작업)을위한 코딩:new키워드로 실행가능한 오브젝트 변수인 exec변수 생성.
+		//final 인 현재클래스에서만 사용하겠다는 명시적인 의미
 		final ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(1);
-		exec.scheduleAtFixedRate(new Runnable() {
+		exec.scheduleAtFixedRate(new Runnable() {//스레드를 이용해서 5초단위로 메서드 반복실행
 			public void run( ) {
 				serviceApi();
 			}

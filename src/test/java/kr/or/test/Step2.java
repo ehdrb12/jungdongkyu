@@ -2,7 +2,7 @@ package kr.or.test;
 
 /**
  * 클래스자료형 사용에 대해서
- * @author 정동규
+ * @author 김일국
  *
  */
 class MemberVO {
@@ -33,7 +33,7 @@ class MemberVO {
 	public String toString() {
 		return "디버그용 MemberVO [name=" + name + ", age=" + age + ", phoneNum=" + phoneNum + "]";
 	}
-
+	
 }
 
 class MemberService {//이 서비스 클래스에서는 회원출력에 관련된 메서드를 모아 놓습니다.(아래)
@@ -43,13 +43,11 @@ class MemberService {//이 서비스 클래스에서는 회원출력에 관련�
 		for(MemberVO member:members) {//members여러 레코드중 1개의 레코드를 member오브젝트객체로 대입
 			cnt = cnt + 1;
 			System.out.println(cnt + "번째 레코드는 " + member.toString());
-			
 		}
 	}
 }
 
 public class Step2 {
-
 
 	public static void main(String[] args) {
 		// 실행 메서드
@@ -71,7 +69,7 @@ public class Step2 {
 		members[1] = memberVO2;
 		members[2] = memberVO3;
 		//전에 사용했던 출력보다는 개선된 방식으로 출력(아래) MemberService 서비스전용 클래스만들어서 처리.
-		MemberService memberService = new MemberService();//자바 오브젝트객체 생성하는 방법
+		MemberService memberService = new MemberService();//자바 오브젝트객체 생성하는 방법\
 		memberService.printMember(members);//서비스클래스의 메서드호출
 	}
 

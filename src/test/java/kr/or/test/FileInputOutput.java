@@ -14,8 +14,8 @@ public class FileInputOutput {
 		FileOutputStream fileOutputStream = null;
 		//오브젝트,실행가능한 클래스형 변수 생성,인스턴스(실행)
 		try {
-			fileInputStream = new FileInputStream("C:\\egov\\workspace\\jungdongkyu\\manifest.yml");
-			fileOutputStream = new FileOutputStream("C:\\egov\\workspace\\jungdongkyu\\manifest_bak.txt");//신규파일에 저장하는 클래스명령어 집합
+			fileInputStream = new FileInputStream("C:\\egov\\workspace\\kimilguk\\manifest.yml");
+			fileOutputStream = new FileOutputStream("C:\\egov\\workspace\\kimilguk\\manifest_bak.txt");//신규파일에 저장하는 클래스명령어 집합
 			//특수문자를 " " 내부에서 사용할때 특수문자(예, " \ ...)를 문자로 인식하게 하는 역할 역슬래시 " \" \\ "
 			//지금 반복문으로 for(시작;끝;증가)만 사용, for 대신에 while(~조건동안){구현을 반복}
 			int byte_content;

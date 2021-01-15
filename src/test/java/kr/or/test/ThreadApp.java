@@ -13,16 +13,15 @@ public class ThreadApp {
 		myThread3.start();
 		System.out.println("언제 출력될까요?");
 	}
-
 }
 
 class MyThread extends Thread {
 	public MyThread(String szName) {
 		super(szName);
 	}
-	public void run() {
-		for(int cnt=0;cnt<100;cnt++) {//NyThread스레드를 start()호출해야지만, 자동실행되는 메서드
-			System.out.println(this.getName() + " ");
+	public void run() {//MyThread스레드를 start()호출해야지만, 자동실행되는 메서드 
+		for(int cnt=0;cnt<100;cnt++) {
+			System.out.print(this.getName() + " ");
 		}
 	}
 }

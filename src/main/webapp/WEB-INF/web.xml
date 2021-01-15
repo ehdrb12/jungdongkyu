@@ -2,13 +2,12 @@
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee https://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
-
 	<!-- The definition of the Root Spring Container shared by all Servlets and Filters -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
-		/WEB-INF/spring/root-context.xml
-		/WEB-INF/spring/security-context.xml
+			/WEB-INF/spring/root-context.xml
+			/WEB-INF/spring/security-context.xml
 		</param-value>
 	</context-param>
 	
@@ -32,8 +31,8 @@
 		<servlet-name>appServlet</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
-
-<!--  ...한글처리를 위한 UTF-8 필터 추가 -->
+	
+	<!-- 필터는 HTTP통신하는 자료를 걸러주는 역할 한글처리를 위한 UTF-8 필터 추가 -->
 	<filter>
 	  <filter-name>encoding</filter-name>
 	  <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
@@ -46,8 +45,8 @@
 	  <filter-name>encoding</filter-name>
 	  <url-pattern>/*</url-pattern>
 	</filter-mapping>
-
-<!--  Ajax사용시 브라우저가 POST, GET만 지원할때, PUT,PATCH,DELETE확장 필터 추가 -->
+	
+	<!--  Ajax사용시 브라우저가 POST, GET만 지원할때, PUT,PATCH,DELETE확장 필터 추가 -->
 	<filter>
 	    <filter-name>hiddenHttpMethodFilter</filter-name>
 	    <filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
@@ -56,12 +55,13 @@
 	    <filter-name>hiddenHttpMethodFilter</filter-name>
 	    <url-pattern>/</url-pattern>
 	</filter-mapping>
-
-	<!-- 4xx로 시작하는 에러 처리하는 페이지 매핑 -->
+	
+	<!-- 4xx로 시작하는 에러 처리하는 페이지 매핑 : 스프링에서 가로채기 못하는 예외처리 -->
 	<error-page>
 		<error-code>404</error-code>
 		<location>/home/error/404</location>
 	</error-page>
+	
 	<!-- 스프링 시큐리티때문에 필터(걸러주는)추가 -->
 	<filter>
         <filter-name>springSecurityFilterChain</filter-name>
@@ -71,5 +71,5 @@
           <filter-name>springSecurityFilterChain</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-
+	
 </web-app>

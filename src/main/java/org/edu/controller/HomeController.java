@@ -11,6 +11,7 @@ import javax.inject.Inject;
 import org.edu.service.IF_BoardService;
 import org.edu.util.CommonController;
 import org.edu.util.SecurityCode;
+import org.edu.vo.AttachVO;
 import org.edu.vo.BoardVO;
 import org.edu.vo.PageVO;
 import org.slf4j.Logger;
@@ -28,8 +29,6 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @Controller
 public class HomeController {
-	
-	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
 	//private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	@Inject
@@ -49,27 +48,31 @@ public class HomeController {
 	
 	//사용자 홈페이지 게시판 상세보기 매핑
 	@RequestMapping(value="/home/board/board_view",method=RequestMethod.GET)
-	public String board_view(@RequestParam("bno") Integer bno,@ModelAttribute("pageVO")PageVO pageVO, Model model) throws Exception {
+	public String board_view(@RequestParam("bno") Integer bno,@ModelAttribute("pageVO") PageVO pageVO, Model model) throws Exception {
 		BoardVO boardVO = boardService.readBoard(bno);
 		//내용에 대한 시큐어코딩(아래)
 		String xssData = securityCode.unscript(boardVO.getContent());
 		boardVO.setContent(xssData);//악성코드 제거한 결과를 다시 셋 저장
-		model.addAttribute("boardVO", boardVO);
+		//=======================================================
 		//첨부파일 데이터 jsp 뷰단으로 보내기(아래)
-		List<HashMap<String,Object>> files = boardService.readAttach(bno);
+		List<AttachVO> files = boardService.readAttach(bno);
+		//[
+		//{'save_file_name':저장된파일명0, 'real_file_name':DB에저장된파일명0},
+		//{'save_file_name':저장된파일명1, 'real_file_name':DB에저장된파일명1}
+		//]
 		String[] save_file_names = new String[files.size()];
 		String[] real_file_names = new String[files.size()];
 		int cnt = 0;
-		for(HashMap<String,Object> filename:files) {
-			save_file_names[cnt] = (String) filename.get("save_file_name");
-			real_file_names[cnt] = (String) filename.get("real_file_name");
+		for(AttachVO filename:files) {//위에 files데이터에서 값을 뽑아오는 로직
+			save_file_names[cnt] = filename.getSave_file_name();
+			real_file_names[cnt] = filename.getReal_file_name();
 			cnt = cnt + 1;
 		}
 		boardVO.setSave_file_names(save_file_names);
 		boardVO.setReal_file_names(real_file_names);
-		//==========================================
+		//=============================================
 		model.addAttribute("boardVO", boardVO);
-		//업로드 한 내용이 이미지인지 일반 문서 피일인지 구분하는 역할을 jsp로 보냅니다.(아래)
+		//업로드 한 내용이 이미지인지 일반문서파일인지 구분하는 역할을 jsp로 보냅니다.(아래)
 		model.addAttribute("checkImgArray", commonController.getCheckImgArray());
 		return "home/board/board_view";
 	}
@@ -100,7 +103,7 @@ public class HomeController {
 		}
 		pageVO.setPerPageNum(5);//페이지 하단 페이징번호 개수
 		pageVO.setQueryPerPageNum(10);//1페이지당 보여줄 게시물 개수
-		int totalCount = boardService.countBoard(pageVO);//페이징의 게시물 전체개수 구하기
+		int totalCount = boardService.countBoard(pageVO);//페이징의 게시물 전체개수 구하기 
 		pageVO.setTotalCount(totalCount);
 		List<BoardVO> board_list = boardService.selectBoard(pageVO);
 		model.addAttribute("board_list", board_list);

@@ -1,7 +1,5 @@
 package kr.or.member;
 
-import kr.or.member.MemberVO;
-
 public class MemberVO {
 	// 멤버변수 만들기(아래)
 	private String name;
@@ -35,8 +33,6 @@ public class MemberVO {
 
 	@Override
 	public String toString() {
-		return "디버그용 MemberVO [name=" + name + ", age=" + age + ", phoneNum=" + phoneNum + "]";
+		return "디버그용 MemberVO [name=" + name + ", age=" + age + "(세), phoneNum=" + phoneNum + "]";
 	}
-
 }
-
