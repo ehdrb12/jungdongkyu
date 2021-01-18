@@ -1,3 +1,13 @@
+#### Hsql 데이터베이스 사용 개선
+- jdbc:hsqldb:file:c:/egov/workspace/embeded/hsql_file.db 이 내용이 사용된 부분에  ;hsqldb.lock_file=false를 추가하면, 사용시 lock이 걸리지 않고 톰캣과 Junit 동시 사용이 가능합니다.(아래 2가지 수정)
+- root-context.xml 과 
+- Junit 작업파일에서 oldQueryTest() 메서드 부분
+- 작업결과 아래와 같이 표현 됩니다.
+- jdbc:hsqldb:file:c:/egov/workspace/embeded/hsql_file.db;hsqldb.lock_file=false
+- 단, 기존에 만들었던 DB폴더에서 lock파일(hsql_file.lck)을 지우셔야 합니다.
+- 다음 실행 부터는 생성되지 않기 때문에 톰캣실행과 JUnit및 다른 프로그램 작업도 가능합니다.
+![ex_screenshot](./git_img/hsql_lock_delete.jpg)
+
 ### 기본정보
 - 스프링관리자 AdminLTE템플릿 샘플: 
 - https://adminlte.io/themes/v3/pages/forms/general.html
@@ -59,9 +69,38 @@
 - 웹프로젝트 소스를 스프링프레임워크 버전으로 5.2.5 마이그레이션(버전 업그레이드)
 - 시간이 여유가 되면, eGovFrame메뉴에서 Start > New TemplateProject 심플홈 템플릿 만들어서 커스터 마이징 예정.
 
-#### 20210118(월) 작업예정
+#### 20200119(화) 작업예정
+- 수업전 어제 Update확인 및 Junit에서 properties파일 로딩해서 전역변수 사용하기 처리 추가.
+- @PropertySource("classpath:properties/local.properties") J유닛파일상단에 추가
+- 사용자단 게시판 CRUD마무리 예정.(Delete작업예정)
+- 메인페이지 최근게시물 처리, 최근이미지 처리(1개의 게시판으로 처리예정)
+- 헤로쿠 배포예정.
+- 사용자단, 유효성 검사 기능을 포함해서 마이페이지+회원가입 프로그램처리.
+- 네이버아이디 로그인(네이버에서 제공Rest-API백엔드단) 실습.
+
+#### 20210118(월) 작업
+- 세로데이터 형식(DB에서 쿼리로 출력되는 원본데이터가 레코드데이터==세로데이터)
+- [ 'attach_list' {
+- {'a.jpg','슬라이드1.jpg'},
+- {'b.jpg','슬라이드2.jpg'},
+- {'c.jpg','슬라이드3.jpg'}
+- } ]
+- 위 데이터를 jsp에서 출력할때는 세로데이터로 나옵니다. foreach(items:'${attach_list}' var='file_name') {<li>file_name.save_file_name</li>}
+- 위 세로 데이터를 가로 데이터로 변경하면 출력은
+- save_file_names = {"a.jpg","b.jpg","c.jpg"};(가로데이터==변수데이터)
+- real_file_names = {"슬라이드1.jpg","슬라이드2.jpg","슬라이드2.jpg"};(가로데이터==변수데이터)
+- 레포트툴을 사용하시면(학점출력, 고지서 금액출력, 증명서출력), 결과 확인이 가능합니다.
+- 지난주 헤로쿠 배포시 DB경로변경, 업로드경로변경 복잡한 절차를 개선시킨과정은 .properties파일로 전역변수 처리해서 OK.
+- 지금은 Hsql이나 Mysql이나 쿼리가 같습니다. 하지만, 만약 oracle쿼리는 AI가없기 때문에 많이 틀립니다. 그래서, 쿼리 경로도 전역변수로 처리합니다.
+- 로컬PC의 DB설정파일이 개발용 - 헤로쿠용 DB설정파일은 운영서버용
+- 로컬PC용 업로드 경로 개발용 - 헤로쿠용 업로드 경로 운영서버용
+- 현재는 해당되는 xml 설정파일에서 개발용과 운영서버용 내용을 변경처리해서 작업합니다.
+- 현업1에서는 globals.properties파일을 만들어서 전역변수로 위 설정내용을 변수처리해서 사용.
+- 현업2에서는 local.properties, prod.properties
+- 용어: 프로퍼티즈(properties)-속성, 프로덕트(product)-운영서버, 로컬(local)-개발PC
 - Hsql데이터베이스에서는 JUnit으로 CRUD테스트시 톰캣을 종료하고 하셔야 합니다.
-- 사용자단 게시판 CRUD마무리 예정.
+- 사용자단 게시판 CRUD마무리 예정.(*Update, Delete)
+- 메인페이지 최근게시물 처리, 최근이미지 처리(1개의 게시판으로 처리예정)
 - 헤로쿠 배포예정.
 - 사용자단, 유효성 검사 기능을 포함해서 마이페이지+회원가입 프로그램처리.
 - 네이버아이디 로그인(네이버에서 제공Rest-API백엔드단) 실습.
