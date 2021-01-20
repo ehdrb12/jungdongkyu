@@ -8,16 +8,22 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
+import org.apache.commons.io.FilenameUtils;
 import org.edu.dao.IF_BoardDAO;
 import org.edu.service.IF_BoardService;
+import org.edu.service.IF_MemberService;
 import org.edu.util.CommonController;
 import org.edu.util.SecurityCode;
 import org.edu.vo.AttachVO;
 import org.edu.vo.BoardVO;
+import org.edu.vo.MemberVO;
 import org.edu.vo.PageVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -36,6 +42,9 @@ public class HomeController {
 	
 	//private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	@Inject
+	private IF_MemberService memberService;
+	
+	@Inject
 	private IF_BoardService boardService;
 	
 	@Inject
@@ -51,6 +60,25 @@ public class HomeController {
 	@RequestMapping(value="/home/error/404",method=RequestMethod.GET)
 	public String error404() throws Exception {
 		return "home/error/404";
+	}
+	
+	//사용자 홈페이지 게시판 삭제 매핑
+	@RequestMapping(value="/home/board/board_delete",method=RequestMethod.POST)
+	public String board_delete(RedirectAttributes rdat, @RequestParam("bno") Integer bno, @RequestParam("page") Integer page) throws Exception {
+		//부모 게시판에 첨부파일이 있다면 첨부파일 삭제처리 후 게시글 삭제(아래)
+		List<AttachVO> delFiles = boardService.readAttach(bno);
+		if(!delFiles.isEmpty()) { //for(변수-한개:레코드-여러개){}
+			for(AttachVO file_name:delFiles) {//향상된 for반복문 입니다. 요즘은 이게 기본입니다.
+				File target = new File(commonController.getUploadPath(),file_name.getSave_file_name());
+				if(target.exists()) {
+					target.delete();//실제 업로드된 파일 지우기
+				}
+			}
+		}
+		//DB에서 부모 게시판에 댓글이 있다면 댓글삭제처리 후 게시글 삭제처리-서비스에 있음(아래)
+		boardService.deleteBoard(bno);
+		rdat.addFlashAttribute("msg", "삭제");//msg변수값은 URL에 표시가 나오지 않게 숨겨서 board_list보낸다.
+		return "redirect:/home/board/board_list?page="+page;//쿼리스트링변수는 URL에 표시가 됩니다.
 	}
 	
 	//사용자 홈페이지 게시판 상세보기 매핑
@@ -116,6 +144,10 @@ public class HomeController {
 		}
 		boardVO.setSave_file_names(save_file_names);
 		boardVO.setReal_file_names(real_file_names);
+		//시큐어코딩 추가(아래)
+		String xssData = boardVO.getContent();
+		boardVO.setContent(securityCode.unscript(xssData));
+		
 		boardService.updateBoard(boardVO);//DB에 신규파일 저장기능 호출
 		//게시판 테이블 업데이트+첨부파일테이블 업데이트
 		rdat.addFlashAttribute("msg", "수정");
@@ -165,6 +197,9 @@ public class HomeController {
 		}
 		boardVO.setSave_file_names(save_file_names);
 		boardVO.setReal_file_names(real_file_names);
+		//보안코딩으로 script 제거(아래)
+		String xssData = boardVO.getContent();
+		boardVO.setContent(securityCode.unscript(xssData));
 		
 		boardService.insertBoard(boardVO);//실제 DB에 인서트
 		rdat.addFlashAttribute("msg", "저장");
@@ -194,13 +229,53 @@ public class HomeController {
 		return "home/board/board_list";
 	}
 	
+	//사용자 홈페이지 회원 마이페이지 수정 매핑
+	@RequestMapping(value="/member/mypage_update",method=RequestMethod.POST)
+	public String mypage_update(HttpServletRequest request, MemberVO memberVO,RedirectAttributes rdat) throws Exception {
+		//스프링시큐리티에서 제공하는 passwordEncoder 암호화 처리(아래)
+		if(memberVO.getUser_pw() != "") {
+			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+			String user_pw_encode = passwordEncoder.encode(memberVO.getUser_pw());
+			memberVO.setUser_pw(user_pw_encode);
+		}
+		memberService.updateMember(memberVO);
+		HttpSession session = request.getSession();
+		session.setAttribute("session_username", memberVO.getUser_name());//기존세션 덮어쓰기.
+		rdat.addFlashAttribute("msg", "회원수정");//model로 값을 보내지 못하는 이유는 redirect 이기때문.
+		return "redirect:/member/mypage";
+	}
 	//사용자 홈페이지 회원 마이페이지 접근 매핑
 	@RequestMapping(value="/member/mypage",method=RequestMethod.GET)
-	public String mypage() throws Exception{
-		
+	public String mypage(HttpServletRequest request, Model model) throws Exception{
+		//마이페이지는 로그인 상태만 접근 가능하기 때문에, 로그인 세션변수중 로그인아이디변수 session_userid를 사용
+		HttpSession session = request.getSession();
+		MemberVO memberVO = memberService.readMember((String) session.getAttribute("session_userid"));
+		model.addAttribute("memberVO", memberVO);
 		return "home/member/mypage";
 	}
 	
+	//사용자 홈페이지 회원탈퇴 매핑
+	@RequestMapping(value="/member/member_disabled",method=RequestMethod.POST)
+	public String member_disabled(HttpServletRequest request, MemberVO memberVO, RedirectAttributes rdat) throws Exception {
+		memberService.updateMember(memberVO);
+		//세션값 invalidate() 삭제하기.
+		request.getSession().invalidate();
+		rdat.addFlashAttribute("msg", "회원탈퇴");
+		return "redirect:/";
+	}
+	
+	//사용자 홈페이지 회원가입 처리 매핑
+	@RequestMapping(value="/join",method=RequestMethod.POST)
+	public String join(MemberVO memberVO, RedirectAttributes rdat) throws Exception {
+		//아래 3줄이 스프링 시큐리티에서 제공하는 패스워드암호화 처리 
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		String user_pw_encode = passwordEncoder.encode(memberVO.getUser_pw());
+		memberVO.setUser_pw(user_pw_encode);
+		
+		memberService.insertMember(memberVO);
+		rdat.addFlashAttribute("msg", "회원가입");
+		return "redirect:/login";
+	}
 	//사용자 홈페이지 회원가입 접근 매핑
 	@RequestMapping(value="/join",method=RequestMethod.GET)
 	public String join() throws Exception{
@@ -210,8 +285,44 @@ public class HomeController {
 	
 	//사용자 홈페이지 루트(최상위) 접근 매핑
 	@RequestMapping(value="/",method=RequestMethod.GET)
-	public String home() throws Exception{
+	public String home(Model model) throws Exception{
+		PageVO pageVO = new PageVO();
+		pageVO.setPage(1);
+		pageVO.setPerPageNum(5);//하단페이징
+		pageVO.setQueryPerPageNum(5);
+		List<BoardVO> board_list = boardService.selectBoard(pageVO);
+		//System.out.println("디버그" + board_list);
+		model.addAttribute("board_list", board_list);
 		
+		//첨부파일 1개만 model클래스를 이용해서 jsp로 보냅니다.
+		String[] save_file_names = new String[board_list.size()];
+		int cnt = 0;
+		for(BoardVO boardVO:board_list) {//board_list변수에는 최대 5개의 레코드가 존재함.
+			List<AttachVO> file_list = boardService.readAttach(boardVO.getBno());
+			//System.out.println("디버그-file_list" + file_list);
+			if(file_list.size() == 0) {//첨부파일이 없을떄
+				save_file_names[cnt] = "";
+				System.out.println("디버그-[" + cnt + "]" + save_file_names[cnt]);
+				//continue;//컨티뉴 아래는 실행 하지 않고 거너띔
+			} else {
+				for(AttachVO file_name:file_list) {
+					String save_file_name = file_name.getSave_file_name();
+					String extName = FilenameUtils.getExtension(save_file_name);
+					boolean imgCheck = commonController.getCheckImgArray().contains(extName.toLowerCase());
+					if(imgCheck) {//첨부파일이 이미지일때
+						save_file_names[cnt] = save_file_name;
+						System.out.println("디버그[" + cnt + "]" + save_file_names[cnt]);
+						break;//이중 반복문에서 현재 for문만 종료
+					} else {//첨부파일이 엑셀,한글같은 파일일때
+						save_file_names[cnt] = "";
+						System.out.println("디버그[" + cnt + "]" + save_file_names[cnt]);
+					}
+				}
+			}
+			cnt = cnt + 1;
+		}
+		
+		model.addAttribute("save_file_names", save_file_names);
 		return "home/home";
 	}
 	
