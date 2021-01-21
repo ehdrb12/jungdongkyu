@@ -73,10 +73,15 @@
 - IoT(아두이노,라즈베리파이-C언어책3권) 2주
 - 안드로이드앱(클라이언트)-통신-자바:스프링웹프로젝트(API서버) 2주
 
-#### 20210121(목) 작업예정
+#### 20210121(목) 작업
+- 인증(Authentication) - 스프링시큐리티에서 enalbed 가 인증체크
+- 권한(Authorization) - 스프링시큐리티에서 ROLE_ADMIN, ROLE_USER 가 권한체크 
+- 콜백 URL: function() 콜백함수와 같은 기능처럼=자동실행되는 함수처럼 로그인 URL로 자동으로 이동하는 방법이 콜백URL
+- 로그인 후 이동할 URL == 콜백URL 과 같은 이야기
+- 네아로 서비스URL : http://localhost:8080 -> http://127.0.0.1:8080
 - 시작전, /admin/member/member_update (AdminController클래스매핑)에서 조건변경
-- memberVO.getUser_pw() != null -> memberVO.getUser_pw() != ""
-- 회원가입 프로그램처리 결과확인.
+- memberVO.getUser_pw() != null -> 추가 || memberVO.getUser_pw() != ""
+- 회원가입 프로그램처리 결과확인.(회원가입 후 바로 로그인X, 관리자가 enabled true로 변경 후 신규회원이 로그인 가능.)
 - 네이버아이디 로그인(네이버에서 제공Rest-API백엔드단) 실습.
 
 #### 20210120(수) 작업
