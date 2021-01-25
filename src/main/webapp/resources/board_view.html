@@ -389,6 +389,7 @@ $(document).ready(function() {
 		$("#rno").val($(this).attr("data-rno"));
 		$(".modal-title").html($(this).find(".timeline-header").text());
 		$("#replytext").val($(this).find(".timeline-body").text());
+		//alert("디버그" + $(this).find(".timeline-body").text());
 		//마우스클릭으로 선택한 댓글의 .timeline-body영역의 text문자를 
 		//모달창의 #replaytext영역에 값으로 입력하겠다.
 	});

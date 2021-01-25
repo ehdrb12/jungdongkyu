@@ -1,5 +1,5 @@
 @charset "UTF-8";
-/*pc용 스타일시작*/
+/*PC용 스타일시작*/
 /*미디어쿼리:미디어의 가로크기가 1132px 이상이면 아래 스타일 적용*/
 @media all and (min-width:1132px) {
 
@@ -7,12 +7,12 @@
 .carousel-item, .carousel-item img {height:700px;}
 /*슬라이드영역 끝*/
 
-/*weare영역시작*/
+/*weare영역 시작*/
 .weare-header {
-margin:0 3%;/*가운데정렬 이면서 좌우여백3%*/
+margin:0 3%;
 margin-top:30px;
 text-align:left;/*내부 글자들 좌우 정렬을 왼쪽으로 지정*/
-}
+}/*가운데정렬 이면서 좌우여백 5%*/
 .weare-header .section-title {
 float:left;
 width:50%;
@@ -21,7 +21,7 @@ width:50%;
 float:right;
 width:50%;
 position:relative;/*p태그내용을 상대위치로 배치*/
-padding-left:20px;/*p태그에 왼쪽여백을 줌. 아래 before가상요소가 나타날 영역을 넓히는 역할*/
+padding-left:20px;/*p태그의 왼쪽여백을 줌. 아래 before가상요소가 나타날 영역을 넓히는 역할*/
 }
 .weare-header p::before {/*p태그앞에 가상요소로 짝대기 하나 만듭니다. 참고,a:hover가상클래스*/
 position:absolute;/*weare-hearder영역안쪽에서 절대위치로 표시*/
@@ -30,7 +30,7 @@ left:0px;
 width:2px;/*짝대기 가로크기*/
 height:40px;/*짝대기 세로크기*/
 background:#ccc;/*짝대기 색상*/
-content:"";/*짝대기만 만들고, 내용은 빈공간으로 처리*/
+content:"";/*짝대기만 만들고, 내용은 비공간으로 처리*/
 }
 /*weare영역 끝*/
 
@@ -39,7 +39,7 @@ content:"";/*짝대기만 만들고, 내용은 빈공간으로 처리*/
 text-align:left;
 margin-left:3%;
 }
-.work-section li {width:25%;}/*100%/4개 = 25%*/
+.work-section li {width:25%;}/*전체100%/4개 = 25%*/
 /*work영역 끝*/
 
 /*blog영역 시작*/
@@ -54,8 +54,7 @@ margin-top:30px;
 .blog-section .container {
 float:right;
 width:80%;
-}/*li리스트태그에 float:left;*/
-
+}/*li리스트태그에 적용했던 방식이라면 모두 float:left;*/
 /*blog영역 끝*/
 
 /*contact영역 시작*/
@@ -76,4 +75,4 @@ width:75%;
 /*contact영역 끝*/
 
 }
-/*pc용 스타일 끝*/
+/*PC용 스타일 끝*/

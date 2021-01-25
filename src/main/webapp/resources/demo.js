@@ -3,9 +3,8 @@
  * ------------------
  * 원본위치: src/main/webapp/resources/dist/js/demo.js
  */
-
 /* 수업용 수정본(아래) */
-$(document).ready(function($) {
+$(document).ready(function ($) {
   var $sidebar = $('.control-sidebar')
   var $container = $('<div />', {
     class: 'p-3 control-sidebar-content text-center'
@@ -16,5 +15,5 @@ $(document).ready(function($) {
   )
   $container.append(
     '<button type="button" class="btn btn-lg btn-primary">로그아웃</button>'
-  )  
+  )
 });

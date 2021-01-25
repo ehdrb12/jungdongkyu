@@ -2,7 +2,7 @@
 <html><!-- html문서는 태그열고 ~ 태그닫고 하는 영역확인 중요 -->
 <head><!-- 문서내용과는 관계없는 문서정보=메타데이터(데이터의데이터)가 존재 -->
 <meta charset="UTF-8"><!-- 문서의 언어 인코딩설정  지금은 유니코드로 됨 -->
-<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scaleable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1">
 <title>반응형홈페이지</title><!-- 문서의 제목을 브라우저상단왼쪽에 표시 -->
 <!-- 외부 css파일 불러오는 태그(아래) -->
 <link rel="stylesheet" href="/resources/sample/css/reset.css" type="text/css">
@@ -15,11 +15,11 @@
 <!-- span태그 자리를 차지하지 않는 영역 = 한뼘 , px 픽셀 화면에 표시되는 크기의 단위 -->
 <!-- :콜론(속성:값, Key:Value), ;세미콜론(문장의 끝) -->
 <style>
-/*pc용 스타일 시작*/
+/*PC용 스타일 시작*/
 @media all and (min-width:1132px) {
 
 }
-/*pc용 스타일 끝*/
+/*PC용 스타일 끝*/
 </style>
 <script>
 /* 자바스크립트 시작 */
@@ -32,7 +32,7 @@
 <header class="header">
 <!-- 상단 로고와 햄버거 메뉴영역 시작 -->
 <h1 class="logo">
-<a href="index.html">LOGO</a><!-- a태그는 페이지이동역할,href헤르프 속성값에 URL을 입력해서 이동 -->
+<a href="index.html">LOGO</a><!-- a태그는 페이지이동역할, href헤르프 속성값에 URL을 입력해서 이동 -->
 </h1><!-- 헤드라인 글자를 표시 h1~h6 -->
 <div class="menu-toggle-btn">
 <span></span>
@@ -53,86 +53,88 @@
 </nav>
 <!-- 상단 로고와 햄버거 메뉴영역 끝 -->
 </header>
+
 <section class="work-section"><!-- division디비전이라는 div 영역표시 태그 대신에 사용 -->
 <h1 class="section-title">WORK</h1>
 <ul>
-<li><!-- 아래a링크의 title속성은 시각장애인을 위한 웹접근성을 위한 코딩입니다. -->
+<li><!-- 아래 a링크의 title속성은 시각장애인을 위한(웹접근성을 위한) 코딩입니다. -->
 <a href="javascript:;" title="겔러리게시판2의 이미지1번입니다.">
 <div class="info">
 <h2>겔러리제목1</h2>
 <p>겔러리게시물1번의 내용입니다. 여러분 환영...</p>
 </div>
-<img src="/resources/sample/img/bag.jpg"alt="겔러리게시판2이미지1">
+<img src="/resources/sample/img/xmas2.png" alt="겔러리게시판2이미지1">
 </a>
 </li>
 <li>
-<a href="javascript">
+<a href="javascript:;">
 <div class="info">
 <h2>겔러리제목2</h2>
 <p>겔러리게시물2번의 내용입니다. 여러분 환영...</p>
 </div>
-<img src="/resources/sample/img/bag.jpg"alt="겔러리게시판2이미지2">
+<img src="/resources/sample/img/xmas2.png" alt="겔러리게시판2이미지2">
 </a>
 </li>
 <li>
-<a href="javascript">
+<a href="javascript:;">
 <div class="info">
 <h2>겔러리제목3</h2>
 <p>겔러리게시물3번의 내용입니다. 여러분 환영...</p>
 </div>
-<img src="/resources/sample/img/bag.jpg"alt="겔러리게시판2이미지3">
+<img src="/resources/sample/img/xmas2.png" alt="겔러리게시판2이미지3">
 </a>
 </li>
 <li>
-<a href="javascript">
+<a href="javascript:;">
 <div class="info">
 <h2>겔러리제목4</h2>
 <p>겔러리게시물4번의 내용입니다. 여러분 환영...</p>
 </div>
-<img src="/resources/sample/img/bag.jpg"alt="겔러리게시판2이미지4">
+<img src="/resources/sample/img/xmas2.png" alt="겔러리게시판2이미지4">
 </a>
 </li>
 <li>
-<a href="javascript">
+<a href="javascript:;">
 <div class="info">
 <h2>겔러리제목5</h2>
 <p>겔러리게시물5번의 내용입니다. 여러분 환영...</p>
 </div>
-<img src="/resources/sample/img/bag.jpg"alt="겔러리게시판2이미지5">
+<img src="/resources/sample/img/xmas2.png" alt="겔러리게시판2이미지5">
 </a>
 </li>
 <li>
-<a href="javascript">
+<a href="javascript:;">
 <div class="info">
 <h2>겔러리제목6</h2>
 <p>겔러리게시물6번의 내용입니다. 여러분 환영...</p>
 </div>
-<img src="/resources/sample/img/bag.jpg"alt="겔러리게시판2이미지6">
+<img src="/resources/sample/img/xmas2.png" alt="겔러리게시판2이미지6">
 </a>
 </li>
 <li>
-<a href="javascript">
+<a href="javascript:;">
 <div class="info">
 <h2>겔러리제목7</h2>
 <p>겔러리게시물7번의 내용입니다. 여러분 환영...</p>
 </div>
-<img src="/resources/sample/img/bag.jpg"alt="겔러리게시판2이미지7">
+<img src="/resources/sample/img/xmas2.png" alt="겔러리게시판2이미지7">
 </a>
 </li>
 <li>
-<a href="javascript">
+<a href="javascript:;">
 <div class="info">
 <h2>겔러리제목8</h2>
 <p>겔러리게시물8번의 내용입니다. 여러분 환영...</p>
 </div>
-<img src="/resources/sample/img/bag.jpg"alt="겔러리게시판2이미지8">
+<img src="/resources/sample/img/xmas2.png" alt="겔러리게시판2이미지8">
 </a>
 </li>
 </ul>
 </section>
+
 <footer class="footer float-clear">
 <!-- 하단 로고 영역 시작 -->
-<p>LOGO</p><!-- 문장영역을 의미하는 paragraph 태그입니다. -->
+<p>LOGO</p><!-- 문장영역을 의미하는 Paragraph 태그입니다. -->
 <!-- 하단 로고 영역 끝 -->
 </footer>
 </div>

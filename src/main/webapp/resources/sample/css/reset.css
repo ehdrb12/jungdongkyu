@@ -1,4 +1,5 @@
 @charset "UTF-8";
+/* 초기화 */
 html {overflow-y:scroll}
 body {margin:0;padding:0;font-size:0.75em;font-family:'Malgun Gothic', dotum, sans-serif;background:#e7e7e7}
 html, h1, h2, h3, h4, h5, h6, form, fieldset, img {margin:0;padding:0;border:0}
