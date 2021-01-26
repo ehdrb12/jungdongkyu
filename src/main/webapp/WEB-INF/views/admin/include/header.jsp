@@ -9,6 +9,9 @@
 if('${msg}' != '') {//자바의 EL표기법 = 달라{변수명}
 	alert("${msg} 가(이) 성공하였습니다.");
 }
+if('${msg_fail}' != ''){
+	alert("${msg_fail} 가(이) 실패햐였습니다.");
+}
 </script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -121,7 +124,7 @@ if('${msg}' != '') {//자바의 EL표기법 = 달라{변수명}
                 </a>
               </li>
               <li class="nav-item">
-                <a href="/admin/bod/bod_type_list" class="nav-link">
+                <a href="/admin/bbs_type/bbs_type_list" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>게시판생성 관리</p>
                 </a>
