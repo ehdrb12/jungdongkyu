@@ -8,7 +8,7 @@
 </head>
 <body>
 <h1>
-	Hello world! 정동규 입니다. 
+	Hello world! 김일국 입니다. 
 </h1>
 <p> <c:out value="${TomcatserverTime}"></c:out>
 <!-- c:out 태그를 사용하는 이유는 해킹 방지용으로 필요합니다. 시큐어코딩(보안코딩) -->

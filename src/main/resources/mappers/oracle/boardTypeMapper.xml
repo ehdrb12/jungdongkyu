@@ -27,4 +27,4 @@
 	<select id="viewBoardType" resultType="org.edu.vo.BoardTypeVO">
 	select * from tbl_board_type where board_type = #{board_type}
 	</select>
-</mapper> 
+</mapper>

@@ -82,9 +82,11 @@
 <script>
 jQuery(document).ready(function(){
 	jQuery("#btn_delete").on("click",function(){
-		var delete_form = jQuery("form[name='update_form']");//폼선택영역 단축변수 만들기
-		delete_form.attr("action","/admin/bbs_type/bbs_type_delete");
-		delete_form.submit();
+		if(confirm("정말로 삭제하겠습니까?")){
+			var delete_form = jQuery("form[name='update_form']");//폼선택영역 단축변수 만들기
+			delete_form.attr("action","/admin/bbs_type/bbs_type_delete");
+			delete_form.submit();
+		}
 	});
 });
 </script>

@@ -297,7 +297,7 @@
 	<engineering_params>
 		<delete_without_origin value="false"/>
 		<engineer_coordinates value="true"/>
-		<engineer_generated value="true"/>
+		<engineer_generated value="false"/>
 		<show_engineering_intree value="false"/>
 		<apply_naming_std value="true"/>
 		<use_pref_abbreviation value="true"/>
@@ -389,7 +389,7 @@
 	<model_compare_storage_props_filter>
 	</model_compare_storage_props_filter>
 	<naming_options>
-		<model_options objectid="BCF167F9-34C9-185D-37B2-F00C8EB04C6C">
+		<model_options objectid="C247225A-9F44-96F7-985C-DC302503283D">
 			<naming_option class_name="oracle.dbtools.crest.model.design.relational.Table" max_name_length="30" case_type="2" valid_characters="" all_valid="true" />
 			<naming_option class_name="oracle.dbtools.crest.model.design.relational.Column" max_name_length="30" case_type="2" valid_characters="" all_valid="true" />
 			<naming_option class_name="oracle.dbtools.crest.model.design.relational.TableView" max_name_length="30" case_type="2" valid_characters="" all_valid="true" />
@@ -397,7 +397,7 @@
 			<naming_option class_name="oracle.dbtools.crest.model.design.relational.FKIndexAssociation" max_name_length="30" case_type="2" valid_characters="" all_valid="true" />
 			<naming_option class_name="oracle.dbtools.crest.model.design.relational.Index" max_name_length="30" case_type="2" valid_characters="" all_valid="true" />
 		</model_options>
-		<model_options objectid="263B46B0-5F65-7B36-926D-EBED9A6494E7">
+		<model_options objectid="C925FDA3-803B-BD75-396E-188203B91EDB">
 			<naming_option class_name="oracle.dbtools.crest.model.design.logical.Entity" max_name_length="254" case_type="2" valid_characters="" all_valid="true" />
 			<naming_option class_name="oracle.dbtools.crest.model.design.logical.Attribute" max_name_length="254" case_type="2" valid_characters="" all_valid="true" />
 			<naming_option class_name="oracle.dbtools.crest.model.design.logical.EntityView" max_name_length="254" case_type="2" valid_characters="" all_valid="true" />
@@ -429,7 +429,7 @@
 				<subviews value="70"/>
 				<arcs value="70"/>
 				<physical_models_estimates>
-							<physical_model_BCF167F9-34C9-185D-37B2-F00C8EB04C6C_Oracle_Database_11g>
+							<physical_model_C247225A-9F44-96F7-985C-DC302503283D_Oracle_Database_11g>
 								<physical_model_name value="Oracle Database 11g"/>
 								<clusters value="70"/>
 								<contexts value="70"/>
@@ -456,7 +456,7 @@
 								<users value="70"/>
 								<views value="70"/>
 								<triggers value="70"/>
-							</physical_model_BCF167F9-34C9-185D-37B2-F00C8EB04C6C_Oracle_Database_11g>
+							</physical_model_C247225A-9F44-96F7-985C-DC302503283D_Oracle_Database_11g>
 				</physical_models_estimates>
 			</relational_model_0_estimates>
 		</relational_model_estimates>

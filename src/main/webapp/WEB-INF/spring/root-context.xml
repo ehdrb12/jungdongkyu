@@ -24,6 +24,9 @@
                 <!-- 
                 <value>classpath:/properties/prod.properties</value>
                  -->
+                 
+                 <!-- Junit실행시 에러나서 여기로 위치 변경 -->
+                <value>classpath:/properties/sns.properties</value>
             </list>
         </property>
     </bean>
