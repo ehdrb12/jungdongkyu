@@ -27,6 +27,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -351,7 +353,11 @@ public class AdminController {
 	
 	//메서드 오버로딩(예, 동영상 로딩중..., 로딩된 매개변수가 다르면, 메서드이름을 중복가능합니다. 대표적인 다형성구현)
 	@RequestMapping(value="/admin/member/member_write",method=RequestMethod.POST)
-	public String member_write(@Valid MemberVO memberVO) throws Exception {
+	public String member_write(HttpServletRequest request,MultipartFile file,@Valid MemberVO memberVO) throws Exception {
+		//프로필 첨부파일 매서드 호출
+		if(file.getOriginalFilename() != null) {
+			commonController.profile_upload(memberVO.getUser_id(), request, file);
+		}
 		//아래 GET방식의 폼 출력화면에서 데이터 전송받은 내용을 처리하는 바인딩.
 		//POST방식으로 넘어온 user_pw값을 BCryptPasswordEncoder클래스로 암호시킴
 		if(memberVO.getUser_pw() != null) {
@@ -376,11 +382,16 @@ public class AdminController {
 		model.addAttribute("memberVO", memberVO);
 		return "admin/member/member_update";
 	}
-	
+	//첨부파일처리는 MultipartFile(첨부파일 태그name 1개일때) , MultipartServletRequest(첨부파일 태그name이 여러개일때) 
 	@RequestMapping(value="/admin/member/member_update",method=RequestMethod.POST)
-	public String member_update(PageVO pageVO,@Valid MemberVO memberVO) throws Exception {
+	public String member_update(HttpServletRequest request,MultipartFile file,PageVO pageVO,@Valid MemberVO memberVO) throws Exception {
+		//프로필 첨부파일 처리
+		if(file.getOriginalFilename() != null) {
+			commonController.profile_upload(memberVO.getUser_id(), request, file);
+		}
 		//POST방식으로 넘어온 user_pw값을 BCryptPasswordEncoder클래스로 암호시킴
-		if(memberVO.getUser_pw() == null || memberVO.getUser_pw() == "") {
+		//if(memberVO.getUser_pw() == null || memberVO.getUser_pw() == "") {
+		if(memberVO.getUser_pw().isEmpty()) {
 		} else {
 			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 			String userPwEncoder = passwordEncoder.encode(memberVO.getUser_pw());
@@ -475,8 +486,29 @@ public class AdminController {
 	
 	//bind:묶는다는 의미, /admin 요청URL경로와 admin/home.jsp를 묶는다는 의미.
 	@RequestMapping(value="/admin",method=RequestMethod.GET)
-	public String admin() throws Exception {
+	public String admin(Model model) throws Exception {
+		//대시보드 만들기 1번 방법: ModelMap<key:objcet>값을 만들어서 보내기
+		PageVO pageVO = new PageVO();
+		pageVO.setPage(1);
+		pageVO.setPerPageNum(5);
+		pageVO.setQueryPerPageNum(4);
+		List<MemberVO> latest_member = memberService.selectMember(pageVO);
+		model.addAttribute("latest_member", latest_member);
+
 		return "admin/home";//상대경로 파일위치
+	}
+	//관리자단 대시보드에 나타낼 다중게시판 최근게시물 출력하는 바인딩
+	@RequestMapping(value="/admin/latest/latest_board",method=RequestMethod.GET)
+	public String latest_board(@RequestParam("board_type") String board_type,Model model) throws Exception {
+		PageVO pageVO = new PageVO();
+		pageVO.setBoard_type(board_type);//jsp > import jstl로 ?~쿼리스트링으로 받은 변수값
+		pageVO.setPage(1);
+		pageVO.setPerPageNum(5);
+		pageVO.setQueryPerPageNum(5);
+		List<BoardVO> latest_list = boardService.selectBoard(pageVO);
+		model.addAttribute("latest_list", latest_list);
+		
+		return "admin/latest/latest_board";
 	}
 	
 }
