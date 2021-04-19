@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>오픈챠트 시작</title>
+<script  src="https://code.jquery.com/jquery-latest.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.1.0/dist/chart.min.js"></script>
+</head>
+<body>
+<canvas id="myChart" width="400" height="400"></canvas>
+<select id="selVote">
+	<option value="red">Red</option>
+	<option value="blue">Blue</option>
+	<option value="yellow">Yellow</option>
+	<option value="green">Green</option>
+	<option value="purple">Purple</option>
+	<option value="orange">Orange</option>
+</select>
+<button id="btnVote">투표하기</button>
+<button id="btnVoteDel">초기화하기</button>
+<canvas id="myChart2" width="400" height="400"></canvas>
+<!-- <script src="http://localhost:5000/socket.io/socket.io.js">
+//노드js에서 발생시킨 소켓io.js를 호출
+</script>
+-->
+<script src="https://jungdongkyu-nodejs.herokuapp.com/socket.io/socket.io.js"></script>
+<script>
+//var serverUrl = 'http://localhost:5000';
+var serverUrl = 'https://kimilguk-nodejs.herokuapp.com';
+var socket = io.connect(serverUrl);
+
+</script>
+<script>
+var btnVote = document.getElementById('btnVote');
+var selVote = document.getElementById('selVote');
+var jsonData = {"red":12,"blue":19,"yellow":3,"green":5,"purple":2,"orange":3};
+//alert(jsonData.Blue);//디버그
+//var jsonData = [12, 19, 3, 5, 2, 3];//자바스크립트의 배열값
+var ctx = document.getElementById('myChart').getContext('2d');
+var ctx2 = document.getElementById('myChart2').getContext('2d');
+var datasets_line_bar = [{
+    label: '본인이 좋아하는 색상 설문조사',
+    data: jsonData,
+    backgroundColor: [
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(153, 102, 255, 0.2)',
+        'rgba(255, 159, 64, 0.2)'
+    ],
+    borderColor: [
+        'rgba(255, 99, 132, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)'
+    ],
+    borderWidth: 1
+}];
+var options_line_bar = {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    };
+var myChart = new Chart(ctx, {
+    type: 'bar',//radar, doughnut, pie, polar, bubble, scatter, area
+    data: {
+        labels: [],
+        datasets: datasets_line_bar
+    },
+    options: options_line_bar
+});
+//myChart2 시작, jsonData에러발생- 일반배열로 변경
+var datasets_radar = [{
+    label: '본인이 좋아하는 색상 설문조사',
+    data: [jsonData.red,jsonData.blue,jsonData.yellow,jsonData.green,jsonData.purple,jsonData.orange],
+    fill: true,
+    radius: 6,//각 data 항목이 6개의 이미지가 원형이고, 그 크기를 반지름
+    pointRadius: 6,
+    pointBorderWidth: 6,
+    pointBackgroundColor: [
+    	'rgba(255,99,132,0.2)',
+    	'rgba(54,162,235,0.2)',
+    	'rgba(255,206,86,0.2)',
+    	'rgba(75,192,192,0.2)',
+    	'rgba(153,102,255,0.2)',
+    	'rgba(255,159,64,0.2)'
+    ],
+    pointBackgroundColor: [
+    	'rgba(255,99,132,1)',
+    	'rgba(54,162,235,1)',
+    	'rgba(255,206,86,1)',
+    	'rgba(75,192,192,1)',
+    	'rgba(153,102,255,1)',
+    	'rgba(255,159,64,1)'
+    ],
+    pointHoverRadius: 10
+  }];
+var options_radar = {
+	scale: {
+		gridLines: {
+			color: "black",
+			lineWidth: 3
+		},
+		angleLines: {
+			display: true
+		},
+		ticks: {
+			beginAtZero: true,
+			stepSize: 1
+		}
+	},
+	legend: {//범례
+		position: 'left'
+	}
+};
+var myChart2 = new Chart(ctx2, {
+	type: 'radar',
+	data: {
+        labels: [selVote[0].value,selVote[1].value,selVote[2].value,selVote[3].value,selVote[4].value,selVote[5].value],
+        datasets: datasets_radar
+    },
+	options: options_radar
+});
+</script>
+
+<script>
+$("#btnVoteDel").on("click", function(){
+	if(confirm("정말로 초기화 하시겠습니까, 투표한 DB자료가 삭제됩니다.")) {
+		$.ajax({
+			type:"post",
+			url:"/chart/deldata",
+			data:"text",
+			headers:{
+				"Content-Type":"application/json",
+				"X-HTTP-Method-Override":"POST"
+			},
+			success:function(result) {
+				if(result=="success"){
+					alert("모든 투표자료가 삭제 되었습니다.");
+					jsonData = {"red":0,"blue":0,"yellow":0,"green":0,"purple":0,"orange":0};//jsonData 초기화
+					updateRender();
+					socket.emit("OnOff", {msg:'updateRender'});//1:1통신 노드js로 문자를 OnOff에 담아서 보냄.
+				}
+			},
+			error:function(result) {
+				alert("API서버를 사용할 수 없습니다.");
+			}
+		});
+	}
+});
+btnVote.onclick = function() {
+var voteIdx = document.getElementById('selVote').options.selectedIndex;
+	//alert(selVote[voteIdx].value);
+	//jsonData[voteIdx] += 1;//누적시킵니다. 자바스크립트의 배열방식
+	//alert(Object.keys(jsonData).length);//Json데이터의 길이구할때
+	
+	//DB초기값이 없을 경우 초기값을 0으로 강제로 지정.
+	if(jsonData.red=="") { jsonData.red=0; }
+	if(jsonData.blue=="") { jsonData.blue=0; }
+	if(jsonData.yellow=="") { jsonData.yellow=0; }
+	if(jsonData.green=="") { jsonData.green=0; }
+	if(jsonData.purple=="") { jsonData.purple=0; }
+	if(jsonData.orange=="") { jsonData.orange=0; }
+	
+	//화면의 select태그를 선택한 인덱스 번호에 해당하는 값을 누적합니다.(아래)
+	//투표버튼을 클릭했을때 해당 버튼의 값만 +1 하는 스위치문
+	switch(voteIdx) {
+	case 0:
+		jsonData.red += 1;//Json데이터 방식 = jsonData.blue
+		break;
+	case 1:
+		jsonData.blue += 1;
+		break;
+	case 2:
+		jsonData.yellow += 1;
+		break;
+	case 3:
+		jsonData.green += 1;
+		break;
+	case 4:
+		jsonData.purple += 1;
+		break;
+	case 5:
+		jsonData.orange += 1;
+		break;
+	}
+	//기존 값과, 변경된 값 변수로 지정, DB입력을 위한 변수 값을 jsonData값으로 채워넣는 로직(아래).
+	//alert(selVote[0].value)
+	for(var i=0;i<Object.keys(jsonData).length;i++){
+		switch(selVote[i].value) {
+		case "red":
+			var red = jsonData.red;
+			break;
+		case "blue":
+			var blue = jsonData.blue;
+			break;
+		case "yellow":
+			var yellow = jsonData.yellow;
+			break;
+		case "green":
+			var green = jsonData.green;
+			break;
+		case "purple":
+			var purple = jsonData.purple;
+			break;
+		case "orange":
+			var orange = jsonData.orange;
+			break;
+		}
+	}
+	//alert(red+blue+yellow+green+purple+orange);
+	$.ajax({
+		type:'post',
+		url:'/chart/setdata',
+		dataType:'text',
+		headers:{
+			"Content-Type":"application/json",
+			"X-HTTP-Method-Override":"POST"
+		},
+		data:JSON.stringify({//json데이터를 post전송할 text로 변경.
+			"red":red,
+			"blue":blue,
+			"yellow":yellow,
+			"green":green,
+			"purple":purple,
+			"orange":orange
+		}),
+		success:function(result) {
+			updateRender();
+			socket.emit("OnOff", {msg:'updateRender'});//1:1통신 노드js로 문자를 OnOff에 담아서 보냄.
+		},
+		error:function(result) {
+			alert("API서버가 작동하지 않습니다. 다음에 이용해 주세요");
+		}
+	});	
+}
+//예전에 실시간 대시보드를 구현했던 방법(푸시-카카오톡알림처럼)
+/*
+var i=1;
+var interval = setInterval(function(){
+	var jsonData = {red:i,blue:19,yellow:3,green:5,purple:2,orange:3};
+	myChart.data.datasets[0].data = jsonData;
+	myChart.update();//Char.js에 내장된 함수로 그래프를 재생 시킴
+	i++;
+	console.log("자동으로 "+i+" 초 실행");
+},1000);//1초마다 DB에 접근해서 새로운 데이터를 받았습니다.
+*/
+</script>
+<script>
+var updateRender = function() {
+	myChart.data.datasets[0].data = jsonData;//결과적으로 json데이터를 만들어야함.
+	myChart.update();//Char.js에 내장된 함수로 그래프를 재생 시킴
+	//두번째 챠트 출력하기-레이더 챠트는 위 막대/라인챠트처럼 jsonData사용불가
+	myChart2.data.datasets[0].data = [jsonData.red,jsonData.blue,jsonData.yellow,jsonData.green,jsonData.purple,jsonData.orange];
+	myChart2.update();
+};
+var getData = function() {
+	//alert('제이쿼리 작동확인');아래 ajax는 무조건실행
+	$.ajax({
+		type:'get',
+		url:'/chart/getdata',//RestAPI생성후변경
+		dataType:'text',//RestAPI에서 받는 데이터 형식 -> 아래 result
+		success:function(result){
+			//jsonData = [0,0,0,0,0,0];//자바스크립트 배열일때
+			if(result == "") {//result값이 없으면 jsonData강제로 생성
+				//alert(result);
+				result={"red":0,"blue":0,"yellow":0,"green":0,"purple":0,"orange":0};
+				jsonData = result;
+			}else{//result값이 있으면, text로 받기 때문에 json파싱이 필요
+				//jsonData = JSON.stringify(result);//Json데이터형식을 text로 변경
+				jsonData = JSON.parse(result);//text데이터를 Json데이터로 변경
+			}
+			updateRender();
+		},
+		error:function(result){
+			alert('RestAPI서버에 문제가 있습니다.');
+		}
+	});
+};
+$(document).ready(function() {//페이지 로딩시 최초1회만 실행
+	socket.on("OnOff", function(jsonMsg){
+		//msg = JSON.stringify(jsonMsg);//json데이터를 스트링데이터로 변경
+		console.log(socket.id+"가 받은 메세지는 "+jsonMsg.msg);
+		if(jsonMsg.msg=="updateRender") {
+			getData();
+		}
+	});
+	getData();//챠트에 초기 데이터 바인딩.
+});
+</script>
+</body>
+</html>
